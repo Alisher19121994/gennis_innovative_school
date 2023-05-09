@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:gennis_innovative_school/pages/entrancePage/entarnce_page.dart';
+import 'package:gennis_innovative_school/network/network.dart';
+import 'package:gennis_innovative_school/pages/registration/model/sign_in.dart';
 import 'package:gennis_innovative_school/projectImages/projectImages.dart';
+import 'package:logger/logger.dart';
+import 'package:http/http.dart' as http;
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -12,16 +17,18 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final formKey = GlobalKey<FormState>();
-  late String username;
-  late String password;
+   String username = '';
+   String password = '';
   var isLoading = false;
   bool passwordVisible=false;
+  var logger = Logger();
 
 
-  @override
+    @override
   void initState() {
     super.initState();
     passwordVisible = true;
+   // _loginUser();
   }
 
   @override
@@ -43,6 +50,7 @@ class _SignInState extends State<SignIn> {
               const SizedBox(
                 height: 26,
               ),
+              //#username & password
               Container(
                   height: 350,
                   margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -138,7 +146,11 @@ class _SignInState extends State<SignIn> {
                               onPressed: (){
                               final isValid = formKey.currentState!.validate();
                               if(isValid){
-                                Navigator.pushReplacementNamed(context, EntrancePage.id);
+
+                                LogIn logIn = LogIn(username: username,password: password);
+                               Network.loginUser(logIn);
+
+                               // Navigator.pushReplacementNamed(context, EntrancePage.id);
                               }
                               },
                               child:const Text("Submit",style: TextStyle(color: Colors.white,fontSize: 19,fontWeight: FontWeight.bold),)
