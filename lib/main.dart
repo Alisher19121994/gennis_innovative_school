@@ -22,20 +22,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Gennis',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       home: const SplashPage(),
       routes:{
         SignIn.id:(context) => const SignIn(),
         EntrancePage.id:(context) => const EntrancePage(),
-        UsersList.id:(context) => const UsersList(),
+        UsersList.id:(context) => const UsersList(getId: 0,),
         AttendanceList.id:(context) => const AttendanceList(),
         CreateList.id:(context) => const CreateList(),
         EduPlanList.id:(context) => const EduPlanList(),
         ProfilePage.id:(context) => const ProfilePage(),
-        MainPage.id:(context) => const MainPage(),
+        MainPage.id:(context) => const MainPage(groupId: 0,),
         EditPhoto.id:(context) => const EditPhoto(),
         AttendanceCheckOut.id:(context) => const AttendanceCheckOut(),
         EditData.id:(context) => const EditData(),

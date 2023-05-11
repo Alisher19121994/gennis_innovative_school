@@ -27,8 +27,8 @@ class _EditDataState extends State<EditData> {
         //#edit data title
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
+          children: const [
+            Text(
               "Edit Profile",
               style: TextStyle(
                   color: Colors.white,

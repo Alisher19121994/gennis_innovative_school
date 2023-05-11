@@ -2,10 +2,15 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/network/network.dart';
+import 'package:gennis_innovative_school/network/sharedPreferenceData/shared_preference_data.dart';
 import 'package:gennis_innovative_school/pages/registration/model/sign_in.dart';
 import 'package:gennis_innovative_school/projectImages/projectImages.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
+
+import '../entrancePage/entarnce_page.dart';
+import '../entrancePage/model/main_entrance_group_entity.dart';
+import 'model/response_logged_in_entity.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -28,7 +33,23 @@ class _SignInState extends State<SignIn> {
   void initState() {
     super.initState();
     passwordVisible = true;
-   // _loginUser();
+  }
+  _loginUser(LogIn logIn)async{
+      var logger = Logger();
+      setState(() {
+        isLoading = true;
+      });
+
+      var response = await Network.loginUser(logIn);
+      if(response != null){
+        setState(() {
+          isLoading = false;
+        });
+      }else{
+        setState(() {
+          isLoading = false;
+        });
+      }
   }
 
   @override
@@ -61,103 +82,115 @@ class _SignInState extends State<SignIn> {
                   ),
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        //#sign in text
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 20),
-                          child: const Text(
-                            "Sign In",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 23,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 26,
-                        ),
-                        //#username
-                        TextFormField(
-                          style: const TextStyle(color: Colors.black),
-                          decoration: const InputDecoration(
-                              prefixIcon: Icon(
-                                Icons.perm_identity,
-                                color: Colors.black,
-                              ),
-                              labelText: 'Username',
-                              border: OutlineInputBorder()),
-                          validator: (value) {
-                            if (value != null && value.isEmpty) {
-                              return 'Username must not be empty';
-                            }
-                            return null;
-                          },
-                          onChanged: (value) => setState(() => username = value),
-                        ),
-                        const SizedBox(
-                          height: 13,
-                        ),
-                        //#password
-                        TextFormField(
-                          keyboardType: TextInputType.visiblePassword,
-                          textInputAction: TextInputAction.done,
-                          obscureText: passwordVisible,
-                          style: const TextStyle(color: Colors.black),
-                          decoration: InputDecoration(
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                  passwordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off),
-                              onPressed: () {
-                                setState(() {
-                                    passwordVisible = !passwordVisible;
-                                  },
-                                );
-                              },
+                    child: Stack(
+                      children:[
+                        Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          //#sign in text
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 20),
+                            child: const Text(
+                              "Sign In",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.bold),
                             ),
-                              prefixIcon: const Icon(
-                                Icons.lock_open_rounded,
-                                color: Colors.black,
-                              ),
-                              labelText: 'Password',
-                              border: const OutlineInputBorder()
                           ),
-                          validator: (value) {
-                            if (value != null && value.isEmpty) {
-                              return 'Password must not be empty';
-                            }
-                            return null;
-                          },
-                          onChanged: (value) => setState(() => password = value),
-                        ),
-                        const SizedBox(
-                          height: 13,
-                        ),
-                        SizedBox(
-                          height: 50,
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF00C2FF),
-                            ),
-                              onPressed: (){
-                              final isValid = formKey.currentState!.validate();
-                              if(isValid){
-
-                                LogIn logIn = LogIn(username: username,password: password);
-                               Network.loginUser(logIn);
-
-                               // Navigator.pushReplacementNamed(context, EntrancePage.id);
+                          const SizedBox(
+                            height: 26,
+                          ),
+                          //#username
+                          TextFormField(
+                            style: const TextStyle(color: Colors.black),
+                            decoration: const InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.perm_identity,
+                                  color: Colors.black,
+                                ),
+                                labelText: 'Username',
+                                border: OutlineInputBorder()),
+                            validator: (value) {
+                              if (value != null && value.isEmpty) {
+                                return 'Username must not be empty';
                               }
-                              },
-                              child:const Text("Submit",style: TextStyle(color: Colors.white,fontSize: 19,fontWeight: FontWeight.bold),)
+                              return null;
+                            },
+                            onChanged: (value) => setState(() => username = value),
                           ),
-                        ),
+                          const SizedBox(
+                            height: 13,
+                          ),
+                          //#password
+                          TextFormField(
+                            keyboardType: TextInputType.visiblePassword,
+                            textInputAction: TextInputAction.done,
+                            obscureText: passwordVisible,
+                            style: const TextStyle(color: Colors.black),
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                    passwordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off),
+                                onPressed: () {
+                                  setState(() {
+                                      passwordVisible = !passwordVisible;
+                                    },
+                                  );
+                                },
+                              ),
+                                prefixIcon: const Icon(
+                                  Icons.lock_open_rounded,
+                                  color: Colors.black,
+                                ),
+                                labelText: 'Password',
+                                border: const OutlineInputBorder()
+                            ),
+                            validator: (value) {
+                              if (value != null && value.isEmpty) {
+                                return 'Password must not be empty';
+                              }
+                              return null;
+                            },
+                            onChanged: (value) => setState(() => password = value),
+                          ),
+                          const SizedBox(
+                            height: 13,
+                          ),
+                          SizedBox(
+                            height: 50,
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF00C2FF),
+                              ),
+                                onPressed: (){
+                                final isValid = formKey.currentState!.validate();
+                                if(isValid){
+                                  LogIn logIn = LogIn(username: username,password: password);
+                                  _loginUser(logIn);;
+                                  // if(_loginUser(logIn)){
+                                     Navigator.pushReplacementNamed(context, EntrancePage.id);
+                                  //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Logged in')));
+                                  // }else{
+                                  //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('NOT Logged in')));
+                                  //
+                                  // }
+                                }
+                                },
+                                child:const Text("Submit",style: TextStyle(color: Colors.white,fontSize: 19,fontWeight: FontWeight.bold),)
+                            ),
+                          ),
 
-                      ],
+                        ],
+                      ),
+                        isLoading ? const Center(
+                          child: CircularProgressIndicator()
+                        )
+                            :const SizedBox.shrink()
+                      ]
                     ),
                   ),
                 ),

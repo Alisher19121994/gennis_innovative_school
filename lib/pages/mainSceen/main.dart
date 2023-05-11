@@ -7,7 +7,8 @@ import 'package:gennis_innovative_school/pages/mainSceen/pages/users_list.dart';
 import '../../projectImages/projectImages.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+  final int groupId;
+  const MainPage({Key? key, required this.groupId}) : super(key: key);
   static const String id = "mainPage";
 
   @override
@@ -17,7 +18,8 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int currentPage = 0;
 
-  List pages = [const UsersList(), const AttendanceList(), const CreateList(), const EduPlanList()];
+  List pages = [  const UsersList(getId: 0,), const AttendanceList(), const CreateList(), const EduPlanList()];
+
 
   @override
   Widget build(BuildContext context) {

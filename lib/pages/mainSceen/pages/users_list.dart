@@ -1,11 +1,15 @@
-import 'package:flutter/gestures.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:gennis_innovative_school/model/fake_user2.dart';
-import 'package:gennis_innovative_school/projectImages/projectImages.dart';
+import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/model/users_list_entity.dart';
+import 'package:logger/logger.dart';
+import 'package:http/http.dart' as http;
+import '../../../network/sharedPreferenceData/shared_preference_data.dart';
 
 class UsersList extends StatefulWidget {
-  const UsersList({Key? key}) : super(key: key);
+   final int getId;
+
+  const UsersList({Key? key, required this.getId,}) : super(key: key);
   static const String id = "usersList";
 
   @override
@@ -13,14 +17,78 @@ class UsersList extends StatefulWidget {
 }
 
 class _UsersListState extends State<UsersList> {
-  List<UserM> listOfUsers = [];
-  var isPaid = false;
+
+
+  var isPaid = true;
+  var isLoading = false;
+
+
+  var logger = Logger();
+  UsersListDataStudents usersListDataStudents= UsersListDataStudents();
+  UsersListEntity usersListEntity = UsersListEntity();
+  List<UsersListDataStudents> listOfUsers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  void fetchData()async{
+    var logger = Logger();
+    String token = await SharedPreferenceData.getToken();
+    final response = await http.get(
+        Uri.parse('http://176.96.243.55/api/group_profile/${widget.getId}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        }
+    );
+    final Map<String,dynamic> body = jsonDecode(response.body);
+    final UsersListEntity usersList = UsersListEntity.fromJson(body);
+
+    logger.i(body);
+
+    setState(() {
+      usersListEntity = usersList;
+      //isLoading = true;
+      listOfUsers = usersList as List<UsersListDataStudents>;
+    });
+    // if(body != null){
+    //   setState(() {
+    //     isLoading = false;
+    //   });
+    // }else{
+    //   setState(() {
+    //     isLoading = false;
+    //   });
+    // }
+
+    if(usersListDataStudents.money > 0 ){
+      setState(() {
+        isPaid == true;
+      });
+    }else{
+      setState(() {
+        isPaid == false;
+      });
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        body: ListView(
+        // body:ListView.builder(
+        //   shrinkWrap: true,
+        //   itemCount: listOfUsers.length,
+        //   itemBuilder:(BuildContext context,int index){
+        //     return _listOfUsers(listOfUsers[index]);
+        //   },
+        // ),
+
+      body:  ListView(
           children: [
             Container(
               decoration: BoxDecoration(
@@ -28,20 +96,19 @@ class _UsersListState extends State<UsersList> {
                   color: Colors.lightBlueAccent),
               margin: const EdgeInsets.all(6),
               padding: const EdgeInsets.all(16),
-              width: MediaQuery.of(context).size.width,
               height: 270,
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        "Education language",
-                        style: TextStyle(color: Colors.black, fontSize: 17),
+                    children:  [
+                      const Text(
+                        "Educational language",
+                        style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "Uzbek",
-                        style: TextStyle(color: Colors.black, fontSize: 17),
+                       usersListEntity.data.information.eduLang.value,
+                        style: const TextStyle(color: Colors.black, fontSize: 17),
                       ),
                     ],
                   ),
@@ -50,30 +117,14 @@ class _UsersListState extends State<UsersList> {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
+                    children:  [
+                      const Text(
                         "Course type",
-                        style: TextStyle(color: Colors.black, fontSize: 17),
+                        style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "Standart",
-                        style: TextStyle(color: Colors.black, fontSize: 17),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        "Group name",
-                        style: TextStyle(color: Colors.black, fontSize: 17),
-                      ),
-                      Text(
-                        "IT",
-                        style: TextStyle(color: Colors.black, fontSize: 17),
+                          usersListEntity.data.information.groupCourseType.value,
+                        style: const TextStyle(color: Colors.black, fontSize: 17),
                       ),
                     ],
                   ),
@@ -82,30 +133,14 @@ class _UsersListState extends State<UsersList> {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        "Group price",
-                        style: TextStyle(color: Colors.black, fontSize: 17),
+                    children:  [
+                      const Text(
+                        "Group's name",
+                        style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "3500000",
-                        style: TextStyle(color: Colors.black, fontSize: 17),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        "Students number",
-                        style: TextStyle(color: Colors.black, fontSize: 17),
-                      ),
-                      Text(
-                        "12",
-                        style: TextStyle(color: Colors.black, fontSize: 17),
+                          usersListEntity.data.information.groupName.value,
+                        style: const TextStyle(color: Colors.black, fontSize: 17),
                       ),
                     ],
                   ),
@@ -114,30 +149,14 @@ class _UsersListState extends State<UsersList> {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        "Teacher name",
-                        style: TextStyle(color: Colors.black, fontSize: 17),
+                    children:  [
+                      const Text(
+                        "Group's price",
+                        style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "Alisher",
-                        style: TextStyle(color: Colors.black, fontSize: 17),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        "Teacher lastname",
-                        style: TextStyle(color: Colors.black, fontSize: 17),
-                      ),
-                      Text(
-                        "Daminov",
-                        style: TextStyle(color: Colors.black, fontSize: 17),
+                        usersListEntity.data.information.groupPrice.value.toString(),
+                        style: const TextStyle(color: Colors.black, fontSize: 17),
                       ),
                     ],
                   ),
@@ -146,44 +165,87 @@ class _UsersListState extends State<UsersList> {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children:  [
+                      const Text(
+                        "Student's number",
+                        style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+                      ),
                       Text(
+                        usersListEntity.data.information.studentsLength.value.toString(),
+                        style: const TextStyle(color: Colors.black, fontSize: 17),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children:  [
+                      const Text(
+                        "Teacher's name",
+                        style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        usersListEntity.data.information.teacherName.value,
+                        style: const TextStyle(color: Colors.black, fontSize: 17),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children:  [
+                      const Text(
+                        "Teacher's lastName",
+                        style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        usersListEntity.data.information.teacherSurname.value,
+                        style: const TextStyle(color: Colors.black, fontSize: 17),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children:  [
+                      const Text(
                         "Holder",
-                        style: TextStyle(color: Colors.black, fontSize: 17),
+                        style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "1400000",
-                        style: TextStyle(color: Colors.black, fontSize: 17),
+                        usersListEntity.data.information.teacherSalary.value.toString(),
+                        style: const TextStyle(color: Colors.black, fontSize: 17),
                       ),
                     ],
                   ),
                 ],
               ),
             ),
-            _listOfUsers(),
-            _listOfUsers(),
-            _listOfUsers(),
-            _listOfUsers(),
-            _listOfUsers(),
-            _listOfUsers(),
-            _listOfUsers(),
-            _listOfUsers(),
-            _listOfUsers(),
-            _listOfUsers(),
-            _listOfUsers(),
-            _listOfUsers(),
-            _listOfUsers(),
-            // ListView.builder(
-            //   itemCount: listOfUsers.length,
-            //   itemBuilder:(BuildContext context,int index){
-            //     return _listOfUsers(listOfUsers[index]);
-            //   },
-            // ),
+            SizedBox(
+             // height: MediaQuery.of(context).size.height,
+             // width: double.infinity,
+              child:ListView.builder(
+                shrinkWrap: true,
+                itemCount: listOfUsers.length,
+                itemBuilder:(BuildContext context,int index){
+                  return _listOfUsers(listOfUsers[index]);
+                },
+              ),
+            )
+
           ],
-        ));
+        )
+    );
+
   }
 
-  Widget _listOfUsers() {
+  Widget _listOfUsers(UsersListDataStudents usersListDataStudents) {
     return Slidable(
       enabled: true,
       direction: Axis.horizontal,
@@ -197,13 +259,15 @@ class _UsersListState extends State<UsersList> {
                   onPressed: (BuildContext context) {},
                   flex: 3,
                   backgroundColor: Colors.green,
-                  label: '350.000',
+                  label: usersListDataStudents.money.toString(),
+                 // label: '350.000',
                 )
               : SlidableAction(
                   onPressed: (BuildContext context) {},
                   flex: 3,
                   backgroundColor: Colors.red,
-                  label: '-350.000',
+                //  label: '-350.000',
+                  label: usersListDataStudents.money.toString(),
                   borderRadius: BorderRadius.circular(14),
                 ),
         ],
@@ -215,28 +279,28 @@ class _UsersListState extends State<UsersList> {
           width: MediaQuery.of(context).size.width,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: const [
-              CircleAvatar(
+            children:  [
+              const CircleAvatar(
                 radius: 50,
-                backgroundImage: NetworkImage(
-                    'https://images.outbrainimg.com/transform/v3/eyJpdSI6ImYwY2QxYTBjMDQzYzI2M2Y0Zjk3OTEyMjg3OGZlMjM0ZmMyMjRkYmEwNWZiMzAzNTk3ZWQyYzZkMmJlNzQ0YzkiLCJ3IjozMDAsImgiOjIwMCwiZCI6Mi4wLCJjcyI6MCwiZiI6NH0.webp'),
-              ),
-              SizedBox(
+               // backgroundImage: NetworkImage(usersListDataStudents.photoProfile.toString()),
+                backgroundImage: NetworkImage('https://images.outbrainimg.com/transform/v3/eyJpdSI6ImYwY2QxYTBjMDQzYzI2M2Y0Zjk3OTEyMjg3OGZlMjM0ZmMyMjRkYmEwNWZiMzAzNTk3ZWQyYzZkMmJlNzQ0YzkiLCJ3IjozMDAsImgiOjIwMCwiZCI6Mi4wLCJjcyI6MCwiZiI6NH0.webp'),),
+             // ),
+              const SizedBox(
                 width: 4,
               ),
               Text(
-                "Alisher",
-                style: TextStyle(
+                usersListDataStudents.surname,
+                style: const TextStyle(
                     color: Colors.black,
                     fontSize: 19,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 7,
               ),
               Text(
-                "Daminov",
-                style: TextStyle(
+                usersListDataStudents.name,
+                style: const TextStyle(
                     color: Colors.black,
                     fontSize: 19,
                     fontWeight: FontWeight.bold),

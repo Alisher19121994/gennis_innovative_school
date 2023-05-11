@@ -1,5 +1,11 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:gennis_innovative_school/pages/registration/sign_in_page.dart';
+import 'package:logger/logger.dart';
+import 'package:http/http.dart' as http;
+import '../../network/sharedPreferenceData/shared_preference_data.dart';
+import 'model/profile_entity.dart';
 import 'morePage/edit_data.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -11,6 +17,37 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+
+  var logger = Logger();
+  ProfileEntity profile = ProfileEntity();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  void fetchData()async{
+    var logger = Logger();
+    String token = await SharedPreferenceData.getToken();
+    String id = await SharedPreferenceData.getId();
+    final response = await http.get(
+        Uri.parse('http://176.96.243.55/api/profile/$id'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        }
+    );
+    final Map<String,dynamic> body = jsonDecode(response.body);
+    final ProfileEntity profileData = ProfileEntity.fromJson(body);
+
+    logger.i(body);
+
+    setState(() {
+      profile = profileData;
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,9 +103,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     TextButton(
                       onPressed: () {
-                        // logout();
+                          SharedPreferenceData.removeLoggedIn();
+                          SharedPreferenceData.removeToken();
+                          SharedPreferenceData.removeId();
+                          Navigator.pushNamed(context, SignIn.id);
                       },
-                      child: const Text("Logout",
+                      child: const Text(
+                        "Logout",
                           style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 19),
                     ),)
                   ],
@@ -100,13 +141,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Column(
                       children: [
                         //#photo changes
-                        const CircleAvatar(
+                         const CircleAvatar(
                           foregroundColor: Colors.black26,
                           backgroundColor: Colors.black26,
                           radius: 70,
-                          backgroundImage: NetworkImage(
-                              "https://www.pngitem.com/pimgs/m/106-1068071_black-person-png-black-man-business-png-transparent.png"),
-                        ),
+                           backgroundImage: NetworkImage("http://176.96.243.55/static/img_folder/photo-1533106418989-88406c7cc8ca.jpg"),
+                           // backgroundImage: NetworkImage(profile.user!.photoProfile),
+                         ),
 
                         const SizedBox(
                           height: 13,
@@ -114,20 +155,21 @@ class _ProfilePageState extends State<ProfilePage> {
                         //#name & lastName
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children:  [
                             Text(
-                              "Alisher",
-                              style: TextStyle(
+                              profile.user.info.name.value,
+                              style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 22),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 5,
                             ),
                             Text(
-                              "Daminov",
-                              style: TextStyle(
+
+                              profile.user.info.surname.value,
+                              style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 22),
@@ -138,9 +180,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           height: 5,
                         ),
                         //#name of job
-                        const Text(
-                          "Teacher",
-                          style: TextStyle(
+                         Text(
+                          profile.user.typeRole,
+                          style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 22),
@@ -162,8 +204,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
+                    children:  [
+                      const Text(
                         "Username",
                         style: TextStyle(
                             color: Colors.black,
@@ -171,8 +213,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "rimefara_teach",
-                        style: TextStyle(
+                          profile.user.info.username.value,
+                        style: const TextStyle(
                             color: Colors.black,
                             fontSize: 17,
                             fontWeight: FontWeight.normal),
@@ -188,8 +230,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
+                    children:  [
+                      const Text(
                         "Age",
                         style: TextStyle(
                             color: Colors.black,
@@ -197,8 +239,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "29",
-                        style: TextStyle(
+                        profile.user.info.age.value.toString(),
+                        style: const TextStyle(
                             color: Colors.black,
                             fontSize: 17,
                             fontWeight: FontWeight.normal),
@@ -214,8 +256,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
+                    children:  [
+                      const Text(
                         "Date of birth",
                         style: TextStyle(
                             color: Colors.black,
@@ -223,8 +265,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "1994",
-                        style: TextStyle(
+                        profile.user.info.birthDate.value,
+                        style: const TextStyle(
                             color: Colors.black,
                             fontSize: 17,
                             fontWeight: FontWeight.normal),
@@ -240,8 +282,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
+                    children:  [
+                      const Text(
                         "Phone number",
                         style: TextStyle(
                             color: Colors.black,
@@ -249,8 +291,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "+998901234567",
-                        style: TextStyle(
+                        profile.user.info.phone.value,
+                        style: const TextStyle(
                             color: Colors.black,
                             fontSize: 17,
                             fontWeight: FontWeight.normal),

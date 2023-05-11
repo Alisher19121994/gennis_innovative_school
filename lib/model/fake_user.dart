@@ -1,10 +1,20 @@
 import 'dart:ffi';
 
 class User{
-  String? subject;
-  String? title;
-  String? image;
-  double? point;
-  //User(this.point);
-  User(this.title,this.subject,this.image);
+  String? token;
+  String? id;
+  String? loggedIn;
+
+  User(this.token, this.id,this.loggedIn);
+
+  User.fromJson(Map<String, dynamic> json)
+      : token = json['token'],
+        id = json['id'],
+        loggedIn = json['loggedIn'];
+
+  Map<String, dynamic> toJson() => {
+    'token': token,
+    'id': id,
+    'loggedIn': loggedIn,
+  };
 }
