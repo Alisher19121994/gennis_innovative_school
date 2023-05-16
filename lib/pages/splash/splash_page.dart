@@ -17,38 +17,30 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  @override
+  void initState() {
+    super.initState();
+    fetchUser();
+  }
+
+  Future<void> fetchUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var status = prefs.getBool('isLoggedIn') ?? false;
+    print(status);
+    runApp(MaterialApp(home: status == true ? const EntrancePage(): const SignIn() ));
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Future.delayed(const Duration(seconds: 3)).then((value) =>
-    //     Navigator.pushAndRemoveUntil(context,
-    //         MaterialPageRoute(builder: (_) => const SignIn()),
-    //             (route) => false)
-    // );
-
-    var data = SharedPreferenceData.getLoggedIn();
-
-    Timer(const Duration(seconds: 2), () => Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (context) => data == 'true'
-              ? const EntrancePage() : const SignIn()),
-      ),
-    );
-
-
-      // var login =  ManagerOfSharedPreferenceData.getLoggedIn();
-      // runApp(MaterialApp(home:  login == null ? const SignIn() : const EntrancePage()));
-
-
     return Scaffold(
       backgroundColor: const Color(0xFF00C2FF),
       body: Center(
         child: Container(
-         margin: const EdgeInsets.all(100),
+          margin: const EdgeInsets.all(100),
           decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(ProjectImages.allLogo),
-            )
-          ),
+              image: DecorationImage(
+            image: AssetImage(ProjectImages.allLogo),
+          )),
         ),
       ),
     );

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:gennis_innovative_school/pages/mainSceen/pages/attendance_list.dart';
-import 'package:gennis_innovative_school/pages/mainSceen/pages/create_list.dart';
-import 'package:gennis_innovative_school/pages/mainSceen/pages/edu_plan_list.dart';
-import 'package:gennis_innovative_school/pages/mainSceen/pages/users_list.dart';
+import 'package:gennis_innovative_school/pages/mainSceen/pages/attendanceList/attendance_list.dart';
+import 'package:gennis_innovative_school/pages/mainSceen/pages/createList/create_list.dart';
+import 'package:gennis_innovative_school/pages/mainSceen/pages/eduPlanList/edu_plan_list.dart';
+import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/users_list.dart';
 
 import '../../projectImages/projectImages.dart';
+import '../entrancePage/model/main_entrance_group_entity.dart';
 
 class MainPage extends StatefulWidget {
   final int groupId;
@@ -16,9 +17,10 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+ late MainEntranceGroupGroups mainEntranceGroupGroups ;
   int currentPage = 0;
 
-  List pages = [  const UsersList(getId: 0,), const AttendanceList(), const CreateList(), const EduPlanList()];
+  List pages = [  const UsersList(getId: 0,), const AttendanceList(),  const CreateList(createId: 0,), const EduPlanList()];
 
 
   @override

@@ -28,7 +28,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
   void fetchData()async{
     var logger = Logger();
-    String token = await SharedPreferenceData.getToken();
+    var token = await SharedPreferenceData.getToken();
     String id = await SharedPreferenceData.getId();
     final response = await http.get(
         Uri.parse('http://176.96.243.55/api/profile/$id'),

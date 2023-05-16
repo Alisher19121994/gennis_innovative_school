@@ -7,7 +7,6 @@ import 'package:flutter/material.dart' show debugPrint;
 import 'package:gennis_innovative_school/pages/entrancePage/model/main_entrance_group_entity.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/model/users_list_entity.dart';
 import 'package:gennis_innovative_school/pages/profilePage/model/profile_entity.dart';
-import 'package:gennis_innovative_school/pages/registration/model/response_logged_in_entity.dart';
 
 JsonConvert jsonConvert = JsonConvert();
 typedef JsonConvertFunction<T> = T Function(Map<String, dynamic> json);
@@ -47,8 +46,6 @@ class JsonConvert {
 		(ProfileUserInfoSurname).toString(): ProfileUserInfoSurname.fromJson,
 		(ProfileUserInfoUsername).toString(): ProfileUserInfoUsername.fromJson,
 		(ProfileUserLinks).toString(): ProfileUserLinks.fromJson,
-		(ResponseLoggedInEntity).toString(): ResponseLoggedInEntity.fromJson,
-		(ResponseLoggedInData).toString(): ResponseLoggedInData.fromJson,
 	};
 
   T? convert<T>(dynamic value, {EnumConvertFunction? enumConvert}) {
@@ -223,12 +220,7 @@ List<T>? convertListNotNull<T>(dynamic value, {EnumConvertFunction? enumConvert}
 		if(<ProfileUserLinks>[] is M){
 			return data.map<ProfileUserLinks>((Map<String, dynamic> e) => ProfileUserLinks.fromJson(e)).toList() as M;
 		}
-		if(<ResponseLoggedInEntity>[] is M){
-			return data.map<ResponseLoggedInEntity>((Map<String, dynamic> e) => ResponseLoggedInEntity.fromJson(e)).toList() as M;
-		}
-		if(<ResponseLoggedInData>[] is M){
-			return data.map<ResponseLoggedInData>((Map<String, dynamic> e) => ResponseLoggedInData.fromJson(e)).toList() as M;
-		}
+
 
 		debugPrint("${M.toString()} not found");
 	

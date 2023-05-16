@@ -1,16 +1,11 @@
 import 'dart:convert';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:gennis_innovative_school/network/network.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/main.dart';
-import 'package:gennis_innovative_school/pages/mainSceen/pages/users_list.dart';
 import 'package:gennis_innovative_school/pages/profilePage/main_profile_page.dart';
 import 'package:gennis_innovative_school/projectImages/projectImages.dart';
 import 'package:logger/logger.dart';
-import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:http/http.dart' as http;
-import '../../model/fake_user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../network/sharedPreferenceData/shared_preference_data.dart';
 import 'model/main_entrance_group_entity.dart';
 
@@ -34,9 +29,10 @@ class _EntrancePageState extends State<EntrancePage> {
     super.initState();
     fetchData();
   }
+
   void fetchData()async{
       var logger = Logger();
-      String token = await SharedPreferenceData.getToken();
+      String? token = await SharedPreferenceData.getToken();
       String id = await SharedPreferenceData.getId();
       final response = await http.get(
         Uri.parse('http://176.96.243.55/api/my_groups/$id'),
@@ -54,16 +50,6 @@ class _EntrancePageState extends State<EntrancePage> {
       list = listOfGroups.groups;
       isLoading = true;
     });
-
-         if(body != null){
-           setState(() {
-             isLoading = false;
-           });
-         }else{
-           setState(() {
-             isLoading = false;
-           });
-         }
 
   }
 

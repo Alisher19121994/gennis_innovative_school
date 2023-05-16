@@ -1,16 +1,15 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/network/network.dart';
 import 'package:gennis_innovative_school/network/sharedPreferenceData/shared_preference_data.dart';
+import 'package:gennis_innovative_school/pages/registration/model/login_response.dart';
 import 'package:gennis_innovative_school/pages/registration/model/sign_in.dart';
 import 'package:gennis_innovative_school/projectImages/projectImages.dart';
+import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
-
 import '../entrancePage/entarnce_page.dart';
-import '../entrancePage/model/main_entrance_group_entity.dart';
-import 'model/response_logged_in_entity.dart';
+
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -22,20 +21,26 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final formKey = GlobalKey<FormState>();
+
    String username = '';
    String password = '';
+
   var isLoading = false;
   bool passwordVisible=false;
+
   var logger = Logger();
 
+  TextEditingController controllerUsername = TextEditingController();
+  TextEditingController controllerPassword = TextEditingController();
 
     @override
   void initState() {
     super.initState();
     passwordVisible = true;
+
   }
+
   _loginUser(LogIn logIn)async{
-      var logger = Logger();
       setState(() {
         isLoading = true;
       });
@@ -43,7 +48,7 @@ class _SignInState extends State<SignIn> {
       var response = await Network.loginUser(logIn);
       if(response != null){
         setState(() {
-          isLoading = false;
+          isLoading = true;
         });
       }else{
         setState(() {
@@ -103,6 +108,7 @@ class _SignInState extends State<SignIn> {
                           ),
                           //#username
                           TextFormField(
+                            controller: controllerUsername,
                             style: const TextStyle(color: Colors.black),
                             decoration: const InputDecoration(
                                 prefixIcon: Icon(
@@ -124,6 +130,7 @@ class _SignInState extends State<SignIn> {
                           ),
                           //#password
                           TextFormField(
+                            controller: controllerPassword,
                             keyboardType: TextInputType.visiblePassword,
                             textInputAction: TextInputAction.done,
                             obscureText: passwordVisible,
@@ -166,19 +173,15 @@ class _SignInState extends State<SignIn> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF00C2FF),
                               ),
-                                onPressed: (){
+                                onPressed: () async {
                                 final isValid = formKey.currentState!.validate();
                                 if(isValid){
+
                                   LogIn logIn = LogIn(username: username,password: password);
-                                  _loginUser(logIn);;
-                                  // if(_loginUser(logIn)){
+                                  var response = await Network.loginUser(logIn);
+                                  if(response !=null){
                                      Navigator.pushReplacementNamed(context, EntrancePage.id);
-                                  //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Logged in')));
-                                  // }else{
-                                  //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('NOT Logged in')));
-                                  //
-                                  // }
-                                }
+                                }}
                                 },
                                 child:const Text("Submit",style: TextStyle(color: Colors.white,fontSize: 19,fontWeight: FontWeight.bold),)
                             ),
@@ -199,5 +202,7 @@ class _SignInState extends State<SignIn> {
         ),
       ),
     );
+
   }
+
 }

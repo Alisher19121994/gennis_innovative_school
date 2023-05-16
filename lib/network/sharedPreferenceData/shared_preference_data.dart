@@ -1,41 +1,36 @@
 import 'dart:convert';
-
+import 'package:gennis_innovative_school/pages/registration/model/login_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../model/fake_user.dart';
-import '../../pages/entrancePage/model/main_entrance_group_entity.dart';
-import '../../pages/registration/model/response_logged_in_entity.dart';
  class SharedPreferenceData {
-
-
    //setLoggedIn
-  static Future<bool> setLoggedIn(ResponseLoggedInEntity responseLoggedInEntity) async {
+  static Future<bool> setLoggedIn(LoginResponse loginResponse) async {
      final SharedPreferences preferences = await SharedPreferences.getInstance();
-     return preferences.setBool("true", responseLoggedInEntity.success);
+      return preferences.setBool("isLoggedIn", loginResponse.success!);
    }
 
    //getLoggedIn
-  static Future<bool> getLoggedIn() async {
-     final SharedPreferences preferences = await SharedPreferences.getInstance();
-     return preferences.getBool("true") ?? false;
-   }
+  // static Future<bool?> getLoggedIn() async {
+  //    final SharedPreferences preferences = await SharedPreferences.getInstance();
+  //    return preferences.getBool("true")?? false;
+  //  }
 
    // setToken
-   static Future <bool>setToken(ResponseLoggedInEntity responseLoggedInEntity) async{
-     final SharedPreferences preferences = await SharedPreferences.getInstance();
-     return preferences.setString('token', responseLoggedInEntity.data!.accessToken);
+   static Future<bool> setToken(LoginResponse loginResponse)async{
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+     return preferences.setString('token',loginResponse.data!.accessToken!);
    }
 
   // getToken
-   static Future <String> getToken()async{
+   static Future<String?> getToken()async{
      final SharedPreferences preferences = await SharedPreferences.getInstance();
-     return preferences.getString('token')?? '';
+     return preferences.getString('token');
    }
 
    //setId
-   static Future<bool> setId(ResponseLoggedInEntity responseLoggedInEntity)async{
+   static Future<bool> setId(LoginResponse loginResponse)async{
      final SharedPreferences preferences = await SharedPreferences.getInstance();
-     return preferences.setString('id', responseLoggedInEntity.data!.id.toString());
+     return preferences.setString('id', loginResponse.data!.id.toString());
    }
 
    //getId

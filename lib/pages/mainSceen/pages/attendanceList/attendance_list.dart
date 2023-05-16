@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/model/fake_user2.dart';
 
-import 'newAttendancePage/new_attendance_page.dart';
+import 'new_attendance_page.dart';
+
 
 class AttendanceList extends StatefulWidget {
   const AttendanceList({Key? key}) : super(key: key);
@@ -35,6 +36,7 @@ class _AttendanceListState extends State<AttendanceList> {
     );
   }
 
+  //#students attendances with dateTime in this _listOfStudentsCheckOut
   Widget _listOfStudentsCheckOut({date,yes,no}) {
     return GestureDetector(
       onTap: (){
@@ -58,6 +60,7 @@ class _AttendanceListState extends State<AttendanceList> {
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Row(
             children: [
+              //#students available in the schedule
               Container(
                 height: 38,
                 width: 38,
@@ -70,6 +73,7 @@ class _AttendanceListState extends State<AttendanceList> {
                 ),
               ),
               const SizedBox(width: 10,),
+              //#students absence in the schedule
               Container(
                 height: 38,
                 width: 38,
