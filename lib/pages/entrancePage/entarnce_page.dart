@@ -44,12 +44,21 @@ class _EntrancePageState extends State<EntrancePage> {
     final Map<String,dynamic> body = jsonDecode(response.body);
     final MainEntranceGroupEntity listOfGroups = MainEntranceGroupEntity.fromJson(body);
 
-         logger.i(body);
-
+    logger.i(body);
     setState(() {
       list = listOfGroups.groups;
       isLoading = true;
     });
+
+    // if(list != null){
+    //   setState(() {
+    //     isLoading = false;
+    //   });
+    // }else{
+    //   setState(() {
+    //     isLoading = false;
+    //   });
+    // }
 
   }
 
@@ -70,7 +79,7 @@ class _EntrancePageState extends State<EntrancePage> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, ProfilePage.id);
+                Navigator.push(context, MaterialPageRoute(builder: (_)=>const ProfilePage()));
               },
               // child: CachedNetworkImage(
               //   width: 90,
@@ -100,8 +109,7 @@ class _EntrancePageState extends State<EntrancePage> {
           ),
           isLoading ? const Center(
             child: CircularProgressIndicator()
-          )
-              :const SizedBox.shrink()
+          ) :const SizedBox.shrink()
         ],
       )
     );

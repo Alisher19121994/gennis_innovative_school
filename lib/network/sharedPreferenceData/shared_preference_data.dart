@@ -1,19 +1,20 @@
-import 'dart:convert';
 import 'package:gennis_innovative_school/pages/registration/model/login_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
  class SharedPreferenceData {
+
+
    //setLoggedIn
-  static Future<bool> setLoggedIn(LoginResponse loginResponse) async {
+  static Future<bool?> setLoggedIn(LoginResponse loginResponse) async {
      final SharedPreferences preferences = await SharedPreferences.getInstance();
       return preferences.setBool("isLoggedIn", loginResponse.success!);
    }
 
-   //getLoggedIn
-  // static Future<bool?> getLoggedIn() async {
-  //    final SharedPreferences preferences = await SharedPreferences.getInstance();
-  //    return preferences.getBool("true")?? false;
-  //  }
+
+  static Future<bool?> getLoggedIn() async {
+     final SharedPreferences preferences = await SharedPreferences.getInstance();
+     return preferences.getBool("isLoggedIn")?? false;
+   }
 
    // setToken
    static Future<bool> setToken(LoginResponse loginResponse)async{

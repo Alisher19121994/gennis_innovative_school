@@ -40,22 +40,6 @@ class _SignInState extends State<SignIn> {
 
   }
 
-  _loginUser(LogIn logIn)async{
-      setState(() {
-        isLoading = true;
-      });
-
-      var response = await Network.loginUser(logIn);
-      if(response != null){
-        setState(() {
-          isLoading = true;
-        });
-      }else{
-        setState(() {
-          isLoading = false;
-        });
-      }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -175,13 +159,28 @@ class _SignInState extends State<SignIn> {
                               ),
                                 onPressed: () async {
                                 final isValid = formKey.currentState!.validate();
-                                if(isValid){
+                                var logger = Logger();
 
-                                  LogIn logIn = LogIn(username: username,password: password);
-                                  var response = await Network.loginUser(logIn);
-                                  if(response !=null){
-                                     Navigator.pushReplacementNamed(context, EntrancePage.id);
-                                }}
+                                LoginResponse loginResponse = LoginResponse();
+
+                                if(isValid) {
+                                  LogIn logIn = LogIn(username: username, password: password);
+                                  Navigator.pushReplacementNamed(context, EntrancePage.id);
+                                  Network.loginUser(logIn).then((response) => {
+                                    if(response != null){
+                                      loginResponse = LoginResponse.fromJson(jsonDecode(response)),
+
+                                 // var checkTime = JwtDecoder.getRemainingTime(loginResponse),
+                                  //CustomSharedPreferences().setRefreshToken(refreshToken.refreshToken),
+
+                                      logger.d(response),
+                                  SharedPreferenceData.setLoggedIn(loginResponse),
+                                  SharedPreferenceData.setToken(loginResponse),
+                                  SharedPreferenceData.setId(loginResponse),
+                                    }
+                                  }
+                                  );
+                                }
                                 },
                                 child:const Text("Submit",style: TextStyle(color: Colors.white,fontSize: 19,fontWeight: FontWeight.bold),)
                             ),

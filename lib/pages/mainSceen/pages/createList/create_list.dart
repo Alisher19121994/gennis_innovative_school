@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../../network/sharedPreferenceData/shared_preference_data.dart';
-import '../../../entrancePage/model/main_entrance_group_entity.dart';
 import '../usersList/model/users.dart';
-import '../usersList/model/users_list_entity.dart';
-import 'model/ratingUser/rating_user.dart';
+
 
 class CreateList extends StatefulWidget {
   final int createId;
@@ -25,12 +24,33 @@ class _CreateListState extends State<CreateList> {
 
   var isSelectedChecked = true;
   var isSelectedUnChecked = false;
-bool isChecked = false;
+  bool isChecked = false;
   var isLoading = false;
   var logger = Logger();
   //UsersListDataStudents usersListDataStudents= UsersListDataStudents();
   List<Students> listOfUsers = [];
   //List<UsersListDataStudents> listOfUsers = [];
+
+  final RefreshController _refreshController = RefreshController(initialRefresh: false);
+
+  void _onRefresh() async{
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async{
+    // monitor network fetch
+    await Future.delayed(const Duration(milliseconds: 1000));
+    listOfUsers.add((listOfUsers.length+1).toString() as Students);
+    if(mounted) {
+      setState(() {
+
+      });
+    }
+    _refreshController.loadComplete();
+  }
 
   @override
   void initState() {
@@ -43,8 +63,8 @@ bool isChecked = false;
     var token = await SharedPreferenceData.getToken();
     String id = await SharedPreferenceData.getId();
     final response = await http.get(
-        //Uri.parse('http://176.96.243.55/api/group_profile/$id'),
-        Uri.parse('http://176.96.243.55/api/group_profile/${widget.createId}'),
+        Uri.parse('http://176.96.243.55/api/group_profile/$id'),
+        //Uri.parse('http://176.96.243.55/api/group_profile/${widget.createId}'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -75,7 +95,6 @@ bool isChecked = false;
       return null;
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -145,12 +164,27 @@ bool isChecked = false;
               const SizedBox(height: 2,),
               //List of students
               Expanded(
-                child: ListView.builder(
-                  itemCount:listOfUsers.length ,
-                  itemBuilder: (BuildContext context, int index){
-                    return _listOfStudents(listOfUsers[index]);
-                  },
-                )
+                child:  SmartRefresher(
+                 enablePullDown: true,
+                 enablePullUp: true,
+                 header: const WaterDropHeader(),
+                 controller: _refreshController,
+                 onRefresh: _onRefresh,
+                 onLoading: _onLoading,
+                 child:  ListView.builder(
+                 itemCount:listOfUsers.length ,
+                 itemBuilder: (BuildContext context, int index){
+                 return _listOfStudents(listOfUsers[index]);
+                 },
+                 ))
+
+  // ListView.builder(
+  // itemBuilder: (c, i) => Card(child: Center(child: Text(items[i]))),
+  // itemExtent: 100.0,
+  // itemCount: items.length,
+  // ),
+
+
               ),
               const SizedBox(height: 120,)
             ],

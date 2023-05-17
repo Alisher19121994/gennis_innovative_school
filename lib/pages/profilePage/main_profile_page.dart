@@ -41,7 +41,6 @@ class _ProfilePageState extends State<ProfilePage> {
     final ProfileEntity profileData = ProfileEntity.fromJson(body);
 
     logger.i(body);
-
     setState(() {
       profile = profileData;
     });

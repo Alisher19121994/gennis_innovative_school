@@ -17,6 +17,7 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+
   @override
   void initState() {
     super.initState();
@@ -26,7 +27,6 @@ class _SplashPageState extends State<SplashPage> {
   Future<void> fetchUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var status = prefs.getBool('isLoggedIn') ?? false;
-    print(status);
     runApp(MaterialApp(home: status == true ? const EntrancePage(): const SignIn() ));
   }
 
