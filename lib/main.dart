@@ -28,16 +28,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: const SplashPage(),
-     // home: const MainPage(groupId: 0),
       routes:{
         SignIn.id:(context) => const SignIn(),
         EntrancePage.id:(context) => const EntrancePage(),
-        UsersList.id:(context) => const UsersList(getId: 0,),
+        UsersList.id:(context) => const UsersList(selectedItem: 0,),
         AttendanceList.id:(context) => const AttendanceList(),
         CreateList.id:(context) =>  const CreateList(createId: 0,),
         EduPlanList.id:(context) => const EduPlanList(),
         ProfilePage.id:(context) => const ProfilePage(),
-        MainPage.id:(context) => const MainPage(groupId: 0,),
+        MainPage.id:(context) => const MainPage(ids: 0,),
         EditPhoto.id:(context) => const EditPhoto(),
         AttendanceCheckOut.id:(context) => const AttendanceCheckOut(),
         EditData.id:(context) => const EditData(),

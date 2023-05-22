@@ -165,13 +165,11 @@ class _SignInState extends State<SignIn> {
 
                                 if(isValid) {
                                   LogIn logIn = LogIn(username: username, password: password);
-                                  Navigator.pushReplacementNamed(context, EntrancePage.id);
+                                 // Navigator.pushNamed(context, EntrancePage.id);
+                                  Navigator.push(context, MaterialPageRoute(builder: (_)=>const EntrancePage()));
                                   Network.loginUser(logIn).then((response) => {
                                     if(response != null){
                                       loginResponse = LoginResponse.fromJson(jsonDecode(response)),
-
-                                 // var checkTime = JwtDecoder.getRemainingTime(loginResponse),
-                                  //CustomSharedPreferences().setRefreshToken(refreshToken.refreshToken),
 
                                       logger.d(response),
                                   SharedPreferenceData.setLoggedIn(loginResponse),

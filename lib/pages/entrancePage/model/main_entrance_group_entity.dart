@@ -4,7 +4,7 @@ import 'dart:convert';
 
 @JsonSerializable()
 class MainEntranceGroupEntity {
-	late List<MainEntranceGroupGroups> groups;
+	 List<MainEntranceGroupGroups> groups = [];
 
 	MainEntranceGroupEntity();
 

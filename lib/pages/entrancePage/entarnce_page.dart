@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/main.dart';
+import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/users_list.dart';
 import 'package:gennis_innovative_school/pages/profilePage/main_profile_page.dart';
 import 'package:gennis_innovative_school/projectImages/projectImages.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../network/sharedPreferenceData/shared_preference_data.dart';
-import 'model/main_entrance_group_entity.dart';
+import 'model/groups_data.dart';
+import 'model/subModel/refresh_token.dart';
 
 class EntrancePage extends StatefulWidget {
   const EntrancePage({Key? key}) : super(key: key);
@@ -19,10 +20,9 @@ class EntrancePage extends StatefulWidget {
 }
 
 class _EntrancePageState extends State<EntrancePage> {
-  List<MainEntranceGroupGroups> list = [];
+  List<Groups> list = [];
   var isLoading = false;
   var logger = Logger();
-  MainEntranceGroupGroups mainEntranceGroupGroups = MainEntranceGroupGroups();
 
   @override
   void initState() {
@@ -30,7 +30,26 @@ class _EntrancePageState extends State<EntrancePage> {
     fetchData();
   }
 
-  void fetchData()async{
+   newToken()async {
+    final authToken = AuthToken(
+      accessToken: 'initial_access_token',
+      refreshToken: 'refresh_token',
+      expiryTime: DateTime.now().add(
+          Duration(minutes: 10)), // Set expiry time accordingly
+    );
+
+// When making a request that requires an access token, use this code:
+    final newAuthToken = await AuthToken.getNewAccessToken(authToken);
+    final response = await http.get(
+      Uri.parse('https://api.your-app.com/data'),
+      headers: {'Authorization': 'Bearer ${newAuthToken.accessToken}'},
+    );
+  }
+
+   void fetchData()async{
+     setState(() {
+       isLoading = true;
+     });
       var logger = Logger();
       String? token = await SharedPreferenceData.getToken();
       String id = await SharedPreferenceData.getId();
@@ -42,23 +61,13 @@ class _EntrancePageState extends State<EntrancePage> {
         }
         );
     final Map<String,dynamic> body = jsonDecode(response.body);
-    final MainEntranceGroupEntity listOfGroups = MainEntranceGroupEntity.fromJson(body);
+    final GroupOfData groupOfData = GroupOfData.fromJson(body);
 
     logger.i(body);
     setState(() {
-      list = listOfGroups.groups;
-      isLoading = true;
+      list = groupOfData.groups!;
+      isLoading = false;
     });
-
-    // if(list != null){
-    //   setState(() {
-    //     isLoading = false;
-    //   });
-    // }else{
-    //   setState(() {
-    //     isLoading = false;
-    //   });
-    // }
 
   }
 
@@ -79,16 +88,9 @@ class _EntrancePageState extends State<EntrancePage> {
             ),
             GestureDetector(
               onTap: () {
+               // Navigator.pushNamed(context,ProfilePage.id );
                 Navigator.push(context, MaterialPageRoute(builder: (_)=>const ProfilePage()));
               },
-              // child: CachedNetworkImage(
-              //   width: 90,
-              //   height: 90,
-              //   imageUrl: "http://176.96.243.55/photo-1533106418989-88406c7cc8ca.jpg",
-              //  // imageUrl: mainEntranceGroupGroups.teacherImg??'',
-              //   placeholder: (context, url) => const CircularProgressIndicator(),
-              //   errorWidget: (context, url, error) => const Icon(Icons.error),
-              // ),
               child:  const CircleAvatar(
                 radius: 24,
                 backgroundColor: Colors.black26,
@@ -104,7 +106,7 @@ class _EntrancePageState extends State<EntrancePage> {
           ListView.builder(
             itemCount: list.length,
             itemBuilder: (context, index) {
-              return _listOfGroup(list[index]);
+              return _listOfGroup(list[index],index);
             },
           ),
           isLoading ? const Center(
@@ -115,61 +117,60 @@ class _EntrancePageState extends State<EntrancePage> {
     );
   }
 
-  Widget _listOfGroup(MainEntranceGroupGroups mainEntranceGroupGroups) {
+  Widget _listOfGroup(Groups groups,int index) {
+    return ListTile(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => UsersList(selectedItem:groups.id!),),
+            );
+          },
 
-    return Card(
-      elevation: 0,
-      //#image
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(groupId:mainEntranceGroupGroups.id,)));
-         // Navigator.pushNamed(context, MainPage.id);
-        },
-        child: Container(
-          height: 240,
-          margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 3),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(18),
-              image: const DecorationImage(
-                  image: AssetImage(ProjectImages.book), fit: BoxFit.cover)),
+        title: Card(
+          elevation: 0,
+          //#image
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+            height: 240,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(18),
-              color: Colors.black26
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                //#subject
-                SizedBox(
-                  width: double.infinity,
-                  height: 30,
-                  child: Text(
-                    mainEntranceGroupGroups.typeOfCourse,
-                    style: const TextStyle(color: Colors.white, fontSize: 20),
+                borderRadius: BorderRadius.circular(18),
+                image: const DecorationImage(
+                    image: AssetImage(ProjectImages.book), fit: BoxFit.cover)),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(18),
+                  color: Colors.black26
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //#subject
+                  SizedBox(
+                    width: double.infinity,
+                    height: 30,
+                    child: Text(
+                      groups.typeOfCourse??"",
+                      style: const TextStyle(color: Colors.white, fontSize: 20),
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                //#title
-                SizedBox(
-                  width: double.infinity,
-                  height: 30,
-                  child: Text(
-                    mainEntranceGroupGroups.subject,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
+                  const SizedBox(
+                    height: 10,
                   ),
-                ),
-              ],
+                  //#title
+                  SizedBox(
+                    width: double.infinity,
+                    height: 30,
+                    child: Text(
+                      groups.subject??"",
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ),
+        )
     );
   }
 }

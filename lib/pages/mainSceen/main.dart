@@ -8,8 +8,8 @@ import '../../projectImages/projectImages.dart';
 import '../entrancePage/model/main_entrance_group_entity.dart';
 
 class MainPage extends StatefulWidget {
-  final int groupId;
-  const MainPage({Key? key, required this.groupId}) : super(key: key);
+    final int ids;
+  const MainPage({Key? key,required this.ids}) : super(key: key);
   static const String id = "mainPage";
 
   @override
@@ -17,10 +17,9 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
- late MainEntranceGroupGroups mainEntranceGroupGroups ;
   int currentPage = 0;
 
-  List pages = [  const UsersList(getId: 0,), const AttendanceList(),  const CreateList(createId: 0,), const EduPlanList()];
+  List pages = [  const UsersList(selectedItem: 0,), const AttendanceList(),  const CreateList(createId: 0,), const EduPlanList()];
 
 
   @override

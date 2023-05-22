@@ -8,9 +8,9 @@ import '../../../../network/sharedPreferenceData/shared_preference_data.dart';
 import 'model/users.dart';
 
 class UsersList extends StatefulWidget {
-   final int getId;
+  final int selectedItem;
 
-  const UsersList({Key? key, required this.getId,}) : super(key: key);
+  const UsersList({Key? key, required this.selectedItem,}) : super(key: key);
   static const String id = "usersList";
 
   @override
@@ -19,15 +19,13 @@ class UsersList extends StatefulWidget {
 
 class _UsersListState extends State<UsersList> {
 
-
   var isPaid = true;
   var isLoading = false;
 
-
   var logger = Logger();
-  UsersListDataStudents usersListDataStudents= UsersListDataStudents();
-  UsersListEntity usersListEntity = UsersListEntity();
-  List<UsersListDataStudents> listOfUsers = [];
+  Students students= Students();
+  UserList usersList = UserList();
+  List<Students> listOfUsers = [];
 
   @override
   void initState() {
@@ -39,34 +37,24 @@ class _UsersListState extends State<UsersList> {
     var logger = Logger();
     var token = await SharedPreferenceData.getToken();
     final response = await http.get(
-        Uri.parse('http://176.96.243.55/api/group_profile/${widget.getId}'),
+         Uri.parse('http://176.96.243.55/api/group_profile/${widget.selectedItem}'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         }
     );
     final Map<String,dynamic> body = jsonDecode(response.body);
-    final UsersListEntity usersList = UsersListEntity.fromJson(body);
+    final UserList userList = UserList.fromJson(body);
 
     logger.i(body);
 
     setState(() {
-      //usersListEntity = usersList;
       isPaid == true;
-      //isLoading = true;
-      listOfUsers = usersList as List<UsersListDataStudents>;
+      listOfUsers = userList as List<Students>;
     });
-    // if(body != null){
-    //   setState(() {
-    //     isLoading = false;
-    //   });
-    // }else{
-    //   setState(() {
-    //     isLoading = false;
-    //   });
-    // }
 
-    if(usersListDataStudents.money > 0 ){
+
+    if(students.money! > 0 ){
       setState(() {
         isPaid == true;
       });
@@ -76,7 +64,6 @@ class _UsersListState extends State<UsersList> {
       });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +91,8 @@ class _UsersListState extends State<UsersList> {
                           style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          usersListEntity.data.information.eduLang.value,
+                          //usersList.data.information.eduLang.value,
+                          usersList.data?.information?.eduLang?.value??"",
                           style: const TextStyle(color: Colors.black, fontSize: 17),
                         ),
                       ],
@@ -120,7 +108,7 @@ class _UsersListState extends State<UsersList> {
                           style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          usersListEntity.data.information.groupCourseType.value,
+                          usersList.data?.information?.groupCourseType?.value??"",
                           style: const TextStyle(color: Colors.black, fontSize: 17),
                         ),
                       ],
@@ -136,7 +124,7 @@ class _UsersListState extends State<UsersList> {
                           style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          usersListEntity.data.information.groupName.value,
+                          usersList.data?.information?.groupName?.value??"",
                           style: const TextStyle(color: Colors.black, fontSize: 17),
                         ),
                       ],
@@ -152,7 +140,7 @@ class _UsersListState extends State<UsersList> {
                           style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          usersListEntity.data.information.groupPrice.value.toString(),
+                          usersList.data?.information?.groupPrice?.value.toString()??"",
                           style: const TextStyle(color: Colors.black, fontSize: 17),
                         ),
                       ],
@@ -168,7 +156,7 @@ class _UsersListState extends State<UsersList> {
                           style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          usersListEntity.data.information.studentsLength.value.toString(),
+                          usersList.data?.information?.studentsLength?.value.toString()??"",
                           style: const TextStyle(color: Colors.black, fontSize: 17),
                         ),
                       ],
@@ -184,7 +172,7 @@ class _UsersListState extends State<UsersList> {
                           style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          usersListEntity.data.information.teacherName.value,
+                          usersList.data?.information?.teacherName?.value??"",
                           style: const TextStyle(color: Colors.black, fontSize: 17),
                         ),
                       ],
@@ -200,7 +188,7 @@ class _UsersListState extends State<UsersList> {
                           style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          usersListEntity.data.information.teacherSurname.value,
+                          usersList.data?.information?.teacherSurname?.value??"",
                           style: const TextStyle(color: Colors.black, fontSize: 17),
                         ),
                       ],
@@ -216,7 +204,7 @@ class _UsersListState extends State<UsersList> {
                           style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          usersListEntity.data.information.teacherSalary.value.toString(),
+                          usersList.data?.information?.teacherSalary?.value?.toString()??"",
                           style: const TextStyle(color: Colors.black, fontSize: 17),
                         ),
                       ],
@@ -225,23 +213,22 @@ class _UsersListState extends State<UsersList> {
                 ),
               ),
               //#group students list with their monthly payment schedule which is shown,once the user swipes from left to right
-              // Expanded(
-              //     child: ListView.builder(
-              //       shrinkWrap: true,
-              //       itemCount: listOfUsers.length,
-              //       itemBuilder:(BuildContext context,int index){
-              //       return _listOfUsers(listOfUsers[index] as UsersListDataStudents);
-              //     },
-              //   ),
-              // )
+              Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: listOfUsers.length,
+                    itemBuilder:(BuildContext context,int index){
+                    return _listOfUsers(listOfUsers[index]);
+                  },
+                ),
+              )
             ],
           ),
       ),
     );
 
   }
-
-  Widget _listOfUsers(UsersListDataStudents usersListDataStudents) {
+  Widget _listOfUsers(Students students) {
     return Slidable(
       enabled: true,
       direction: Axis.horizontal,
@@ -255,15 +242,13 @@ class _UsersListState extends State<UsersList> {
                   onPressed: (BuildContext context) {},
                   flex: 3,
                   backgroundColor: Colors.green,
-                  label: usersListDataStudents.money.toString(),
-                 // label: '350.000',
+                  label: students.money.toString(),
                 )
               : SlidableAction(
                   onPressed: (BuildContext context) {},
                   flex: 3,
                   backgroundColor: Colors.red,
-                //  label: '-350.000',
-                  label: usersListDataStudents.money.toString(),
+                  label: students.money.toString(),
                   borderRadius: BorderRadius.circular(14),
                 ),
         ],
@@ -278,14 +263,14 @@ class _UsersListState extends State<UsersList> {
             children:  [
               const CircleAvatar(
                 radius: 50,
-               // backgroundImage: NetworkImage(usersListDataStudents.photoProfile.toString()),
-                backgroundImage: NetworkImage('https://images.outbrainimg.com/transform/v3/eyJpdSI6ImYwY2QxYTBjMDQzYzI2M2Y0Zjk3OTEyMjg3OGZlMjM0ZmMyMjRkYmEwNWZiMzAzNTk3ZWQyYzZkMmJlNzQ0YzkiLCJ3IjozMDAsImgiOjIwMCwiZCI6Mi4wLCJjcyI6MCwiZiI6NH0.webp'),),
-             // ),
+              //  backgroundImage: NetworkImage(students.photoProfile as String),
+               // backgroundImage: NetworkImage('https://images.outbrainimg.com/transform/v3/eyJpdSI6ImYwY2QxYTBjMDQzYzI2M2Y0Zjk3OTEyMjg3OGZlMjM0ZmMyMjRkYmEwNWZiMzAzNTk3ZWQyYzZkMmJlNzQ0YzkiLCJ3IjozMDAsImgiOjIwMCwiZCI6Mi4wLCJjcyI6MCwiZiI6NH0.webp'),),
+              ),
               const SizedBox(
                 width: 4,
               ),
               Text(
-                usersListDataStudents.surname,
+                students.surname??"",
                 style: const TextStyle(
                     color: Colors.black,
                     fontSize: 19,
@@ -295,7 +280,7 @@ class _UsersListState extends State<UsersList> {
                 width: 7,
               ),
               Text(
-                usersListDataStudents.name,
+                students.name??"",
                 style: const TextStyle(
                     color: Colors.black,
                     fontSize: 19,

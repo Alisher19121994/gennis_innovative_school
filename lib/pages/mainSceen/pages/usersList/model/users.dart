@@ -1,4 +1,4 @@
-class UsersList {
+class UserList {
   Data? data;
   int? groupID;
   String? groupName;
@@ -10,7 +10,7 @@ class UsersList {
   int? teacherId;
   List<TimeTable>? timeTable;
 
-  UsersList(
+  UserList(
       {this.data,
         this.groupID,
         this.groupName,
@@ -22,7 +22,7 @@ class UsersList {
         this.teacherId,
         this.timeTable});
 
-  UsersList.fromJson(Map<String, dynamic> json) {
+  UserList.fromJson(Map<String, dynamic> json) {
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
     groupID = json['groupID'];
     groupName = json['groupName'];

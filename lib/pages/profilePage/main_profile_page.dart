@@ -105,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           SharedPreferenceData.removeLoggedIn();
                           SharedPreferenceData.removeToken();
                           SharedPreferenceData.removeId();
-                          Navigator.pushNamed(context, SignIn.id);
+                          Navigator.pushReplacement(context, SignIn.id as Route<Object?>);
                       },
                       child: const Text(
                         "Logout",

@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:logger/logger.dart';
@@ -71,7 +69,7 @@ class _CreateListState extends State<CreateList> {
         }
     );
     final Map<String,dynamic> body = jsonDecode(response.body);
-    final UsersList usersList = UsersList.fromJson(body);
+    final UserList usersList = UserList.fromJson(body);
 
     logger.i(body);
     setState(() {

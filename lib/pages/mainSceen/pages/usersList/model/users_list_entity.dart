@@ -4,7 +4,7 @@ import 'dart:convert';
 
 @JsonSerializable()
 class UsersListEntity {
-	late UsersListData data;
+	 UsersListData data = UsersListData();
 	late int groupID;
 	late String groupName;
 	late bool groupStatus;
@@ -31,7 +31,7 @@ class UsersListEntity {
 
 @JsonSerializable()
 class UsersListData {
-	late UsersListDataInformation information;
+	 UsersListDataInformation information = UsersListDataInformation();
 	late List<UsersListDataStudents> students;
 
 	UsersListData();
@@ -48,7 +48,7 @@ class UsersListData {
 
 @JsonSerializable()
 class UsersListDataInformation {
-	late UsersListDataInformationEduLang eduLang;
+	late UsersListDataInformationEduLang eduLang = UsersListDataInformationEduLang();
 	late UsersListDataInformationGroupCourseType groupCourseType;
 	late UsersListDataInformationGroupName groupName;
 	late UsersListDataInformationGroupPrice groupPrice;
