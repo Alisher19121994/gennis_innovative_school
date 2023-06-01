@@ -6,7 +6,6 @@
 import 'package:flutter/material.dart' show debugPrint;
 import 'package:gennis_innovative_school/pages/entrancePage/model/main_entrance_group_entity.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/model/users_list_entity.dart';
-import 'package:gennis_innovative_school/pages/profilePage/model/profile_entity.dart';
 
 JsonConvert jsonConvert = JsonConvert();
 typedef JsonConvertFunction<T> = T Function(Map<String, dynamic> json);
@@ -30,22 +29,7 @@ class JsonConvert {
 		(UsersListDataStudents).toString(): UsersListDataStudents.fromJson,
 		(UsersListLinks).toString(): UsersListLinks.fromJson,
 		(UsersListTimeTable).toString(): UsersListTimeTable.fromJson,
-		(ProfileEntity).toString(): ProfileEntity.fromJson,
-		(ProfileUser).toString(): ProfileUser.fromJson,
-		(ProfileUserActiveToChange).toString(): ProfileUserActiveToChange.fromJson,
-		(ProfileUserGroups).toString(): ProfileUserGroups.fromJson,
-		(ProfileUserInfo).toString(): ProfileUserInfo.fromJson,
-		(ProfileUserInfoAge).toString(): ProfileUserInfoAge.fromJson,
-		(ProfileUserInfoBirthDate).toString(): ProfileUserInfoBirthDate.fromJson,
-		(ProfileUserInfoBirthDay).toString(): ProfileUserInfoBirthDay.fromJson,
-		(ProfileUserInfoBirthMonth).toString(): ProfileUserInfoBirthMonth.fromJson,
-		(ProfileUserInfoBirthYear).toString(): ProfileUserInfoBirthYear.fromJson,
-		(ProfileUserInfoFathersName).toString(): ProfileUserInfoFathersName.fromJson,
-		(ProfileUserInfoName).toString(): ProfileUserInfoName.fromJson,
-		(ProfileUserInfoPhone).toString(): ProfileUserInfoPhone.fromJson,
-		(ProfileUserInfoSurname).toString(): ProfileUserInfoSurname.fromJson,
-		(ProfileUserInfoUsername).toString(): ProfileUserInfoUsername.fromJson,
-		(ProfileUserLinks).toString(): ProfileUserLinks.fromJson,
+
 	};
 
   T? convert<T>(dynamic value, {EnumConvertFunction? enumConvert}) {
@@ -172,54 +156,7 @@ List<T>? convertListNotNull<T>(dynamic value, {EnumConvertFunction? enumConvert}
 		if(<UsersListTimeTable>[] is M){
 			return data.map<UsersListTimeTable>((Map<String, dynamic> e) => UsersListTimeTable.fromJson(e)).toList() as M;
 		}
-		if(<ProfileEntity>[] is M){
-			return data.map<ProfileEntity>((Map<String, dynamic> e) => ProfileEntity.fromJson(e)).toList() as M;
-		}
-		if(<ProfileUser>[] is M){
-			return data.map<ProfileUser>((Map<String, dynamic> e) => ProfileUser.fromJson(e)).toList() as M;
-		}
-		if(<ProfileUserActiveToChange>[] is M){
-			return data.map<ProfileUserActiveToChange>((Map<String, dynamic> e) => ProfileUserActiveToChange.fromJson(e)).toList() as M;
-		}
-		if(<ProfileUserGroups>[] is M){
-			return data.map<ProfileUserGroups>((Map<String, dynamic> e) => ProfileUserGroups.fromJson(e)).toList() as M;
-		}
-		if(<ProfileUserInfo>[] is M){
-			return data.map<ProfileUserInfo>((Map<String, dynamic> e) => ProfileUserInfo.fromJson(e)).toList() as M;
-		}
-		if(<ProfileUserInfoAge>[] is M){
-			return data.map<ProfileUserInfoAge>((Map<String, dynamic> e) => ProfileUserInfoAge.fromJson(e)).toList() as M;
-		}
-		if(<ProfileUserInfoBirthDate>[] is M){
-			return data.map<ProfileUserInfoBirthDate>((Map<String, dynamic> e) => ProfileUserInfoBirthDate.fromJson(e)).toList() as M;
-		}
-		if(<ProfileUserInfoBirthDay>[] is M){
-			return data.map<ProfileUserInfoBirthDay>((Map<String, dynamic> e) => ProfileUserInfoBirthDay.fromJson(e)).toList() as M;
-		}
-		if(<ProfileUserInfoBirthMonth>[] is M){
-			return data.map<ProfileUserInfoBirthMonth>((Map<String, dynamic> e) => ProfileUserInfoBirthMonth.fromJson(e)).toList() as M;
-		}
-		if(<ProfileUserInfoBirthYear>[] is M){
-			return data.map<ProfileUserInfoBirthYear>((Map<String, dynamic> e) => ProfileUserInfoBirthYear.fromJson(e)).toList() as M;
-		}
-		if(<ProfileUserInfoFathersName>[] is M){
-			return data.map<ProfileUserInfoFathersName>((Map<String, dynamic> e) => ProfileUserInfoFathersName.fromJson(e)).toList() as M;
-		}
-		if(<ProfileUserInfoName>[] is M){
-			return data.map<ProfileUserInfoName>((Map<String, dynamic> e) => ProfileUserInfoName.fromJson(e)).toList() as M;
-		}
-		if(<ProfileUserInfoPhone>[] is M){
-			return data.map<ProfileUserInfoPhone>((Map<String, dynamic> e) => ProfileUserInfoPhone.fromJson(e)).toList() as M;
-		}
-		if(<ProfileUserInfoSurname>[] is M){
-			return data.map<ProfileUserInfoSurname>((Map<String, dynamic> e) => ProfileUserInfoSurname.fromJson(e)).toList() as M;
-		}
-		if(<ProfileUserInfoUsername>[] is M){
-			return data.map<ProfileUserInfoUsername>((Map<String, dynamic> e) => ProfileUserInfoUsername.fromJson(e)).toList() as M;
-		}
-		if(<ProfileUserLinks>[] is M){
-			return data.map<ProfileUserLinks>((Map<String, dynamic> e) => ProfileUserLinks.fromJson(e)).toList() as M;
-		}
+
 
 
 		debugPrint("${M.toString()} not found");

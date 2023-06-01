@@ -3,27 +3,35 @@ import 'package:gennis_innovative_school/pages/mainSceen/pages/attendanceList/at
 import 'package:gennis_innovative_school/pages/mainSceen/pages/createList/create_list.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/eduPlanList/edu_plan_list.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/users_list.dart';
-
+import '../../network/sharedPreferenceData/shared_preference_data.dart';
 import '../../projectImages/projectImages.dart';
-import '../entrancePage/model/main_entrance_group_entity.dart';
+import '../entrancePage/model/groups_data.dart';
 
 class MainPage extends StatefulWidget {
-    final int ids;
-  const MainPage({Key? key,required this.ids}) : super(key: key);
+
+
+  const MainPage({Key? key}) : super(key: key);
   static const String id = "mainPage";
+
 
   @override
   State<MainPage> createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
-  int currentPage = 0;
 
-  List pages = [  const UsersList(selectedItem: 0,), const AttendanceList(),  const CreateList(createId: 0,), const EduPlanList()];
+  int currentPage = 0;
+  List pages = [
+    UsersList(selectedItem: 0),
+    const AttendanceList(),
+    const CreateList(createId: 0,),
+    const EduPlanList()
+  ];
 
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF00C2FF),
@@ -40,25 +48,23 @@ class _MainPageState extends State<MainPage> {
           ],
         ),
       ),
-
       body: pages[currentPage],
-
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentPage,
-        onTap: (value){
-         setState(() {
-           currentPage = value;
-         });
+        onTap: (value) {
+          setState(() {
+            currentPage = value;
+          });
         },
         type: BottomNavigationBarType.fixed,
         backgroundColor: const Color(0xFFFFFFFF),
         selectedItemColor: const Color(0xFF00C2FF),
-        unselectedItemColor:  const Color(0xFF54185D),
+        unselectedItemColor: const Color(0xFF54185D),
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.list_alt),label: 'List'),
-          BottomNavigationBarItem(icon: Icon(Icons.pending_actions_outlined),label: 'Attendance'),
-          BottomNavigationBarItem(icon: Icon(Icons.add_circle_outline_rounded),label: 'Create'),
-          BottomNavigationBarItem(icon: Icon(Icons.cast_for_education_outlined),label: 'Edu-action'),
+          BottomNavigationBarItem(icon: Icon(Icons.list_alt), label: 'List'),
+          BottomNavigationBarItem(icon: Icon(Icons.pending_actions_outlined), label: 'Attendance'),
+          BottomNavigationBarItem(icon: Icon(Icons.add_circle_outline_rounded), label: 'Create'),
+          BottomNavigationBarItem(icon: Icon(Icons.cast_for_education_outlined), label: 'Edu-action'),
         ],
       ),
     );

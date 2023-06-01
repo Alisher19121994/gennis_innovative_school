@@ -1,6 +1,8 @@
 import 'package:gennis_innovative_school/pages/registration/model/login_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../pages/entrancePage/model/groups_data.dart';
+
  class SharedPreferenceData {
 
 
@@ -39,6 +41,17 @@ import 'package:shared_preferences/shared_preferences.dart';
      final SharedPreferences preferences = await SharedPreferences.getInstance();
      return preferences.getString('id') ?? '';
    }
+
+  //setId
+  static Future<bool> setInnerId(Groups groups)async{
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.setString('ids', groups.id.toString());
+  }
+  //getId
+  static Future<String> getInnerId()async{
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getString('ids') ?? '';
+  }
 
    //removeLoggedIn
   static Future<bool> removeLoggedIn()async{

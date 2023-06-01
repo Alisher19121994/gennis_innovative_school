@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/model/users_list_entity.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
 import '../../../../network/sharedPreferenceData/shared_preference_data.dart';
+import '../../../entrancePage/model/groups_data.dart';
 import 'model/users.dart';
 
 class UsersList extends StatefulWidget {
   final int selectedItem;
 
-  const UsersList({Key? key, required this.selectedItem,}) : super(key: key);
+   UsersList({Key? key, required this.selectedItem,}) : super(key: key);
   static const String id = "usersList";
 
   @override
@@ -36,6 +36,7 @@ class _UsersListState extends State<UsersList> {
   void fetchData()async{
     var logger = Logger();
     var token = await SharedPreferenceData.getToken();
+    var id = await SharedPreferenceData.getInnerId();
     final response = await http.get(
          Uri.parse('http://176.96.243.55/api/group_profile/${widget.selectedItem}'),
         headers: {
@@ -213,15 +214,15 @@ class _UsersListState extends State<UsersList> {
                 ),
               ),
               //#group students list with their monthly payment schedule which is shown,once the user swipes from left to right
-              Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: listOfUsers.length,
-                    itemBuilder:(BuildContext context,int index){
-                    return _listOfUsers(listOfUsers[index]);
-                  },
-                ),
-              )
+              // Expanded(
+              //     child: ListView.builder(
+              //       shrinkWrap: true,
+              //       itemCount: listOfUsers.length,
+              //       itemBuilder:(BuildContext context,int index){
+              //       return _listOfUsers(listOfUsers[index]);
+              //     },
+              //   ),
+              // )
             ],
           ),
       ),

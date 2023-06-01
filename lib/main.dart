@@ -1,3 +1,4 @@
+import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/pages/entrancePage/entarnce_page.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/main.dart';
@@ -18,6 +19,7 @@ void main()async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await Hive.openBox('login');
+  ChuckerFlutter.showOnRelease = true;
   runApp(const MyApp());
 }
 
@@ -27,16 +29,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        navigatorObservers: [ChuckerFlutter.navigatorObserver],
       home: const SplashPage(),
+      //home:  const MainPage(ids: 0,),
       routes:{
         SignIn.id:(context) => const SignIn(),
         EntrancePage.id:(context) => const EntrancePage(),
-        UsersList.id:(context) => const UsersList(selectedItem: 0,),
+        UsersList.id:(context) =>  UsersList(selectedItem: 0,),
         AttendanceList.id:(context) => const AttendanceList(),
         CreateList.id:(context) =>  const CreateList(createId: 0,),
         EduPlanList.id:(context) => const EduPlanList(),
         ProfilePage.id:(context) => const ProfilePage(),
-        MainPage.id:(context) => const MainPage(ids: 0,),
+        MainPage.id:(context) => const MainPage(),
         EditPhoto.id:(context) => const EditPhoto(),
         AttendanceCheckOut.id:(context) => const AttendanceCheckOut(),
         EditData.id:(context) => const EditData(),

@@ -5,7 +5,7 @@ import 'package:gennis_innovative_school/pages/registration/sign_in_page.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
 import '../../network/sharedPreferenceData/shared_preference_data.dart';
-import 'model/profile_entity.dart';
+import 'model/user_profile.dart';
 import 'morePage/edit_data.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -17,34 +17,33 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
   var logger = Logger();
-  ProfileEntity profile = ProfileEntity();
+
+  // ProfileEntity profile = ProfileEntity();
+  UserProfile userProfile = UserProfile();
 
   @override
   void initState() {
     super.initState();
     fetchData();
   }
-  void fetchData()async{
+
+  void fetchData() async {
     var logger = Logger();
     var token = await SharedPreferenceData.getToken();
     String id = await SharedPreferenceData.getId();
-    final response = await http.get(
-        Uri.parse('http://176.96.243.55/api/profile/$id'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        }
-    );
-    final Map<String,dynamic> body = jsonDecode(response.body);
-    final ProfileEntity profileData = ProfileEntity.fromJson(body);
+    final response = await http
+        .get(Uri.parse('http://176.96.243.55/api/profile/$id'), headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    final Map<String, dynamic> body = jsonDecode(response.body);
+    final UserProfile profileData = UserProfile.fromJson(body);
 
     logger.i(body);
     setState(() {
-      profile = profileData;
+      userProfile = profileData;
     });
-
   }
 
   @override
@@ -83,9 +82,14 @@ class _ProfilePageState extends State<ProfilePage> {
                       onPressed: () {
                         Navigator.pushNamed(context, EditData.id);
                       },
-                      child: const Text("Edit profile data",
-                        style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 19),
-                    ),)
+                      child: const Text(
+                        "Edit profile data",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 19),
+                      ),
+                    )
                   ],
                 ),
                 const SizedBox(width: 15),
@@ -102,15 +106,20 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     TextButton(
                       onPressed: () {
-                          SharedPreferenceData.removeLoggedIn();
-                          SharedPreferenceData.removeToken();
-                          SharedPreferenceData.removeId();
-                          Navigator.pushReplacement(context, SignIn.id as Route<Object?>);
+                        SharedPreferenceData.removeLoggedIn();
+                        SharedPreferenceData.removeToken();
+                        SharedPreferenceData.removeId();
+                        Navigator.pushReplacement(
+                            context, SignIn.id as Route<Object?>);
                       },
                       child: const Text(
                         "Logout",
-                          style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 19),
-                    ),)
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 19),
+                      ),
+                    )
                   ],
                 )
               ])),
@@ -140,13 +149,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Column(
                       children: [
                         //#photo changes
-                         const CircleAvatar(
+                         CircleAvatar(
                           foregroundColor: Colors.black26,
                           backgroundColor: Colors.black26,
                           radius: 70,
-                           backgroundImage: NetworkImage("http://176.96.243.55/static/img_folder/photo-1533106418989-88406c7cc8ca.jpg"),
-                           // backgroundImage: NetworkImage(profile.user!.photoProfile),
-                         ),
+                          backgroundImage: NetworkImage("http://176.96.243.55/static/img_folder/photo-1533106418989-88406c7cc8ca.jpg"),
+                          // backgroundImage: NetworkImage(userProfile.user!.photoProfile!),
+                        ),
 
                         const SizedBox(
                           height: 13,
@@ -154,9 +163,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         //#name & lastName
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children:  [
+                          children: [
                             Text(
-                              profile.user.info.name.value,
+                              userProfile.user?.info?.name?.value ?? "",
                               style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -166,8 +175,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               width: 5,
                             ),
                             Text(
-
-                              profile.user.info.surname.value,
+                              userProfile.user?.info?.surname?.value ?? "",
                               style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -179,8 +187,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           height: 5,
                         ),
                         //#name of job
-                         Text(
-                          profile.user.typeRole,
+                        Text(
+                          userProfile.user?.typeRole ?? "",
                           style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -203,7 +211,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children:  [
+                    children: [
                       const Text(
                         "Username",
                         style: TextStyle(
@@ -212,7 +220,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                          profile.user.info.username.value,
+                        userProfile.user?.info?.username?.value ?? "",
                         style: const TextStyle(
                             color: Colors.black,
                             fontSize: 17,
@@ -229,7 +237,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children:  [
+                    children: [
                       const Text(
                         "Age",
                         style: TextStyle(
@@ -238,7 +246,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        profile.user.info.age.value.toString(),
+                        userProfile.user?.info?.age?.value.toString() ?? "",
                         style: const TextStyle(
                             color: Colors.black,
                             fontSize: 17,
@@ -255,7 +263,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children:  [
+                    children: [
                       const Text(
                         "Date of birth",
                         style: TextStyle(
@@ -264,7 +272,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        profile.user.info.birthDate.value,
+                        userProfile.user?.info?.birthDate?.value ?? "",
                         style: const TextStyle(
                             color: Colors.black,
                             fontSize: 17,
@@ -281,7 +289,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children:  [
+                    children: [
                       const Text(
                         "Phone number",
                         style: TextStyle(
@@ -290,7 +298,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        profile.user.info.phone.value,
+                        userProfile.user?.info?.phone?.value ?? "",
                         style: const TextStyle(
                             color: Colors.black,
                             fontSize: 17,
