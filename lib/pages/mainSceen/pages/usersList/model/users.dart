@@ -223,7 +223,7 @@ class Students {
   Null? photoProfile;
   String? regDate;
   String? role;
-  bool? isTypeChecked;
+  String? isTypeChecked;
   String? surname;
   String? username;
 
@@ -259,6 +259,7 @@ class Students {
     surname = json['surname'];
     username = json['username'];
   }
+
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

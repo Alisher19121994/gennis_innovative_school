@@ -8,9 +8,9 @@ import '../../../entrancePage/model/groups_data.dart';
 import 'model/users.dart';
 
 class UsersList extends StatefulWidget {
-  final int selectedItem;
+  final int ids;
 
-   UsersList({Key? key, required this.selectedItem,}) : super(key: key);
+   UsersList({Key? key, required this.ids,}) : super(key: key);
   static const String id = "usersList";
 
   @override
@@ -36,15 +36,14 @@ class _UsersListState extends State<UsersList> {
   void fetchData()async{
     var logger = Logger();
     var token = await SharedPreferenceData.getToken();
-    var id = await SharedPreferenceData.getInnerId();
     final response = await http.get(
-         Uri.parse('http://176.96.243.55/api/group_profile/${widget.selectedItem}'),
+         Uri.parse('http://176.96.243.55/api/group_profile/${widget.ids}'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         }
     );
-    final Map<String,dynamic> body = jsonDecode(response.body);
+    final Map<String,dynamic> body = jsonDecode(response.body.toString());
     final UserList userList = UserList.fromJson(body);
 
     logger.i(body);
@@ -70,162 +69,316 @@ class _UsersListState extends State<UsersList> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              //#group overall views in the basic schedule
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(17),
-                    color: Colors.lightBlueAccent),
-                margin: const EdgeInsets.all(6),
-                padding: const EdgeInsets.all(16),
-                height: 270,
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children:  [
-                        const Text(
-                          "Educational language",
-                          style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          //usersList.data.information.eduLang.value,
-                          usersList.data?.information?.eduLang?.value??"",
-                          style: const TextStyle(color: Colors.black, fontSize: 17),
-                        ),
-                      ],
+      body:  Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          //#group overall views in the basic schedule
+          Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(17),
+                color: Colors.lightBlueAccent),
+            margin: const EdgeInsets.all(6),
+            padding: const EdgeInsets.all(16),
+            height: 270,
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children:  [
+                    const Text(
+                      "Educational language",
+                      style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children:  [
-                        const Text(
-                          "Course type",
-                          style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          usersList.data?.information?.groupCourseType?.value??"",
-                          style: const TextStyle(color: Colors.black, fontSize: 17),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children:  [
-                        const Text(
-                          "Group's name",
-                          style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          usersList.data?.information?.groupName?.value??"",
-                          style: const TextStyle(color: Colors.black, fontSize: 17),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children:  [
-                        const Text(
-                          "Group's price",
-                          style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          usersList.data?.information?.groupPrice?.value.toString()??"",
-                          style: const TextStyle(color: Colors.black, fontSize: 17),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children:  [
-                        const Text(
-                          "Student's number",
-                          style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          usersList.data?.information?.studentsLength?.value.toString()??"",
-                          style: const TextStyle(color: Colors.black, fontSize: 17),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children:  [
-                        const Text(
-                          "Teacher's name",
-                          style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          usersList.data?.information?.teacherName?.value??"",
-                          style: const TextStyle(color: Colors.black, fontSize: 17),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children:  [
-                        const Text(
-                          "Teacher's lastName",
-                          style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          usersList.data?.information?.teacherSurname?.value??"",
-                          style: const TextStyle(color: Colors.black, fontSize: 17),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children:  [
-                        const Text(
-                          "Holder",
-                          style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          usersList.data?.information?.teacherSalary?.value?.toString()??"",
-                          style: const TextStyle(color: Colors.black, fontSize: 17),
-                        ),
-                      ],
+                    Text(
+                      //usersList.data.information.eduLang.value,
+                      usersList.data?.information?.eduLang?.value??"",
+                      style: const TextStyle(color: Colors.black, fontSize: 17),
                     ),
                   ],
                 ),
-              ),
-              //#group students list with their monthly payment schedule which is shown,once the user swipes from left to right
-              // Expanded(
-              //     child: ListView.builder(
-              //       shrinkWrap: true,
-              //       itemCount: listOfUsers.length,
-              //       itemBuilder:(BuildContext context,int index){
-              //       return _listOfUsers(listOfUsers[index]);
-              //     },
-              //   ),
-              // )
-            ],
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children:  [
+                    const Text(
+                      "Course type",
+                      style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      usersList.data?.information?.groupCourseType?.value??"",
+                      style: const TextStyle(color: Colors.black, fontSize: 17),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children:  [
+                    const Text(
+                      "Group's name",
+                      style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      usersList.data?.information?.groupName?.value??"",
+                      style: const TextStyle(color: Colors.black, fontSize: 17),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children:  [
+                    const Text(
+                      "Group's price",
+                      style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      usersList.data?.information?.groupPrice?.value.toString()??"",
+                      style: const TextStyle(color: Colors.black, fontSize: 17),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children:  [
+                    const Text(
+                      "Student's number",
+                      style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      usersList.data?.information?.studentsLength?.value.toString()??"",
+                      style: const TextStyle(color: Colors.black, fontSize: 17),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children:  [
+                    const Text(
+                      "Teacher's name",
+                      style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      usersList.data?.information?.teacherName?.value??"",
+                      style: const TextStyle(color: Colors.black, fontSize: 17),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children:  [
+                    const Text(
+                      "Teacher's lastName",
+                      style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      usersList.data?.information?.teacherSurname?.value??"",
+                      style: const TextStyle(color: Colors.black, fontSize: 17),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children:  [
+                    const Text(
+                      "Holder",
+                      style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      usersList.data?.information?.teacherSalary?.value?.toString()??"",
+                      style: const TextStyle(color: Colors.black, fontSize: 17),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
+          //#group students list with their monthly payment schedule which is shown,once the user swipes from left to right
+          Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: listOfUsers.length,
+              itemBuilder:(BuildContext context,int index){
+                return _listOfUsers(listOfUsers[index]);
+              },
+            ),
+          )
+        ],
       ),
+      // body: SingleChildScrollView(
+      //   child: Column(
+      //       mainAxisAlignment: MainAxisAlignment.start,
+      //       children: [
+      //         //#group overall views in the basic schedule
+      //         Container(
+      //           decoration: BoxDecoration(
+      //               borderRadius: BorderRadius.circular(17),
+      //               color: Colors.lightBlueAccent),
+      //           margin: const EdgeInsets.all(6),
+      //           padding: const EdgeInsets.all(16),
+      //           height: 270,
+      //           child: Column(
+      //             children: [
+      //               Row(
+      //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                 children:  [
+      //                   const Text(
+      //                     "Educational language",
+      //                     style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+      //                   ),
+      //                   Text(
+      //                     //usersList.data.information.eduLang.value,
+      //                     usersList.data?.information?.eduLang?.value??"",
+      //                     style: const TextStyle(color: Colors.black, fontSize: 17),
+      //                   ),
+      //                 ],
+      //               ),
+      //               const SizedBox(
+      //                 height: 10,
+      //               ),
+      //               Row(
+      //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                 children:  [
+      //                   const Text(
+      //                     "Course type",
+      //                     style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+      //                   ),
+      //                   Text(
+      //                     usersList.data?.information?.groupCourseType?.value??"",
+      //                     style: const TextStyle(color: Colors.black, fontSize: 17),
+      //                   ),
+      //                 ],
+      //               ),
+      //               const SizedBox(
+      //                 height: 10,
+      //               ),
+      //               Row(
+      //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                 children:  [
+      //                   const Text(
+      //                     "Group's name",
+      //                     style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+      //                   ),
+      //                   Text(
+      //                     usersList.data?.information?.groupName?.value??"",
+      //                     style: const TextStyle(color: Colors.black, fontSize: 17),
+      //                   ),
+      //                 ],
+      //               ),
+      //               const SizedBox(
+      //                 height: 10,
+      //               ),
+      //               Row(
+      //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                 children:  [
+      //                   const Text(
+      //                     "Group's price",
+      //                     style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+      //                   ),
+      //                   Text(
+      //                     usersList.data?.information?.groupPrice?.value.toString()??"",
+      //                     style: const TextStyle(color: Colors.black, fontSize: 17),
+      //                   ),
+      //                 ],
+      //               ),
+      //               const SizedBox(
+      //                 height: 10,
+      //               ),
+      //               Row(
+      //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                 children:  [
+      //                   const Text(
+      //                     "Student's number",
+      //                     style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+      //                   ),
+      //                   Text(
+      //                     usersList.data?.information?.studentsLength?.value.toString()??"",
+      //                     style: const TextStyle(color: Colors.black, fontSize: 17),
+      //                   ),
+      //                 ],
+      //               ),
+      //               const SizedBox(
+      //                 height: 10,
+      //               ),
+      //               Row(
+      //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                 children:  [
+      //                   const Text(
+      //                     "Teacher's name",
+      //                     style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+      //                   ),
+      //                   Text(
+      //                     usersList.data?.information?.teacherName?.value??"",
+      //                     style: const TextStyle(color: Colors.black, fontSize: 17),
+      //                   ),
+      //                 ],
+      //               ),
+      //               const SizedBox(
+      //                 height: 10,
+      //               ),
+      //               Row(
+      //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                 children:  [
+      //                   const Text(
+      //                     "Teacher's lastName",
+      //                     style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+      //                   ),
+      //                   Text(
+      //                     usersList.data?.information?.teacherSurname?.value??"",
+      //                     style: const TextStyle(color: Colors.black, fontSize: 17),
+      //                   ),
+      //                 ],
+      //               ),
+      //               const SizedBox(
+      //                 height: 10,
+      //               ),
+      //               Row(
+      //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                 children:  [
+      //                   const Text(
+      //                     "Holder",
+      //                     style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+      //                   ),
+      //                   Text(
+      //                     usersList.data?.information?.teacherSalary?.value?.toString()??"",
+      //                     style: const TextStyle(color: Colors.black, fontSize: 17),
+      //                   ),
+      //                 ],
+      //               ),
+      //             ],
+      //           ),
+      //         ),
+      //         //#group students list with their monthly payment schedule which is shown,once the user swipes from left to right
+      //         Expanded(
+      //             child: ListView.builder(
+      //               shrinkWrap: true,
+      //               itemCount: listOfUsers.length,
+      //               itemBuilder:(BuildContext context,int index){
+      //               return _listOfUsers(listOfUsers[index]);
+      //             },
+      //           ),
+      //         )
+      //       ],
+      //     ),
+      // ),
     );
 
   }

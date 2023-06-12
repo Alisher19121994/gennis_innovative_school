@@ -5,7 +5,8 @@ import 'new_attendance_page.dart';
 
 
 class AttendanceList extends StatefulWidget {
-  const AttendanceList({Key? key}) : super(key: key);
+  final int ids;
+  const AttendanceList({Key? key, required this.ids}) : super(key: key);
   static const String id = "attendanceList";
 
   @override

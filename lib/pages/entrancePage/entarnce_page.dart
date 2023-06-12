@@ -1,14 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:gennis_innovative_school/pages/groupPage/group_Page.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/main.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/createList/create_list.dart';
-import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/users_list.dart';
 import 'package:gennis_innovative_school/pages/profilePage/main_profile_page.dart';
 import 'package:gennis_innovative_school/projectImages/projectImages.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
 import '../../network/sharedPreferenceData/shared_preference_data.dart';
-import '../profilePage/model/user_profile.dart';
 import 'model/groups_data.dart';
 import 'model/subModel/refresh_token.dart';
 
@@ -22,7 +21,6 @@ class EntrancePage extends StatefulWidget {
 }
 
 class _EntrancePageState extends State<EntrancePage> {
-  //UserProfile userProfile = UserProfile();
   List<Groups> list = [];
   var isLoading = false;
   var logger = Logger();
@@ -127,10 +125,7 @@ class _EntrancePageState extends State<EntrancePage> {
   Widget _listOfGroup(BuildContext context,Groups groups) {
     return ListTile(
           onTap: () {
-           /// SharedPreferenceData.setInnerId(groups);
-               // Navigator.of(context).push(MaterialPageRoute(builder: (_)=> const MainPage()));
-                //Navigator.of(context).push(MaterialPageRoute(builder: (_)=>  UsersList(selectedItem: groups.id!)));
-                Navigator.of(context).push(MaterialPageRoute(builder: (_)=>  CreateList(createId: groups.id!)));
+                Navigator.of(context).push(MaterialPageRoute(builder: (_)=>  MainPage(setId: groups.id?? 0)));
           },
         title: Card(
           elevation: 0,

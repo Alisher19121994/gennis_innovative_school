@@ -9,8 +9,8 @@ import '../entrancePage/model/groups_data.dart';
 
 class MainPage extends StatefulWidget {
 
-
-  const MainPage({Key? key}) : super(key: key);
+  final int setId;
+  const MainPage({Key? key, required this.setId}) : super(key: key);
   static const String id = "mainPage";
 
 
@@ -20,17 +20,20 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
 
+  var page = true;
   int currentPage = 0;
   List pages = [
-    UsersList(selectedItem: 0),
-    const AttendanceList(),
-    const CreateList(createId: 0,),
+    UsersList(ids: 0),
+    const AttendanceList(ids: 0,),
+    const CreateList(ids: 0,),
     const EduPlanList()
   ];
 
 
+
   @override
   Widget build(BuildContext context) {
+    List<dynamic> pageIds = [widget.setId];
 
     return Scaffold(
       appBar: AppBar(
@@ -48,12 +51,17 @@ class _MainPageState extends State<MainPage> {
           ],
         ),
       ),
-      body: pages[currentPage],
+    //  body: pages[currentPage](pageIds[currentPage]),
+      body: _buildPage(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentPage,
         onTap: (value) {
+         // pageIds[value];
+          // Navigator.of(context).push(MaterialPageRoute(builder: (_)=>
+          //     page ? UsersList(ids: widget.setId):CreateList(ids: widget.setId)));
           setState(() {
-            currentPage = value;
+           currentPage = value;
+           //pageIds = widget.setId as List;
           });
         },
         type: BottomNavigationBarType.fixed,
@@ -68,5 +76,17 @@ class _MainPageState extends State<MainPage> {
         ],
       ),
     );
+  }
+  Widget _buildPage() {
+    switch (currentPage) {
+      case 0:
+        return UsersList(ids: widget.setId);
+      case 1:
+        return AttendanceList(ids: widget.setId);
+      case 2:
+        return CreateList(ids: widget.setId);
+      default:
+        return Container();
+    }
   }
 }

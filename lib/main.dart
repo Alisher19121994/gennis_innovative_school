@@ -1,6 +1,7 @@
 import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/pages/entrancePage/entarnce_page.dart';
+import 'package:gennis_innovative_school/pages/groupPage/group_Page.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/main.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/attendanceList/attendance_list.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/attendanceList/new_attendance_page.dart';
@@ -36,15 +37,16 @@ class MyApp extends StatelessWidget {
       routes:{
         SignIn.id:(context) => const SignIn(),
         EntrancePage.id:(context) => const EntrancePage(),
-        UsersList.id:(context) =>  UsersList(selectedItem: 0,),
-        AttendanceList.id:(context) => const AttendanceList(),
-        CreateList.id:(context) =>  const CreateList(createId: 0,),
+        UsersList.id:(context) =>  UsersList(ids: 0,),
+        AttendanceList.id:(context) => const AttendanceList(ids: 0,),
+        CreateList.id:(context) =>  const CreateList(ids: 0,),
         EduPlanList.id:(context) => const EduPlanList(),
         ProfilePage.id:(context) => const ProfilePage(),
-        MainPage.id:(context) => const MainPage(),
+        MainPage.id:(context) => const MainPage(setId: 0,),
         EditPhoto.id:(context) => const EditPhoto(),
         AttendanceCheckOut.id:(context) => const AttendanceCheckOut(),
         EditData.id:(context) => const EditData(),
+        GroupPage.id:(context) => const GroupPage(getGroupId: 0,),
     }
     );
   }
