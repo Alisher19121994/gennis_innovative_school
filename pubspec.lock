@@ -449,10 +449,10 @@ packages:
     dependency: "direct main"
     description:
       name: scroll_date_picker
-      sha256: "98cb444d44abc5925e4265382acab28fac69bf64e7ac4718f65d37519ab8dab0"
+      sha256: "65b4e0223f561a9475e156ff93fbe0712d2e995d399b40352b2f2f44540909d9"
       url: "https://pub.dev"
     source: hosted
-    version: "3.7.0"
+    version: "3.7.1"
   share_plus:
     dependency: transitive
     description:

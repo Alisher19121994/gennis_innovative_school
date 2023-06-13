@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
+import 'package:scroll_date_picker/scroll_date_picker.dart';
 import '../../../../network/sharedPreferenceData/shared_preference_data.dart';
 import '../usersList/model/users.dart';
 
@@ -21,6 +22,7 @@ class CreateList extends StatefulWidget {
 class _CreateListState extends State<CreateList> {
 
   var isLoading = false;
+  var isChecked = false;
   var logger = Logger();
   List<Students> studentsOfListChecked = [];
 
@@ -54,7 +56,7 @@ class _CreateListState extends State<CreateList> {
       isLoading = false;
     });
   }
-
+  DateTime _selectedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -76,58 +78,58 @@ class _CreateListState extends State<CreateList> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          const SizedBox(width: 20,),
                           SizedBox(
-                            height: 55,
-                            width: 100,
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.lightGreenAccent,
+                            height: 100,
+                            child: ScrollDatePicker(
+                              selectedDate: _selectedDate,
+                              locale: const Locale('en'),
+                              scrollViewOptions: const DatePickerScrollViewOptions(
+                                year: ScrollViewDetailOptions(
+                                 // label: 'Year',
+                                  margin: EdgeInsets.only(right: 8),
+                                ),
+                                month: ScrollViewDetailOptions(
+                                  //label: 'Month',
+                                  margin: EdgeInsets.only(right: 8),
+                                ),
                               ),
-                              child: const Text(
-                                "Date",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 19,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 55,
-                            //width: double.infinity,
-                            child: Center(
-                              child: Text(
-                                '04.2023',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 55,
-                            width: 100,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                //  _listOfStudents()
-                                List<String> selectedItems = [];
-                                // _checkedItems.forEach((key, value) {
-                                // if (value) {
-                                //  selectedItems.add(key);
-                                //         }});
+                              onDateTimeChanged: (DateTime value) {
+                                setState(() {
+                                  _selectedDate = value;
+                                });
                               },
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.lightBlueAccent,
-                                  side: const BorderSide(
-                                      width: 2, color: Colors.white)),
-                              child: const Text(
-                                "Submit",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 19,
-                                    fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          const SizedBox(width: 70,),
+                          //#submit button
+                          Expanded(
+                            child: SizedBox(
+                              height: 55,
+                              width: 100,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  //  _listOfStudents()
+                                  List<String> selectedItems = [];
+                                  // _checkedItems.forEach((key, value) {
+                                  // if (value) {
+                                  //  selectedItems.add(key);
+                                  //         }});
+                                  setState(() {
+                                    _selectedDate = DateTime.now();
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.lightBlueAccent,
+                                    side: const BorderSide(
+                                        width: 2, color: Colors.white)),
+                                child: const Text(
+                                  "Submit",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
                             ),
                           ),
@@ -142,20 +144,31 @@ class _CreateListState extends State<CreateList> {
                           itemCount: studentsOfListChecked.length,
                           itemBuilder: (context, index) {
                             return Card(
+                              borderOnForeground: true,
                               color: Colors.cyanAccent,
                               child: ListTile(
                                 leading:  Text(studentsOfListChecked[index].surname ?? '',style: const TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),
                                 title: Text(studentsOfListChecked[index].name ?? '',style: const TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),
-                                trailing: Checkbox(
-                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                  value: studentsOfListChecked[index].isTypeChecked,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      studentsOfListChecked[index].isTypeChecked = value;
-                                    });
-                                  },
-                                  activeColor: Colors.lightBlue,
-                                    tristate: true,
+                                trailing: Transform.scale(
+                                  scale: 2.2,
+                                  child: Checkbox(
+                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    value: studentsOfListChecked[index].isTypeChecked,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        studentsOfListChecked[index].isTypeChecked = value;
+                                      });
+                                    },
+                                    checkColor: Colors.white,
+                                    activeColor: Colors.blue,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(5.0),
+                                      ),
+                                    ),
+
+                                      tristate: true,
+                                  ),
                                 ),
 
                               ),
