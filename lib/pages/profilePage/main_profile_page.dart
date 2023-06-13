@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/pages/registration/sign_in_page.dart';
+import 'package:gennis_innovative_school/projectImages/projectImages.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
 import '../../network/sharedPreferenceData/shared_preference_data.dart';
@@ -150,10 +151,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       children: [
                         //#photo changes
                          CircleAvatar(
-                          foregroundColor: Colors.black26,
+                          foregroundColor: Colors.black12,
                           backgroundColor: Colors.black26,
                           radius: 70,
-                          backgroundImage: NetworkImage("http://176.96.243.55/static/img_folder/photo-1533106418989-88406c7cc8ca.jpg"),
+                        //  backgroundImage: NetworkImage("http://176.96.243.55/static/img_folder/photo-1533106418989-88406c7cc8ca.jpg"),
+                           backgroundImage: AssetImage(ProjectImages.mue),
                           // backgroundImage: NetworkImage(userProfile.user!.photoProfile!),
                         ),
 

@@ -223,7 +223,7 @@ class Students {
   Null? photoProfile;
   String? regDate;
   String? role;
-  String? isTypeChecked;
+  bool? isTypeChecked;
   String? surname;
   String? username;
 

@@ -97,9 +97,9 @@ class _EntrancePageState extends State<EntrancePage> {
               child: CircleAvatar(
                 radius: 24,
                 backgroundColor: Colors.black26,
-                backgroundImage: NetworkImage("http://176.96.243.55/static/img_folder/photo-1533106418989-88406c7cc8ca.jpg"),
+                //backgroundImage: NetworkImage("http://176.96.243.55/static/img_folder/photo-1533106418989-88406c7cc8ca.jpg"),
                // backgroundImage: NetworkImage(userProfile.user!.photoProfile!),
-                //backgroundImage: NetworkImage(mainEntranceGroupGroups.teacherImg?? ''),
+                backgroundImage: AssetImage(ProjectImages.mue),
               ),
             )
           ],

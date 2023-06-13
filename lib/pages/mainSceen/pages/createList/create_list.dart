@@ -19,24 +19,20 @@ class CreateList extends StatefulWidget {
 }
 
 class _CreateListState extends State<CreateList> {
-  var isSelectedChecked = true;
-  var isSelectedUnChecked = false;
-
-  bool isChecked = false;
 
   var isLoading = false;
   var logger = Logger();
-  List<Students> listOfUsers = [];
-  List<Students> list = [];
+  List<Students> studentsOfListChecked = [];
+
 
   @override
   void initState() {
     super.initState();
-    fetchData();
+    _fetchData();
     Dio().interceptors.add(ChuckerDioInterceptor());
   }
 
-  void fetchData() async {
+  void _fetchData() async {
     final chuckerHttpClient = ChuckerHttpClient(http.Client());
     setState(() {
       isLoading = true;
@@ -54,32 +50,11 @@ class _CreateListState extends State<CreateList> {
 
     logger.i(body);
     setState(() {
-      listOfUsers = usersList.data!.students!;
+      studentsOfListChecked = usersList.data!.students!;
       isLoading = false;
-
-    });
-    setState(() {
-      isChecked = false;
-      //isChecked = false;
     });
   }
 
-  Future<String?> ratingUser(Students students) async {
-    final response = await http.post(
-      Uri.parse('http://176.96.243.55/api/make_attendance'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'isTypeChecked': students.isTypeChecked,
-      }),
-    );
-    var logger = Logger();
-    if (response.statusCode == 200) {
-      logger.i(response.body);
-      return response.body;
-    } else {
-      return null;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +111,12 @@ class _CreateListState extends State<CreateList> {
                             width: 100,
                             child: ElevatedButton(
                               onPressed: () {
-                                //  _listOfStudents();
+                                //  _listOfStudents()
+                                List<String> selectedItems = [];
+                                // _checkedItems.forEach((key, value) {
+                                // if (value) {
+                                //  selectedItems.add(key);
+                                //         }});
                               },
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.lightBlueAccent,
@@ -153,17 +133,33 @@ class _CreateListState extends State<CreateList> {
                           ),
                         ],
                       )),
-                  const SizedBox(
-                    height: 2,
-                  ),
+                  const SizedBox(height: 2,),
                   //List of students
                   Expanded(
                     child: Stack(
                       children: [
                         ListView.builder(
-                          itemCount: listOfUsers.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return _listOfStudents(listOfUsers[index]);
+                          itemCount: studentsOfListChecked.length,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              color: Colors.cyanAccent,
+                              child: ListTile(
+                                leading:  Text(studentsOfListChecked[index].surname ?? '',style: const TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),
+                                title: Text(studentsOfListChecked[index].name ?? '',style: const TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),
+                                trailing: Checkbox(
+                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                  value: studentsOfListChecked[index].isTypeChecked,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      studentsOfListChecked[index].isTypeChecked = value;
+                                    });
+                                  },
+                                  activeColor: Colors.lightBlue,
+                                    tristate: true,
+                                ),
+
+                              ),
+                            );
                           },
                         ),
                         isLoading
@@ -177,224 +173,10 @@ class _CreateListState extends State<CreateList> {
                   )
                 ],
               )
-              //   :const SizedBox.shrink()
-              ),
+            //   :const SizedBox.shrink()
+          ),
         ));
   }
-
-  //#fullname of student,ratings checked points,available students
-  Widget _listOfStudents(Students students) {
-    return Container(
-        padding: const EdgeInsets.all(4),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                //#fullname of student
-                SizedBox(
-                  width: 110,
-                  child: Column(
-                    children: [
-                      Text(
-                        students.surname ?? "",
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        students.name ?? "",
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            overflow: TextOverflow.ellipsis),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  width: 1,
-                ),
-                //#checked points and available students
-                Expanded(
-                    child: Column(
-                  children: [
-                    //#ratings checked points
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            //#point title
-                            Container(
-                              height: 38,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
-                                  color: Colors.cyanAccent),
-                              child: const Center(
-                                child: Text(
-                                  "Point",
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 14),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 30,
-                            ),
-                            //#ratings checked points
-                            RatingBar.builder(
-                              initialRating: 0,
-                              minRating: 1,
-                              direction: Axis.horizontal,
-                              itemCount: 5,
-                              itemPadding:
-                                  const EdgeInsets.symmetric(horizontal: 0.7),
-                              itemBuilder: (context, _) => const Icon(
-                                Icons.star,
-                                color: Colors.amber,
-                              ),
-                              onRatingUpdate: (rating) {
-                                // value = rating;
-                                print(rating.toInt());
-                                // Rating rating = Rating(rating);
-                              },
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    //#available students
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        //#checked title in the table
-                        Container(
-                          height: 38,
-                          width: 50,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              color: Colors.cyanAccent),
-                          child: const Center(
-                            child: Text(
-                              "Check",
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 14),
-                            ),
-                          ),
-                        ),
-
-                        Container(
-                          color: Colors.cyan,
-                          height: 46,
-                          width: 76,
-                          child: ListView.builder(
-                          itemCount: list.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return _checkedBox(list[index]);
-                          },
-                        ),
-                        ),
-
-
-
-                        SizedBox(
-                          height: 46,
-                          width: 76,
-                          child: ListTile(
-                            onTap: () {
-                              setState(() {
-                                //isChecked = !isChecked;
-                                isChecked = false;
-                              });
-                            },
-                            selected: isChecked,
-                            selectedColor: Colors.red,
-                            title: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7),
-                                  color: isChecked ? Colors.red : Colors.grey,),
-                              child: const Center(
-                                child: Icon(
-                                  Icons.close_sharp,
-                                  size: 30,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ))
-              ],
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            const Divider(
-              thickness: 1,
-            )
-          ],
-        ));
-  }
-
-  Widget _checkedBox(Students students){
-    return Container(
-        height: 46,
-        width: 76);
-
-      //       color: Colors.cyanAccent,
-      //       decoration: BoxDecoration(
-      //         borderRadius: BorderRadius.circular(7),
-      //        color: students.isTypeChecked! ? Colors.green : Colors.grey,),
-      //       // // child: const Center(
-      //       // //   child: Icon(Icons.check, size: 30, color: Colors.white,),
-      //
-      // child: Checkbox(
-      //   value: students.isTypeChecked,
-      //   onChanged: (value) {
-      //     setState(() {
-      //       students.isTypeChecked = value;
-      //     });
-      //   },
-      // ),
-
-
-    // return   SizedBox(
-    //   height: 46,
-    //   width: 76,
-    //   child: ListTile(
-    //     onTap: () {
-    //       setState(() {
-    //         //isChecked = !isChecked;
-    //         students.isTypeChecked = false;
-    //       });
-    //     },
-    //     selected: students.isTypeChecked??false,
-    //     selectedColor: Colors.green,
-    //     title: Container(
-    //       decoration: BoxDecoration(
-    //         borderRadius: BorderRadius.circular(7),
-    //         color: students.isTypeChecked! ? Colors.green : Colors.grey,),
-    //       child: const Center(
-    //         child: Icon(Icons.check, size: 30, color: Colors.white,),
-    //       ),
-    //     ),
-    //   ),
-    // );
-  }}
 
 // import 'package:flutter/material.dart';
 //
@@ -463,3 +245,4 @@ class _CreateListState extends State<CreateList> {
 //     );
 //   }
 // }
+}

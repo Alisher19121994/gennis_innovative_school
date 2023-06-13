@@ -7,6 +7,7 @@ import 'package:gennis_innovative_school/pages/mainSceen/pages/attendanceList/at
 import 'package:gennis_innovative_school/pages/mainSceen/pages/attendanceList/new_attendance_page.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/createList/create_list.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/eduPlanList/edu_plan_list.dart';
+import 'package:gennis_innovative_school/pages/mainSceen/pages/pointList/point_list.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/users_list.dart';
 import 'package:gennis_innovative_school/pages/profilePage/main_profile_page.dart';
 import 'package:gennis_innovative_school/pages/profilePage/morePage/edit_data.dart';
@@ -33,7 +34,6 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         navigatorObservers: [ChuckerFlutter.navigatorObserver],
       home: const SplashPage(),
-      //home:  const MainPage(ids: 0,),
       routes:{
         SignIn.id:(context) => const SignIn(),
         EntrancePage.id:(context) => const EntrancePage(),
@@ -47,6 +47,7 @@ class MyApp extends StatelessWidget {
         AttendanceCheckOut.id:(context) => const AttendanceCheckOut(),
         EditData.id:(context) => const EditData(),
         GroupPage.id:(context) => const GroupPage(getGroupId: 0,),
+        PointList.id:(context) => const PointList(ids: 0,),
     }
     );
   }
