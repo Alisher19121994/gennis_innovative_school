@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gennis_innovative_school/model/fake_user2.dart';
 
 import 'new_attendance_page.dart';
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:gennis_innovative_school/model/fake_user2.dart';
 
 class AttendanceCheckOut extends StatefulWidget {
   const AttendanceCheckOut({Key? key}) : super(key: key);
