@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class EduPlanList extends StatefulWidget {
-  const EduPlanList({Key? key}) : super(key: key);
+  final int ids;
+  const EduPlanList({Key? key, required this.ids}) : super(key: key);
   static const String id = "eduPlanList";
 
   @override

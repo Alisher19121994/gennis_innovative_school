@@ -3,60 +3,118 @@ import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:gennis_innovative_school/controller/create_list.dart';
+import 'package:gennis_innovative_school/network/network.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/instance_manager.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
 import 'package:scroll_date_picker/scroll_date_picker.dart';
 import '../../../../network/sharedPreferenceData/shared_preference_data.dart';
+import '../../../registration/sign_in_page.dart';
 import '../usersList/model/users.dart';
 
-class CreateList extends StatefulWidget {
+class CheckList extends StatefulWidget {
   final int ids;
 
-  const CreateList({Key? key, required this.ids}) : super(key: key);
+  const CheckList({Key? key, required this.ids}) : super(key: key);
   static const String id = "createList";
 
   @override
-  State<CreateList> createState() => _CreateListState();
+  State<CheckList> createState() => _CheckListState();
 }
 
-class _CreateListState extends State<CreateList> {
-
-  var isLoading = false;
-  var isChecked = false;
-  var logger = Logger();
-  List<Students> studentsOfListChecked = [];
+class _CheckListState extends State<CheckList> {
+  // static const String baseUrl = "http://176.96.243.55/api/";
+  // var isLoading = false;
+  // var isChecked = false;
+  // var logger = Logger();
+  // List<Students> studentsOfListChecked = [];
 
 
   @override
   void initState() {
     super.initState();
-    _fetchData();
-    Dio().interceptors.add(ChuckerDioInterceptor());
+    Get.find<CreateController>().apiListOfStudents(widget.ids);
+    //_fetchData();
+    //getData('group_profile',"${widget.ids}");
+    //Dio().interceptors.add(ChuckerDioInterceptor());
   }
 
-  void _fetchData() async {
-    final chuckerHttpClient = ChuckerHttpClient(http.Client());
-    setState(() {
-      isLoading = true;
-    });
-    var logger = Logger();
-    var token = await SharedPreferenceData.getToken();
-    final response = await chuckerHttpClient.get(
-        Uri.parse('http://176.96.243.55/api/group_profile/${widget.ids}'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        });
-    final Map<String, dynamic> body = jsonDecode(response.body.toString());
-    final UserList usersList = UserList.fromJson(body);
+    //  Future<http.Response> getData(String api,String id) async {
+    //    setState(() {
+    //      isLoading = true;
+    //    });
+    //   final accessToken = SharedPreferenceData.getToken();
+    //   final response = await http.get(
+    //     Uri.parse("$baseUrl$api/$id"),
+    //     headers: {"Authorization": "Bearer $accessToken"},
+    //   );
+    //
+    //   if (response.statusCode == 401) {
+    //     var logger = Logger();
+    //     final newAccessToken = await getNewAccessToken();
+    //     final newResponse = await http.get(
+    //       Uri.parse("$baseUrl$api"),
+    //       headers: {"Authorization": "Bearer $newAccessToken"},
+    //     );
+    //     final Map<String, dynamic> body = jsonDecode(newAccessToken.body);
+    //     final UserList usersList = UserList.fromJson(body);
+    //     logger.d(body);
+    //     setState(() {
+    //       studentsOfListChecked = usersList.data!.students!;
+    //       isLoading = false;
+    //     });
+    //     return newResponse;
+    //   } else {
+    //     return response;
+    //   }
+    // }
+    //
+    //  Future getNewAccessToken() async {
+    //   var userData = SharedPreferenceData.getUsername();
+    //   var passwordData = SharedPreferenceData.getPassword();
+    //   final response = await http.post(
+    //     Uri.parse("$baseUrl/login"),
+    //     body: {
+    //       "username": userData,
+    //       "password": passwordData,
+    //     },
+    //   );
+    //
+    //   if (response.statusCode == 200) {
+    //     final data = jsonDecode(response.body);
+    //     return data;
+    //   } else {
+    //     throw Exception("Failed to get new access token");
+    //   }
+    // }
 
-    logger.i(body);
-    setState(() {
-      studentsOfListChecked = usersList.data!.students!;
-      isLoading = false;
-    });
-  }
+  // void _fetchData() async {
+  //   final chuckerHttpClient = ChuckerHttpClient(http.Client());
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //   var logger = Logger();
+  //   var token = await SharedPreferenceData.getToken();
+  //   final response = await chuckerHttpClient.get(
+  //       Uri.parse('http://176.96.243.55/api/group_profile/${widget.ids}'),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Authorization': 'Bearer $token',
+  //       });
+  //   final Map<String, dynamic> body = jsonDecode(response.body.toString());
+  //   final UserList usersList = UserList.fromJson(body);
+  //
+  //   logger.i(body);
+  //   setState(() {
+  //     studentsOfListChecked = usersList.data!.students!;
+  //     isLoading = false;
+  //   });
+  // }
   DateTime _selectedDate = DateTime.now();
+
 
   @override
   Widget build(BuildContext context) {
@@ -85,15 +143,8 @@ class _CreateListState extends State<CreateList> {
                               selectedDate: _selectedDate,
                               locale: const Locale('en'),
                               scrollViewOptions: const DatePickerScrollViewOptions(
-                                year: ScrollViewDetailOptions(
-                                 // label: 'Year',
-                                  margin: EdgeInsets.only(right: 8),
-                                ),
-                                month: ScrollViewDetailOptions(
-                                  //label: 'Month',
-                                  margin: EdgeInsets.only(right: 8),
-                                ),
-                              ),
+                                year: ScrollViewDetailOptions(margin: EdgeInsets.only(right: 8),),
+                                month: ScrollViewDetailOptions(margin: EdgeInsets.only(right: 8),),),
                               onDateTimeChanged: (DateTime value) {
                                 setState(() {
                                   _selectedDate = value;
@@ -109,7 +160,6 @@ class _CreateListState extends State<CreateList> {
                               width: 100,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  //  _listOfStudents()
                                   List<String> selectedItems = [];
                                   // _checkedItems.forEach((key, value) {
                                   // if (value) {
@@ -138,47 +188,52 @@ class _CreateListState extends State<CreateList> {
                   const SizedBox(height: 2,),
                   //List of students
                   Expanded(
-                    child: Stack(
-                      children: [
-                        ListView.builder(
-                          itemCount: studentsOfListChecked.length,
-                          itemBuilder: (context, index) {
-                            return Card(
-                              borderOnForeground: true,
-                              color: Colors.cyanAccent,
-                              child: ListTile(
-                                leading:  Text(studentsOfListChecked[index].surname ?? '',style: const TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),
-                                title: Text(studentsOfListChecked[index].name ?? '',style: const TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),
-                                trailing: Transform.scale(
-                                  scale: 2.2,
-                                  child: Checkbox(
-                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                    value: studentsOfListChecked[index].isTypeChecked,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        studentsOfListChecked[index].isTypeChecked = value;
-                                      });
-                                    },
-                                    checkColor: Colors.white,
-                                    activeColor: Colors.blue,
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(5.0),
+                    child: GetBuilder<CreateController>(
+                      init: CreateController(),
+                      builder: (_controller){
+                        return Stack(
+                          children: [
+                            ListView.builder(
+                              itemCount: _controller.listOfStudents.length,
+                              itemBuilder: (context, index) {
+                                return Card(
+                                  borderOnForeground: true,
+                                  color: Colors.cyanAccent,
+                                  child: ListTile(
+                                    leading:  Text(_controller.listOfStudents[index].surname ?? '',style: const TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),
+                                    title: Text(_controller.listOfStudents[index].name ?? '',style: const TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),
+                                    trailing: Transform.scale(
+                                      scale: 2.2,
+                                      child: Checkbox(
+                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                        value: _controller.listOfStudents[index].isTypeChecked,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _controller.listOfStudents[index].isTypeChecked = value;
+                                          });
+                                        },
+                                        checkColor: Colors.white,
+                                        activeColor: Colors.blue,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(5.0),
+                                          ),
+                                        ),
+
+                                        tristate: true,
                                       ),
                                     ),
 
-                                      tristate: true,
                                   ),
-                                ),
-
-                              ),
-                            );
-                          },
-                        ),
-                        isLoading
-                            ? const Center(child: CircularProgressIndicator())
-                            : const SizedBox.shrink()
-                      ],
+                                );
+                              },
+                            ),
+                           _controller.isLoading
+                                ? const Center(child: CircularProgressIndicator())
+                                : const SizedBox.shrink()
+                          ],
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(

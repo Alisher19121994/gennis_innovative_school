@@ -2,10 +2,27 @@ import 'package:gennis_innovative_school/pages/registration/model/login_response
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../pages/entrancePage/model/groups_data.dart';
+import '../../pages/registration/model/sign_in.dart';
 
  class SharedPreferenceData {
+   //setLoggedIn
+   static Future setUsername(String username) async {
+     final SharedPreferences preferences = await SharedPreferences.getInstance();
+     return preferences.setString("username", username);
+   }
+   static Future getUsername() async {
+     final SharedPreferences preferences = await SharedPreferences.getInstance();
+     return preferences.getString("username");
+   }
+   static Future setPassword(String password) async {
+     final SharedPreferences preferences = await SharedPreferences.getInstance();
+     return preferences.setString("password",password);
+   }
 
-
+   static Future getPassword() async {
+     final SharedPreferences preferences = await SharedPreferences.getInstance();
+     return preferences.getString("password");
+   }
    //setLoggedIn
   static Future<bool?> setLoggedIn(LoginResponse loginResponse) async {
      final SharedPreferences preferences = await SharedPreferences.getInstance();

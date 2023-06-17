@@ -23,6 +23,7 @@ dependencies:
   dio: ^5.1.2
   drop_down_list_menu: ^0.0.9
   http: ^0.13.6
+  get: ^4.6.5
 
 
 

@@ -17,7 +17,10 @@ import 'package:gennis_innovative_school/pages/splash/splash_page.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'networkService/di_service/di_service.dart';
+
 void main()async {
+  await DIService.init();
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await Hive.openBox('login');
@@ -34,13 +37,14 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         navigatorObservers: [ChuckerFlutter.navigatorObserver],
       home: const SplashPage(),
+      //home: const MainPage(setId: 0),
       routes:{
         SignIn.id:(context) => const SignIn(),
         EntrancePage.id:(context) => const EntrancePage(),
         UsersList.id:(context) =>  UsersList(ids: 0,),
         AttendanceList.id:(context) => const AttendanceList(ids: 0,),
-        CreateList.id:(context) =>  const CreateList(ids: 0,),
-        EduPlanList.id:(context) => const EduPlanList(),
+        CheckList.id:(context) =>  const CheckList(ids: 0,),
+        EduPlanList.id:(context) => const EduPlanList(ids: 0,),
         ProfilePage.id:(context) => const ProfilePage(),
         MainPage.id:(context) => const MainPage(setId: 0,),
         EditPhoto.id:(context) => const EditPhoto(),

@@ -26,9 +26,9 @@ class _MainPageState extends State<MainPage> {
   List pages = [
      UsersList(ids: 0),
     const AttendanceList(ids: 0,),
-    const CreateList(ids: 0,),
+    const CheckList(ids: 0,),
     const PointList(ids: 0,),
-    const EduPlanList()
+    const EduPlanList(ids: 0,)
   ];
 
   @override
@@ -79,7 +79,11 @@ class _MainPageState extends State<MainPage> {
       case 1:
         return AttendanceList(ids: widget.setId);
       case 2:
-        return CreateList(ids: widget.setId);
+        return CheckList(ids: widget.setId);
+      case 3:
+        return PointList(ids: widget.setId);
+      case 4:
+        return EduPlanList(ids: widget.setId);
       default:
         return Container();
     }

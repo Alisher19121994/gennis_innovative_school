@@ -9,8 +9,7 @@ import '../pages/registration/model/login_response.dart';
 
 
 class Network {
-
-
+  static const String baseUrl = "http://176.96.243.55/api/";
   // POST Login
   static Future<String?> loginUser(LogIn logIn) async {
     final response = await http.post(
@@ -30,10 +29,6 @@ class Network {
       return null;
     }
   }
-
-
-
-
   // GET groups
   static Future getGroups() async {
     var token = await SharedPreferenceData.getToken();
@@ -54,6 +49,44 @@ class Network {
       return jsonResponse;
     } else {
       return null;
+    }
+  }
+
+   static Future<http.Response> getData(String api,String id) async {
+     final accessToken = SharedPreferenceData.getToken();
+     final response = await http.get(
+      Uri.parse("$baseUrl$api/$id"),
+      headers: {"Authorization": "Bearer $accessToken"},
+    );
+
+    if (response.statusCode == 401) {
+      final newAccessToken = await _getNewAccessToken();
+      final newResponse = await http.get(
+        Uri.parse("$baseUrl$api"),
+        headers: {"Authorization": "Bearer $newAccessToken"},
+      );
+      return newResponse;
+    } else {
+      return response;
+    }
+  }
+
+  static Future<String> _getNewAccessToken() async {
+    var userData = SharedPreferenceData.getUsername();
+    var passwordData = SharedPreferenceData.getPassword();
+    final response = await http.post(
+      Uri.parse("$baseUrl/login"),
+      body: {
+        "username": userData,
+        "password": passwordData,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data;
+    } else {
+      throw Exception("Failed to get new access token");
     }
   }
 }
