@@ -104,9 +104,14 @@ class NetworkService {
     return params;
   }
 
-  static List<Students> parsePostList(String response) {
-    dynamic json = jsonDecode(response);
-    var data = List<Students>.from(json.map((info) => Students.fromJson(info)));
-    return data;
+  static UserList parseUserList(String response) {
+    var logger = Logger();
+    // dynamic json = jsonDecode(response);
+    // var data = List<UserList>.from(json.map((info) => UserList.fromJson(info)));
+      final Map<String,dynamic> body = jsonDecode(response);
+      final UserList userList = UserList.fromJson(body);
+      LogService.w(body as String);
+      logger.w(body);
+    return userList;
   }
 }

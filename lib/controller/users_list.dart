@@ -7,7 +7,7 @@ import '../logService/log_service.dart';
 class UserListController extends GetxController {
   var isLoading = false;
   var isPaid = false;
-  var listOfStudents = [];
+  List<Students> listOfStudents = [];
   Students students = Students();
   UserList userList = UserList();
 
@@ -26,10 +26,11 @@ class UserListController extends GetxController {
         NetworkService.API_group_profile+id.toString(), NetworkService.paramsEmpty());
     if (response != null) {
       LogService.w(response);
-      listOfStudents = NetworkService.parsePostList(response);
+      listOfStudents = NetworkService.parseUserList(response) as List<Students>;
+      update();
     } else {
       listOfStudents = [];
-
+      update();
     }
     isLoading = false;
     update();

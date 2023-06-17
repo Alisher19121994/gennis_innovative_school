@@ -5,6 +5,7 @@ import 'package:gennis_innovative_school/controller/users_list.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
+import '../../../../logService/log_service.dart';
 import '../../../../network/sharedPreferenceData/shared_preference_data.dart';
 import '../../../../widget_views/list_of_users.dart';
 import '../../../entrancePage/model/groups_data.dart';
@@ -33,7 +34,6 @@ class _UsersListState extends State<UsersList> {
   @override
   void initState() {
     super.initState();
-    //fetchData();
     Get.find<UserListController>().apiListOfStudents(widget.ids);
   }
 
@@ -76,6 +76,7 @@ class _UsersListState extends State<UsersList> {
       body:GetBuilder<UserListController>(
         init: UserListController(),
         builder: (controller){
+        print(controller);
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [

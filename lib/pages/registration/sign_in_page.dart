@@ -5,7 +5,6 @@ import 'package:gennis_innovative_school/network/sharedPreferenceData/shared_pre
 import 'package:gennis_innovative_school/pages/registration/model/login_response.dart';
 import 'package:gennis_innovative_school/pages/registration/model/sign_in.dart';
 import 'package:gennis_innovative_school/projectImages/projectImages.dart';
-import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
 import '../entrancePage/entarnce_page.dart';

@@ -14,16 +14,13 @@ import 'package:gennis_innovative_school/pages/profilePage/morePage/edit_data.da
 import 'package:gennis_innovative_school/pages/profilePage/morePage/edit_photo.dart';
 import 'package:gennis_innovative_school/pages/registration/sign_in_page.dart';
 import 'package:gennis_innovative_school/pages/splash/splash_page.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+
 
 import 'networkService/di_service/di_service.dart';
 
 void main()async {
   await DIService.init();
-  WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
-  await Hive.openBox('login');
+
   ChuckerFlutter.showOnRelease = true;
   runApp(const MyApp());
 }
