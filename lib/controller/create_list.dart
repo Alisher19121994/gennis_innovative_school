@@ -7,16 +7,18 @@ import '../logService/log_service.dart';
 class CreateController extends GetxController {
   var isLoading = false;
   List<Students> listOfStudents = [];
+  Students students = Students();
+  UserList userList = UserList();
 
 
-  void apiListOfStudents(int id) async {
+  void apiCreateListOfStudents(int id) async {
     isLoading = true;
     update();
-    var response = await NetworkService.GET(
-        NetworkService.API_group_profile+id.toString(), NetworkService.paramsEmpty());
+    var response = await NetworkService.GET(NetworkService.API_group_profile+id.toString(), NetworkService.paramsEmpty());
     if (response != null) {
-      LogService.w(response);
-      listOfStudents = NetworkService.parseUserList(response) as List<Students>;
+      //LogService.w(response as String);
+     // listOfStudents = userList.data!.students!;
+      listOfStudents = NetworkService.parseUserList(response as String) as List<Students>;
       update();
     } else {
       listOfStudents = [];

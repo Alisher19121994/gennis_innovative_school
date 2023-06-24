@@ -1,5 +1,9 @@
 import 'dart:async';
-
+import 'dart:convert';
+import 'package:gennis_innovative_school/pages/registration/model/login_response.dart';
+import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/pages/entrancePage/entarnce_page.dart';
 import 'package:gennis_innovative_school/pages/registration/sign_in_page.dart';
@@ -30,6 +34,7 @@ class _SplashPageState extends State<SplashPage> {
     runApp(MaterialApp(home: status == true ? const EntrancePage(): const SignIn() ));
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,4 +50,6 @@ class _SplashPageState extends State<SplashPage> {
       ),
     );
   }
+
 }
+

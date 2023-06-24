@@ -5,6 +5,17 @@ import '../../pages/entrancePage/model/groups_data.dart';
 import '../../pages/registration/model/sign_in.dart';
 
  class SharedPreferenceData {
+
+   static Future<String?> getRefreshToken() async {
+   SharedPreferences prefs = await SharedPreferences.getInstance();
+   String? refreshToken = prefs.getString('refresh_token');
+   return refreshToken;
+   }
+
+   static Future<void> setRefreshToken(LoginResponse loginResponse) async {
+   SharedPreferences prefs = await SharedPreferences.getInstance();
+   await prefs.setString('refresh_token', loginResponse.data!.refreshToken!);
+   }
    //setLoggedIn
    static Future setUsername(String username) async {
      final SharedPreferences preferences = await SharedPreferences.getInstance();

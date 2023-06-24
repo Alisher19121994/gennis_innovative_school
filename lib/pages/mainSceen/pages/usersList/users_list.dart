@@ -34,7 +34,7 @@ class _UsersListState extends State<UsersList> {
   @override
   void initState() {
     super.initState();
-    Get.find<UserListController>().apiListOfStudents(widget.ids);
+    Get.find<UserListController>().apiUserListOfStudents(widget.ids);
   }
 
   // void fetchData()async{
@@ -76,165 +76,175 @@ class _UsersListState extends State<UsersList> {
       body:GetBuilder<UserListController>(
         init: UserListController(),
         builder: (controller){
-        print(controller);
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-             // #group overall views in the basic schedule
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(17),
-                    color: Colors.lightBlueAccent),
-                margin: const EdgeInsets.all(6),
-                padding: const EdgeInsets.all(16),
-                height: 270,
-                child: Column(
+          print(controller);
+          return SingleChildScrollView(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              width: double.infinity,
+              child: Stack(
+                children:[
+                  Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children:  [
-                        const Text(
-                          "Educational language",
-                          style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          //usersList.data.information.eduLang.value,
-                          controller.userList.data?.information?.eduLang?.value??"",
-                          style: const TextStyle(color: Colors.black, fontSize: 17),
-                        ),
-                      ],
+                   // #group overall views in the basic schedule
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(17),
+                          color: Colors.lightBlueAccent),
+                      margin: const EdgeInsets.all(6),
+                      padding: const EdgeInsets.all(16),
+                      height: 270,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children:  [
+                              Text(
+                                controller.userList.data?.information?.eduLang?.name??"",
+                                style: const TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                controller.userList.data?.information?.eduLang?.value??"",
+                                style: const TextStyle(color: Colors.black, fontSize: 17),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children:  [
+                               Text(
+                              //  "Course type",
+                                controller.userList.data?.information?.groupCourseType?.name??"" ,
+                                style: const TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                controller.userList.data?.information?.groupCourseType?.value??"",
+                                style: const TextStyle(color: Colors.black, fontSize: 17),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children:  [
+                              const Text(
+                                "Group's name",
+                                style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                controller.userList.data?.information?.groupName?.value??"",
+                                style: const TextStyle(color: Colors.black, fontSize: 17),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children:  [
+                              const Text(
+                                "Group's price",
+                                style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                controller.userList.data?.information?.groupPrice?.value.toString()??"",
+                                style: const TextStyle(color: Colors.black, fontSize: 17),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children:  [
+                              const Text(
+                                "Student's number",
+                                style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                controller.userList.data?.information?.studentsLength?.value.toString()??"",
+                                style: const TextStyle(color: Colors.black, fontSize: 17),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children:  [
+                              const Text(
+                                "Teacher's name",
+                                style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                controller.userList.data?.information?.teacherName?.value??"",
+                                style: const TextStyle(color: Colors.black, fontSize: 17),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children:  [
+                              const Text(
+                                "Teacher's lastName",
+                                style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                controller.userList.data?.information?.teacherSurname?.value??"",
+                                style: const TextStyle(color: Colors.black, fontSize: 17),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children:  [
+                              const Text(
+                                "Holder",
+                                style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                controller.userList.data?.information?.teacherSalary?.value?.toString()??"",
+                                style: const TextStyle(color: Colors.black, fontSize: 17),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children:  [
-                        const Text(
-                          "Course type",
-                          style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
+//                  controller.isLoading ? const Center(child: CircularProgressIndicator(),):const SizedBox.shrink(),
+                   // #group students list with their monthly payment schedule which is shown,once the user swipes from left to right
+                    Expanded(
+                        child: ListView.builder(
+                          itemCount: controller.listOfStudents.length,
+                          itemBuilder:(BuildContext context,int index){
+                           // Students students = controller.listOfStudents[index];
+                            return listOfUsers(controller.listOfStudents[index] as UserListController);
+                          },
                         ),
-                        Text(
-                          controller.userList.data?.information?.groupCourseType?.value??"",
-                          style: const TextStyle(color: Colors.black, fontSize: 17),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children:  [
-                        const Text(
-                          "Group's name",
-                          style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          controller.userList.data?.information?.groupName?.value??"",
-                          style: const TextStyle(color: Colors.black, fontSize: 17),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children:  [
-                        const Text(
-                          "Group's price",
-                          style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          controller.userList.data?.information?.groupPrice?.value.toString()??"",
-                          style: const TextStyle(color: Colors.black, fontSize: 17),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children:  [
-                        const Text(
-                          "Student's number",
-                          style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          controller.userList.data?.information?.studentsLength?.value.toString()??"",
-                          style: const TextStyle(color: Colors.black, fontSize: 17),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children:  [
-                        const Text(
-                          "Teacher's name",
-                          style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          controller.userList.data?.information?.teacherName?.value??"",
-                          style: const TextStyle(color: Colors.black, fontSize: 17),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children:  [
-                        const Text(
-                          "Teacher's lastName",
-                          style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          controller.userList.data?.information?.teacherSurname?.value??"",
-                          style: const TextStyle(color: Colors.black, fontSize: 17),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children:  [
-                        const Text(
-                          "Holder",
-                          style: TextStyle(color: Colors.black, fontSize: 17,fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          controller.userList.data?.information?.teacherSalary?.value?.toString()??"",
-                          style: const TextStyle(color: Colors.black, fontSize: 17),
-                        ),
-                      ],
-                    ),
+                      ),
+                   // controller.isLoading ? const Center(child: CircularProgressIndicator(),):const SizedBox.shrink(),
+
                   ],
                 ),
+                  controller.isLoading ? const Center(child: CircularProgressIndicator(),):const SizedBox.shrink(),
+
+                ]
               ),
-             // #group students list with their monthly payment schedule which is shown,once the user swipes from left to right
-              Expanded(
-                child: Container(
-                  height: MediaQuery.of(context).size.height,
-                  color: Colors.cyanAccent,
-                  child: ListView.builder(
-                    itemCount: controller.listOfStudents.length,
-                    itemBuilder:(BuildContext context,int index){
-                      Students students = controller.listOfStudents[index];
-                      return listOfUsers(students,controller);
-                    },
-                  ),
-                ),
-              ),
-              controller.isLoading ? const Center(child: CircularProgressIndicator(),):const SizedBox.shrink(),
-            ],
+            ),
           );
         },
       ),

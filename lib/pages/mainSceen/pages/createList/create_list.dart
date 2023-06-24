@@ -36,7 +36,7 @@ class _CheckListState extends State<CheckList> {
   @override
   void initState() {
     super.initState();
-    Get.find<CreateController>().apiListOfStudents(widget.ids);
+    Get.find<CreateController>().apiCreateListOfStudents(widget.ids);
     //_fetchData();
     //getData('group_profile',"${widget.ids}");
     //Dio().interceptors.add(ChuckerDioInterceptor());
@@ -190,26 +190,26 @@ class _CheckListState extends State<CheckList> {
                   Expanded(
                     child: GetBuilder<CreateController>(
                       init: CreateController(),
-                      builder: (_controller){
+                      builder: (controller){
                         return Stack(
                           children: [
                             ListView.builder(
-                              itemCount: _controller.listOfStudents.length,
+                              itemCount: controller.listOfStudents.length,
                               itemBuilder: (context, index) {
                                 return Card(
                                   borderOnForeground: true,
                                   color: Colors.cyanAccent,
                                   child: ListTile(
-                                    leading:  Text(_controller.listOfStudents[index].surname ?? '',style: const TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),
-                                    title: Text(_controller.listOfStudents[index].name ?? '',style: const TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),
+                                    leading:  Text(controller.listOfStudents[index].surname ?? '',style: const TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),
+                                    title: Text(controller.listOfStudents[index].name ?? '',style: const TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),
                                     trailing: Transform.scale(
                                       scale: 2.2,
                                       child: Checkbox(
                                         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                        value: _controller.listOfStudents[index].isTypeChecked,
+                                        value: controller.listOfStudents[index].isTypeChecked,
                                         onChanged: (value) {
                                           setState(() {
-                                            _controller.listOfStudents[index].isTypeChecked = value;
+                                            controller.listOfStudents[index].isTypeChecked = value;
                                           });
                                         },
                                         checkColor: Colors.white,
@@ -228,7 +228,7 @@ class _CheckListState extends State<CheckList> {
                                 );
                               },
                             ),
-                           _controller.isLoading
+                           controller.isLoading
                                 ? const Center(child: CircularProgressIndicator())
                                 : const SizedBox.shrink()
                           ],

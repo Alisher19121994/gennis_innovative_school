@@ -22,6 +22,8 @@ dependencies:
   drop_down_list_menu: ^0.0.9
   http: ^0.13.6
   get: ^4.6.5
+  shimmer: ^3.0.0
+  jwt_decoder: ^2.0.1
 
 
 

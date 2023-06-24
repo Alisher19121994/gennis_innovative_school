@@ -1,5 +1,5 @@
 class UserList {
-  Data? data;
+  DataList? data;
   int? groupID;
   String? groupName;
   bool? groupStatus;
@@ -23,7 +23,7 @@ class UserList {
         this.timeTable});
 
   UserList.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? DataList.fromJson(json['data']) : null;
     groupID = json['groupID'];
     groupName = json['groupName'];
     groupStatus = json['groupStatus'];
@@ -67,13 +67,13 @@ class UserList {
   }
 }
 
-class Data {
+class DataList {
   Information? information;
   List<Students>? students;
 
-  Data({this.information, this.students});
+  DataList({this.information, this.students});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  DataList.fromJson(Map<String, dynamic> json) {
     information = json['information'] != null
         ? new Information.fromJson(json['information'])
         : null;

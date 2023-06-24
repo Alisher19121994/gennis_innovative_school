@@ -34,7 +34,6 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         navigatorObservers: [ChuckerFlutter.navigatorObserver],
       home: const SplashPage(),
-      //home: const MainPage(setId: 0),
       routes:{
         SignIn.id:(context) => const SignIn(),
         EntrancePage.id:(context) => const EntrancePage(),

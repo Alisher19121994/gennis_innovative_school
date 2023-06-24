@@ -5,9 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../controller/users_list.dart';
-import '../pages/mainSceen/pages/usersList/model/users.dart';
 
-Widget listOfUsers(Students students,UserListController userListController) {
+Widget listOfUsers(UserListController userListController) {
   return Slidable(
     enabled: true,
     direction: Axis.horizontal,
@@ -21,13 +20,13 @@ Widget listOfUsers(Students students,UserListController userListController) {
           onPressed: (BuildContext context) {},
           flex: 3,
           backgroundColor: Colors.green,
-          label: students.money.toString(),
+          label: userListController.students.money.toString(),
         )
             : SlidableAction(
           onPressed: (BuildContext context) {},
           flex: 3,
           backgroundColor: Colors.red,
-          label: students.money.toString(),
+          label: userListController.students.money.toString(),
           borderRadius: BorderRadius.circular(14),
         ),
       ],
@@ -36,7 +35,7 @@ Widget listOfUsers(Students students,UserListController userListController) {
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 12),
         height: 60,
-        width: MediaQuery.of(context as BuildContext).size.width,
+       // width: MediaQuery.of(context as BuildContext).size.width,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children:  [
@@ -48,8 +47,9 @@ Widget listOfUsers(Students students,UserListController userListController) {
             const SizedBox(
               width: 4,
             ),
+            //#surname
             Text(
-              students.surname??"",
+              userListController.students.surname??"",
               style: const TextStyle(
                   color: Colors.black,
                   fontSize: 19,
@@ -58,8 +58,9 @@ Widget listOfUsers(Students students,UserListController userListController) {
             const SizedBox(
               width: 7,
             ),
+            //#name
             Text(
-              students.name??"",
+              userListController.students.name??"",
               style: const TextStyle(
                   color: Colors.black,
                   fontSize: 19,
