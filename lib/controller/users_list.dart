@@ -9,6 +9,7 @@ class UserListController extends GetxController {
   Students students = Students();
   UserList userList = UserList();
 
+
   void apiUserListOfStudents(int id) async {
     // if(students.money! > 0 ){
     //   isPaid = true;
@@ -19,16 +20,16 @@ class UserListController extends GetxController {
     // // }
     isLoading = true;
     update();
-    var response = await NetworkService.GETUserList(
-        NetworkService.API_group_profile + id.toString(),
-        NetworkService.paramsEmpty());
-    if (response != null) {
-      listOfStudents = response;
-      update();
-    } else {
-      listOfStudents = [];
-      update();
-    }
+    var response = await NetworkService.fetchUsersData(NetworkService.API_group_profile,id);
+    listOfStudents = response.data!.students!;
+     // if (response != null) {
+     //   listOfStudents  = NetworkService.parseUserList(response) as List<Students>;
+     // // listOfStudents = List.from(response).map((e) => Da);
+     //   update();
+     // } else {
+     //   listOfStudents = [];
+     //   update();
+     // }
     isLoading = false;
     update();
   }

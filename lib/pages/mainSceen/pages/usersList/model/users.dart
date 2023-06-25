@@ -75,23 +75,23 @@ class DataList {
 
   DataList.fromJson(Map<String, dynamic> json) {
     information = json['information'] != null
-        ? new Information.fromJson(json['information'])
+        ?  Information.fromJson(json['information'])
         : null;
     if (json['students'] != null) {
       students = <Students>[];
       json['students'].forEach((v) {
-        students!.add(new Students.fromJson(v));
+        students!.add( Students.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.information != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (information != null) {
       data['information'] = this.information!.toJson();
     }
-    if (this.students != null) {
-      data['students'] = this.students!.map((v) => v.toJson()).toList();
+    if (students != null) {
+      data['students'] = students!.map((v) => v.toJson()).toList();
     }
     return data;
   }

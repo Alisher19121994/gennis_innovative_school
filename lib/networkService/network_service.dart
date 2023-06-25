@@ -1,8 +1,5 @@
 import 'dart:convert';
-
-import 'package:gennis_innovative_school/logService/log_service.dart';
-import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/users_list.dart';
-import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import '../network/sharedPreferenceData/shared_preference_data.dart';
@@ -12,11 +9,7 @@ import 'auth.dart';
 
 class NetworkService {
   static String baseUrl = '176.96.243.55';
-
-  // static Map<String, String> headers = {
-  //   'Content-Type': 'application/json; charset=UTF-8',
-  //   'Authorization': 'Bearer $token',
-  // };
+  static String baseUrlAddress = 'http://176.96.243.55';
 
   static Future<Map<String, String>> getHeaders() async {
     String? token = await SharedPreferenceData.getToken();
@@ -59,31 +52,23 @@ class NetworkService {
     return response;
   }
 
-  static Future<List<Students>?> GETUserList(String api, Map<String, String> params) async {
-    String? token = await SharedPreferenceData.getToken();
-    var uri = Uri.http(baseUrl, api, params);
-    var response = await get(uri, headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $token',
-      },);
-    if (response.statusCode == 200) {
-      dynamic json = jsonDecode(response.body);
-      return (json as List).map((e) => Students.fromJson(e)).toList();
-
-      // var data = List<Students>.from(json.map((info) => Students.fromJson(info))).toList();
-      // return data;
-    }
-    return null;
+  static Future<UserList> fetchUsersData(String api,int id)async{
+    var token = await SharedPreferenceData.getToken();
+    final response = await http.get(Uri.parse('$baseUrlAddress/$api/$id'), headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    final Map<String,dynamic> body = jsonDecode(response.body.toString());
+    final UserList userList = UserList.fromJson(body);
+    return userList;
   }
-
-  static Future<String?> GET(String api, Map<String, String> params) async {
+  static Future GET(String api, Map<String, String> params) async {
     String? token = await SharedPreferenceData.getToken();
     var uri = Uri.http(baseUrl, api, params);
     var response = await get(uri, headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
       },);
-    //LogService.i('network service pars qilish: ${response.body}');
     if (response.statusCode == 200) {
       return response.body;
     }
@@ -136,7 +121,8 @@ class NetworkService {
   }
 
   /* Http Apis */
-  static String API_group_profile = '/api/group_profile/';
+  static String API_group_profile = 'api/group_profile';
+  static String API_my_groups = 'api/my_groups';
   /* Http params */
 
   static Map<String, String> paramsEmpty() {
@@ -202,16 +188,15 @@ class NetworkService {
     });
     return params;
   }
-
-  static UserList parseUserList(String response) {
-   // dynamic json = jsonDecode(response);
-    Map<String, dynamic> jsonMap = jsonDecode(response);
-    UserList groupInfo = UserList.fromJson(jsonMap);
+//////////
+  static DataList parseUserList(String response) {
+    var jsonMap = jsonDecode(response);
+    DataList groupInfo = DataList.fromJson(jsonMap);
     return groupInfo;
   }
   static List getList(String response) {
    // Map<String, dynamic> json = jsonDecode(response);
-    dynamic json = jsonDecode(response);
+    var json = jsonDecode(response);
     return (json as List).map((e) => UserList.fromJson(e)).toList();
   }
   static List<Students> userList(String response) {
@@ -221,6 +206,8 @@ class NetworkService {
     var data = List<Students>.from(json.map((info) => Students.fromJson(info))).toList();
     return data;
   }
+
+
 // static List<Students> parseUserList(String response) {
 //   var logger = Logger();
 //   dynamic json = jsonDecode(response);
