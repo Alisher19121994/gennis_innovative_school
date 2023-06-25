@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/pages/registration/sign_in_page.dart';
 import 'package:gennis_innovative_school/projectImages/projectImages.dart';
@@ -150,14 +151,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Column(
                       children: [
                         //#photo changes
-                         CircleAvatar(
-                          foregroundColor: Colors.black12,
-                          backgroundColor: Colors.black26,
-                          radius: 70,
-                        //  backgroundImage: NetworkImage("http://176.96.243.55/static/img_folder/photo-1533106418989-88406c7cc8ca.jpg"),
-                           backgroundImage: AssetImage(ProjectImages.mue),
-                          // backgroundImage: NetworkImage(userProfile.user!.photoProfile!),
-                        ),
+                        CircleAvatar(radius: 50,
+                          child: CachedNetworkImage(
+                            imageUrl: userProfile.user?.photoProfile??'',
+                            placeholder: (context, url) => const CircularProgressIndicator(),
+                            errorWidget: (context, url, error) => const Icon(Icons.error,color: Colors.red,),
+                          ),),
 
                         const SizedBox(
                           height: 13,

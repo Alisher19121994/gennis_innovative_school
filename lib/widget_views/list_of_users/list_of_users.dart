@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -29,19 +30,22 @@ Widget listOfUsers(Students students,UserListController userListController) {
         ),
       ],
     ),
-    child: Expanded(
       child: Container(
+        color: Colors.cyanAccent,
         margin: const EdgeInsets.symmetric(vertical: 6),
         height: 60,
        // width: MediaQuery.of(context as BuildContext).size.width,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children:  [
-            const CircleAvatar(
-              radius: 50,
-               // backgroundImage: NetworkImage(students.photoProfile),
-              // backgroundImage: NetworkImage('https://images.outbrainimg.com/transform/v3/eyJpdSI6ImYwY2QxYTBjMDQzYzI2M2Y0Zjk3OTEyMjg3OGZlMjM0ZmMyMjRkYmEwNWZiMzAzNTk3ZWQyYzZkMmJlNzQ0YzkiLCJ3IjozMDAsImgiOjIwMCwiZCI6Mi4wLCJjcyI6MCwiZiI6NH0.webp'),),
-            ),
+              CircleAvatar(radius: 45,
+              backgroundColor: Colors.black12,
+              foregroundColor: Colors.black12,
+              child: CachedNetworkImage(
+                imageUrl: students.photoProfile??'',
+                placeholder: (context, url) => const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error,color: Colors.red,),
+              ),),
             const SizedBox(
               width: 4,
             ),
@@ -67,6 +71,5 @@ Widget listOfUsers(Students students,UserListController userListController) {
           ],
         ),
       ),
-    ),
   );
 }

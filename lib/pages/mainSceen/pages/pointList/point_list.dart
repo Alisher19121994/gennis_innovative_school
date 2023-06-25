@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gennis_innovative_school/controller/point_list.dart';
 import 'package:get/get.dart';
@@ -46,8 +47,16 @@ class _PointListState extends State<PointList> {
                     itemCount: controller.listOfStudents.length,
                     itemBuilder:(BuildContext context,int index){
                       return Card(
+                        color: Colors.cyanAccent,
                         child: ListTile(
-                          leading: CircleAvatar(radius: 50,backgroundImage: NetworkImage(controller.listOfStudents[index].photoProfile??''),),
+                          leading: CircleAvatar(radius: 45,
+                            backgroundColor: Colors.black12,
+                            foregroundColor: Colors.black12,
+                            child: CachedNetworkImage(
+                              imageUrl: controller.listOfStudents[index].photoProfile??'',
+                              placeholder: (context, url) => const CircularProgressIndicator(),
+                              errorWidget: (context, url, error) => const Icon(Icons.error,color: Colors.red,),
+                            ),),
                           title: Text(controller.listOfStudents[index].surname??'',style: const TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),),
                           subtitle: Text(controller.listOfStudents[index].name??'',style: const TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: RatingBar.builder(
