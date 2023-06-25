@@ -2,7 +2,7 @@ import 'package:gennis_innovative_school/networkService/network_service.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/model/users.dart';
 import 'package:get/get.dart';
 
-class UserListController extends GetxController {
+class PointListController extends GetxController {
   var isLoading = false;
   var isPaid = false;
   List<Students> listOfStudents = [];
@@ -10,7 +10,7 @@ class UserListController extends GetxController {
   UserList userList = UserList();
 
 
-  void apiUserListOfStudents(int id) async {
+  void apiPointListOfStudents(int id) async {
     isLoading = true;
     update();
     var response = await NetworkService.fetchUsersData(NetworkService.API_group_profile,id);
@@ -18,13 +18,6 @@ class UserListController extends GetxController {
     isLoading = false;
     update();
 
-    if(students.money! > 0 ){
-      isPaid = true;
-      update();
-    }else{
-      isPaid = false;
-      update();
-    }
   }
 
 

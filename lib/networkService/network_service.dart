@@ -124,7 +124,22 @@ class NetworkService {
   static String API_group_profile = 'api/group_profile';
   static String API_my_groups = 'api/my_groups';
   /* Http params */
-
+  // Future<String?> ratingUser() async {
+  //   final response = await http.post(
+  //     Uri.parse('http://176.96.243.55/api/make_attendance'),
+  //     headers: {'Content-Type': 'application/json'},
+  //     body: jsonEncode({
+  //       //'isTypeChecked': students.isTypeChecked,
+  //     }),
+  //   );
+  //   var logger = Logger();
+  //   if (response.statusCode == 200) {
+  //     logger.i(response.body);
+  //     return response.body;
+  //   } else {
+  //     return null;
+  //   }
+  // }
   static Map<String, String> paramsEmpty() {
     Map<String, String> params = {};
     return params;
@@ -187,24 +202,6 @@ class NetworkService {
       'username': students.username.toString(),
     });
     return params;
-  }
-//////////
-  static DataList parseUserList(String response) {
-    var jsonMap = jsonDecode(response);
-    DataList groupInfo = DataList.fromJson(jsonMap);
-    return groupInfo;
-  }
-  static List getList(String response) {
-   // Map<String, dynamic> json = jsonDecode(response);
-    var json = jsonDecode(response);
-    return (json as List).map((e) => UserList.fromJson(e)).toList();
-  }
-  static List<Students> userList(String response) {
-    //final Map<String,dynamic> body = jsonDecode(response);
-    //   final UserList userList = UserList.fromJson(body);
-    dynamic json = jsonDecode(response);
-    var data = List<Students>.from(json.map((info) => Students.fromJson(info))).toList();
-    return data;
   }
 
 

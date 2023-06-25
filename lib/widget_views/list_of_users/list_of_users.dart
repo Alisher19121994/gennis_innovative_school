@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/model/users.dart';
-import '../controller/users_list.dart';
+import '../../controller/users_list.dart';
 
 Widget listOfUsers(Students students,UserListController userListController) {
   return Slidable(

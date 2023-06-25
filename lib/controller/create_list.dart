@@ -14,17 +14,18 @@ class CreateController extends GetxController {
   void apiCreateListOfStudents(int id) async {
     isLoading = true;
     update();
-    var response = await NetworkService.GET(NetworkService.API_group_profile+id.toString(), NetworkService.paramsEmpty());
-    if (response != null) {
-      //LogService.w(response as String);
-     // listOfStudents = userList.data!.students!;
-      listOfStudents = NetworkService.parseUserList(response as String) as List<Students>;
-      update();
-    } else {
-      listOfStudents = [];
-      update();
-    }
+    var response = await NetworkService.fetchUsersData(NetworkService.API_group_profile, id);
+    listOfStudents =  response.data!.students!;
+    update();
     isLoading = false;
     update();
+    //
+    // if(students.isTypeChecked = true){
+    //   listOfStudents = (students.isTypeChecked = true) as List<Students>;
+    //   update();
+    // }else{
+    //   listOfStudents = (students.isTypeChecked = false) as List<Students>;
+    //   update();
+    // }
   }
 }

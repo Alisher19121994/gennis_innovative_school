@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/controller/users_list.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import '../../../../widget_views/list_of_users.dart';
+import '../../../../widget_views/list_of_users/list_of_users.dart';
 import 'model/users.dart';
 
 class UsersList extends StatefulWidget {
   final int ids;
-
    const UsersList({Key? key, required this.ids,}) : super(key: key);
    static const String id = "usersList";
 
@@ -16,45 +15,11 @@ class UsersList extends StatefulWidget {
 }
 
 class _UsersListState extends State<UsersList> {
-
   @override
   void initState() {
     super.initState();
     Get.find<UserListController>().apiUserListOfStudents(widget.ids);
   }
-
-  // void fetchData()async{
-  //   var logger = Logger();
-  //   var token = await SharedPreferenceData.getToken();
-  //   final response = await http.get(
-  //        Uri.parse('http://176.96.243.55/api/group_profile/${widget.ids}'),
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': 'Bearer $token',
-  //       }
-  //   );
-  //   final Map<String,dynamic> body = jsonDecode(response.body.toString());
-  //   final UserList userList = UserList.fromJson(body);
-  //
-  //   logger.i(body);
-  //
-  //   setState(() {
-  //     isPaid == true;
-  //     listOfUsers = userList as List<Students>;
-  //   });
-  //
-  //
-  //   if(students.money! > 0 ){
-  //     setState(() {
-  //       isPaid == true;
-  //     });
-  //   }else{
-  //     setState(() {
-  //       isPaid == false;
-  //     });
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
