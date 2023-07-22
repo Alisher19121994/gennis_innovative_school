@@ -2,7 +2,7 @@ import 'package:gennis_innovative_school/pages/registration/model/login_response
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../pages/entrancePage/model/groups_data.dart';
-import '../../pages/registration/model/sign_in.dart';
+//import '../../pages/registration/model/sign_in.dart';
 
  class SharedPreferenceData {
 

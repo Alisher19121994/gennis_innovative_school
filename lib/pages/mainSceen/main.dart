@@ -4,9 +4,8 @@ import 'package:gennis_innovative_school/pages/mainSceen/pages/createList/create
 import 'package:gennis_innovative_school/pages/mainSceen/pages/eduPlanList/edu_plan_list.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/pointList/point_list.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/users_list.dart';
-import '../../network/sharedPreferenceData/shared_preference_data.dart';
 import '../../projectImages/projectImages.dart';
-import '../entrancePage/model/groups_data.dart';
+import '../drawer/main_drawer_page.dart';
 
 class MainPage extends StatefulWidget {
 
@@ -24,7 +23,7 @@ class _MainPageState extends State<MainPage> {
   var page = true;
   int currentPage = 0;
   List pages = [
-     UsersList(ids: 0),
+    const UsersList(ids: 0),
     const AttendanceList(ids: 0,),
     const CheckList(ids: 0,),
     const PointList(ids: 0,),
@@ -35,6 +34,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      drawer: const MainDrawer(),
       appBar: AppBar(
         backgroundColor: const Color(0xFF00C2FF),
         elevation: 0,

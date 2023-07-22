@@ -30,45 +30,47 @@ Widget listOfUsers(Students students,UserListController userListController) {
         ),
       ],
     ),
-      child: Container(
+      child: Card(
         color: Colors.cyanAccent,
-        margin: const EdgeInsets.symmetric(vertical: 6),
-        height: 60,
-       // width: MediaQuery.of(context as BuildContext).size.width,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children:  [
-              CircleAvatar(radius: 45,
-              backgroundColor: Colors.black12,
-              foregroundColor: Colors.black12,
-              child: CachedNetworkImage(
-                imageUrl: students.photoProfile??'',
-                placeholder: (context, url) => const CircularProgressIndicator(),
-                errorWidget: (context, url, error) => const Icon(Icons.error,color: Colors.red,),
-              ),),
-            const SizedBox(
-              width: 4,
-            ),
-            //#surname
-            Text(
-              students.surname??"",
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 19,
-                  fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              width: 7,
-            ),
-            //#name
-            Text(
-              students.name??"",
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 19,
-                  fontWeight: FontWeight.bold),
-            ),
-          ],
+        child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 6),
+          height: 60,
+         // width: MediaQuery.of(context as BuildContext).size.width,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children:  [
+                CircleAvatar(radius: 45,
+                backgroundColor: Colors.black12,
+                foregroundColor: Colors.black12,
+                child: CachedNetworkImage(
+                  imageUrl: students.photoProfile??'',
+                  placeholder: (context, url) => const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error,color: Colors.red,),
+                ),),
+              const SizedBox(
+                width: 4,
+              ),
+              //#surname
+              Text(
+                students.surname??"",
+                style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 19,
+                    fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                width: 7,
+              ),
+              //#name
+              Text(
+                students.name??"",
+                style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 19,
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
         ),
       ),
   );

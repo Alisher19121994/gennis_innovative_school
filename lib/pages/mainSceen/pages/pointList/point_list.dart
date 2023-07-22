@@ -64,7 +64,7 @@ class _PointListState extends State<PointList> {
                             minRating: 1,
                             direction: Axis.horizontal,
                             itemCount: 5,
-                            itemSize: 44,
+                            itemSize: 25,
                             itemPadding: const EdgeInsets.symmetric(horizontal: 0.9),
                             itemBuilder: (context, _) => const Icon(Icons.star, color: Colors.amber,),
                             onRatingUpdate: (rating) {

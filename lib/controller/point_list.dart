@@ -6,7 +6,8 @@ class PointListController extends GetxController {
   var isLoading = false;
   var isPaid = false;
   List<Students> listOfStudents = [];
-  Students students = Students();
+  late Students students;
+  //Students students = Students();
   UserList userList = UserList();
 
 

@@ -1,16 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:gennis_innovative_school/pages/registration/model/login_response.dart';
-import 'package:http/http.dart' as http;
-import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/pages/entrancePage/entarnce_page.dart';
 import 'package:gennis_innovative_school/pages/registration/sign_in_page.dart';
 import 'package:gennis_innovative_school/projectImages/projectImages.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../network/sharedPreferenceData/shared_preference_data.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);

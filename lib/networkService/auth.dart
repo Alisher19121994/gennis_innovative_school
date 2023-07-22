@@ -1,7 +1,6 @@
 
-import 'dart:convert';
+//import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../network/sharedPreferenceData/shared_preference_data.dart';
 
@@ -28,9 +27,9 @@ class Auth {
     }
   }
 
-  static bool isTokenExpired(String token) {
-    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
-    int expiryTime = decodedToken['exp'] * 1000;
-    return DateTime.now().millisecondsSinceEpoch > expiryTime;
-  }
+  // static bool isTokenExpired(String token) {
+  //   Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+  //   int expiryTime = decodedToken['exp'] * 1000;
+  //   return DateTime.now().millisecondsSinceEpoch > expiryTime;
+  // }
 }

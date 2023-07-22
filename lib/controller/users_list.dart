@@ -6,7 +6,8 @@ class UserListController extends GetxController {
   var isLoading = false;
   var isPaid = false;
   List<Students> listOfStudents = [];
-  Students students = Students();
+//  Students students = Students();
+ late Students students;
   UserList userList = UserList();
 
 
@@ -18,13 +19,13 @@ class UserListController extends GetxController {
     isLoading = false;
     update();
 
-    if(students.money! > 0 ){
-      isPaid = true;
-      update();
-    }else{
-      isPaid = false;
-      update();
-    }
+    // if(students.money! > 0 ){
+    //   isPaid = true;
+    //   update();
+    // }else{
+    //   isPaid = false;
+    //   update();
+    // }
   }
 
 
