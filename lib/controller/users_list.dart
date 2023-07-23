@@ -14,8 +14,8 @@ class UserListController extends GetxController {
   void apiUserListOfStudents(int id) async {
     isLoading = true;
     update();
-    var response = await NetworkService.fetchUsersData(NetworkService.API_group_profile,id);
-    listOfStudents = response.data!.students!;
+    var response = await NetworkService.fetchUsersData(NetworkService.API_attendances,id);
+    listOfStudents = response?.data!.students as List<Students>;
     isLoading = false;
     update();
 

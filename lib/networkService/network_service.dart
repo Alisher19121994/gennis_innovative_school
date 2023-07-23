@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/model/students_list_info.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import '../network/sharedPreferenceData/shared_preference_data.dart';
@@ -7,9 +8,10 @@ import '../pages/mainSceen/pages/usersList/model/users.dart';
 import '../pages/registration/model/login_response.dart';
 
 class NetworkService {
-  static String baseUrlAddress = 'http://192.168.1.23:5000';
+  static String baseUrlAddress = 'http://192.168.1.3:5000';
 
   /* Http Apis */
+  static String API_attendances = 'api/attendances';
   static String API_group_profile = 'api/group_profile';
   static String API_my_groups = 'api/my_groups';
   static String API_make_attendance = 'api/make_attendance';
@@ -41,7 +43,7 @@ class NetworkService {
     }
   }
   /* HTTP request  */
-  static Future<UserList> fetchUsersData(String api,int id)async{
+  static Future<UserList?> fetchUsersData(String api,int id)async{
     var token = await SharedPreferenceData.getToken();
     final response = await http.get(Uri.parse('$baseUrlAddress/$api/$id'), headers: {
       'Content-Type': 'application/json',
@@ -50,6 +52,16 @@ class NetworkService {
     final Map<String,dynamic> body = jsonDecode(response.body.toString());
     final UserList userList = UserList.fromJson(body);
     return userList;
+  }
+  static Future<StudentsListInfo> fetchUsers(String api,int id)async{
+    var token = await SharedPreferenceData.getToken();
+    final response = await http.get(Uri.parse('$baseUrlAddress/$api/$id'), headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    final Map<String,dynamic> body = jsonDecode(response.body.toString());
+    final StudentsListInfo studentsListInfo = StudentsListInfo.fromJson(body);
+    return studentsListInfo;
   }
 
   static Future<GroupOfData>fetchGroupData(String api)async{
@@ -80,16 +92,38 @@ class NetworkService {
     return null;
   }
 
-
-  static Future<String?> POST(String api, Map<dynamic, dynamic> params) async {
+  static Future<String?> PostUsersAttendance(String api,UserList userList) async {
+    Students? students;
     String? token = await SharedPreferenceData.getToken();
-    var uri = Uri.https(baseUrlAddress, api);
-    var response = await post(uri,
+    var response = await post(Uri.parse('$baseUrlAddress/$api'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
         },
-        body: jsonEncode(params));
+        body: jsonEncode({
+            'groupId': userList.groupID,
+            userList.data?.students: {
+              'age': students!.age,
+              'attended':students.attended,
+              'comment': students.comment,
+              "date": {"day": students.date?.day, "month": students.date?.month},
+              "id": students.id,
+              'img': students.img,
+              'money': students.money,
+              'moneyType':students.moneyType,
+              'name': students.name,
+              'phone': students.phone,
+              'photoProfile':students.photoProfile,
+              "reason": students.reason,
+              'reg_date': students.regDate,
+              'role': students.role,
+              "scores": students.scores,
+              'surname': students.surname,
+              'typeChecked':students.typeChecked,
+              'username': students.username,
+            }
+          }
+        ));
     if (response.statusCode == 200) {
       return response.body;
     }
@@ -164,7 +198,7 @@ class NetworkService {
         'phone': students.phone,
         'photoProfile':students.photoProfile,
         "reason": students.reason,
-        'regDate': students.regDate,
+        'reg_date': students.regDate,
         'role': students.role,
         "scores": students.scores,
         'surname': students.surname,

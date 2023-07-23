@@ -233,13 +233,13 @@ class Students {
   String? typeChecked;
   String? username;
 
-  Students( Date dates, Date string, String check,
-      {
-        //this.age,
-       // this.attended,
-       // this.comment,
-        this.date,
-        //this.id,
+  Students(String checked,
+      //{
+        // this.age,
+        // this.attended,
+        // this.comment,
+        // this.date,
+        // this.id,
         // this.img,
         // this.money,
         // this.moneyType,
@@ -251,9 +251,10 @@ class Students {
         // this.role,
         // this.scores,
         // this.surname,
-        this.typeChecked,
-        //this.username
-      });
+         //this.typeChecked,
+        // this.username
+     // }
+      );
 
   Students.fromJson(Map<String, dynamic> json) {
     age = json['age'];

@@ -18,23 +18,22 @@ Widget listOfUsers(CreateController controller, int index) {
         style: const TextStyle(
             color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
       ),
-      trailing: Transform.scale(
-        scale: 1.8,
-        child: Checkbox(
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          value: controller.listOfStudents[index].typeChecked =='no',
-          onChanged: (_) =>
-              controller.toggleStudentSelection((controller.listOfStudents[index].typeChecked =='yes') as Students),
-          checkColor: Colors.white,
-          activeColor: Colors.blue,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(5.0),
-            ),
-          ),
-          tristate: true,
-        ),
-      ),
+      // trailing: Transform.scale(
+      //   scale: 1.8,
+      //   child: Checkbox(
+      //     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      //     value: controller.listOfStudents[index].typeChecked =='no',
+      //     onChanged: (_) => controller.toggleStudentSelection((controller.listOfStudents[index].typeChecked =='yes') as Students),
+      //     checkColor: Colors.white,
+      //     activeColor: Colors.blue,
+      //     shape: const RoundedRectangleBorder(
+      //       borderRadius: BorderRadius.all(
+      //         Radius.circular(5.0),
+      //       ),
+      //     ),
+      //     tristate: true,
+      //   ),
+      // ),
     ),
   );
 }

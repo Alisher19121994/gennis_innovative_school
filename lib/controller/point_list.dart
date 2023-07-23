@@ -15,7 +15,7 @@ class PointListController extends GetxController {
     isLoading = true;
     update();
     var response = await NetworkService.fetchUsersData(NetworkService.API_group_profile,id);
-    listOfStudents = response.data!.students!;
+    listOfStudents = response?.data!.students as List<Students>;
     isLoading = false;
     update();
 

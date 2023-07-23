@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 class CreateController extends GetxController {
   var isLoading = false;
   var isChecked = false;
+  int index = 0;
+  var response;
   List<Students> listOfStudents = [];
   Date day = Date();
   Date month = Date();
@@ -17,18 +19,17 @@ class CreateController extends GetxController {
     update();
     var response = await NetworkService.fetchUsersData(
         NetworkService.API_group_profile, id);
-    listOfStudents = response.data!.students!;
+    listOfStudents = response?.data?.students as List<Students>;
     update();
     isLoading = false;
     update();
-
   }
 
-  void apiPostOfStudentsAttendance(Students students) async {
+  void apiPostOfStudentsAttendance(UserList userAttendance) async {
     isLoading = true;
     update();
-    var response = await NetworkService.POST(NetworkService.API_make_attendance,
-        NetworkService.paramsCreateStudentsAttendance(userList, students));
+    response = await NetworkService.PostUsersAttendance(
+        NetworkService.API_make_attendance, userAttendance);
     if (response != null) {
     } else {
       isLoading = false;
@@ -36,24 +37,8 @@ class CreateController extends GetxController {
     }
   }
 
-  void toggleStudentSelection(Students student) {
-   // isChecked == false;
-    // update();
-    // if (isChecked) {
-    //   student.typeChecked == 'no';
-    //   update();
-    // } else {
-    //   student.typeChecked == 'yes';
-    //   update();
-    // }
-    // return isChecked;
-
-    if(student.typeChecked == 'no'){
-      listOfStudents = (student.typeChecked == 'no') as List<Students>;
-      update();
-    }else{
-      listOfStudents = (student.typeChecked == 'yes') as List<Students>;
-      update();
-    }
+  void toggleStudentSelection() {
+    isChecked = !isChecked;
+    update();
   }
 }
