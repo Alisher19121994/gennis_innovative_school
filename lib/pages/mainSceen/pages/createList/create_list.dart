@@ -38,12 +38,6 @@ class _CheckListState extends State<CheckList> {
     super.initState();
     Get.find<CreateController>().apiCreateListOfStudents(widget.ids);
   }
-  _finish(BuildContext context) {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      //Navigator.pop(context, "result");
-      Get.to(AttendanceList(ids: widget.ids));
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +135,7 @@ class _CheckListState extends State<CheckList> {
                             ),
                             controller.isLoading
                                 ? const Center(
-                                child: CircularProgressIndicator())
+                                  child: CircularProgressIndicator())
                                 : const SizedBox.shrink(),
                           ],
                         ),
@@ -220,7 +214,7 @@ class _CheckListState extends State<CheckList> {
                                           }
                                           if(controller.response.statusCode == 200){
                                             Get.find<CreateController>().apiPostOfStudentsAttendance(controller.userList);
-                                            _finish(context);
+                                            controller.finish(context);
                                           }
                                         },
                                         style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlueAccent, side: const BorderSide(width: 2, color: Colors.white)),
@@ -232,7 +226,6 @@ class _CheckListState extends State<CheckList> {
                               )),
                         ),
                       ),
-
                     ],
                   );
                 },
@@ -242,159 +235,3 @@ class _CheckListState extends State<CheckList> {
         );
   }
 }
-// import 'package:flutter/material.dart';
-//
-// class CheckboxList extends StatefulWidget {
-//   @override
-//   _CheckboxListState createState() => _CheckboxListState();
-// }
-//
-// class _CheckboxListState extends State<CheckboxList> {
-//   List<String> _items = [
-//     'Item 1',
-//     'Item 2',
-//     'Item 3',
-//     'Item 4',
-//     'Item 5',
-//   ];
-//
-//   Map<String, bool> _checkedItems = {
-//     'Item 1': false,
-//     'Item 2': false,
-//     'Item 3': false,
-//     'Item 4': false,
-//     'Item 5': false,
-//   };
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Checkbox List'),
-//       ),
-//       body: Column(
-//         children: [
-//           Expanded(
-//             child: ListView.builder(
-//               itemCount: _items.length,
-//               itemBuilder: (BuildContext context, int index) {
-//                 final item = _items[index];
-//                 return CheckboxListTile(
-//                   title: Text(item),
-//                   value: _checkedItems[item],
-//                   onChanged: (bool value) {
-//                     setState(() {
-//                       _checkedItems[item] = value;
-//                     });
-//                   },
-//                 );
-//               },
-//             ),
-//           ),
-//           ElevatedButton(
-//             onPressed: () {
-//               // Perform some action based on selected items
-//               List<String> selectedItems = [];
-//               _checkedItems.forEach((key, value) {
-//                 if (value) {
-//                   selectedItems.add(key);
-//                 }
-//               });
-//               print(selectedItems);
-//             },
-//             child: Text('Get Selected Items'),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-  //sjdhjfjsdfjdjghdhgjf//
-  // void toggleStudentSelection(Student student) {
-  // student.isSelected = !student.isSelected;
-  // setState(() {});
-  // }
-  //
-  // void sendSelectedStudentsToServer() {
-  // final selectedStudents = students.where((student) => student.isSelected).toList();
-  // // Send selected students to the server using http.post or any other method you prefer.
-  // // Your implementation here...
-  // }
-  //
-  // @override
-  // Widget build(BuildContext context) {
-  // return Scaffold(
-  // appBar: AppBar(
-  // title: Text('Select Students'),
-  // ),
-  // body: ListView.builder(
-  // itemCount: students.length,
-  // itemBuilder: (context, index) {
-  // final student = students[index];
-  // return CheckboxListTile(
-  // title: Text(student.name),
-  // value: student.isSelected,
-  // onChanged: (_) => toggleStudentSelection(student),
-  // );
-  // },
-  // ),
-  // floatingActionButton: FloatingActionButton(
-  // onPressed: sendSelectedStudentsToServer,
-  // child: Icon(Icons.send),
-  // ),
-  // );
-  // }
-  // }
-
-  //sjdhjfjsdfjdjghdhgjf//
-
-// class _MyHomePageState extends State<MyHomePage> {
-//   List<Student> students = [
-//     Student(1, 'John'),
-//     Student(2, 'Alice'),
-//     Student(3, 'Bob'),
-//     Student(4, 'Jane'),
-//   ];
-//
-//   List<int> selectedStudents = [];
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Student List'),
-//       ),
-//       body: ListView.builder(
-//         itemCount: students.length,
-//         itemBuilder: (context, index) {
-//           return CheckboxListTile(
-//             title: Text(students[index].name),
-//             value: selectedStudents.contains(students[index].id),
-//             onChanged: (bool isChecked) {
-//               setState(() {
-//                 if (isChecked) {
-//                   selectedStudents.add(students[index].id);
-//                 } else {
-//                   selectedStudents.remove(students[index].id);
-//                 }
-//               });
-//             },
-//           );
-//         },
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: () {
-//           sendSelectedStudentsToServer();
-//         },
-//         child: Icon(Icons.send),
-//       ),
-//     );
-//   }
-//
-//   void sendSelectedStudentsToServer() async {
-//     // Send the selectedStudents list to the server using http package
-//     // For simplicity, we will just print the selected student ids here
-//     print(selectedStudents);
-//   }
-// }}

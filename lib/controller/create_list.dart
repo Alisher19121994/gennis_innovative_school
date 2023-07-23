@@ -1,6 +1,10 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:gennis_innovative_school/networkService/network_service.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/model/users.dart';
 import 'package:get/get.dart';
+
+import '../pages/mainSceen/pages/attendanceList/attendance_list.dart';
 //import 'package:http/http.dart' as http;
 
 class CreateController extends GetxController {
@@ -40,5 +44,12 @@ class CreateController extends GetxController {
   void toggleStudentSelection() {
     isChecked = !isChecked;
     update();
+  }
+
+  finish(BuildContext context) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      //Navigator.pop(context, "result");
+      Get.to(const AttendanceList(ids: 0));
+    });
   }
 }
