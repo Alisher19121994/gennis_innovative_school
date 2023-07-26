@@ -1,9 +1,6 @@
 import 'dart:convert';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/pages/registration/sign_in_page.dart';
-import 'package:gennis_innovative_school/projectImages/projectImages.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
 import '../../network/sharedPreferenceData/shared_preference_data.dart';
@@ -70,7 +67,7 @@ class _ProfilePageState extends State<ProfilePage> {
               PopupMenuItem(
                   child: Column(children: [
                 //#edit data
-                Row(
+                     Row(
                   children: [
                     Icon(
                       Icons.edit,
@@ -151,12 +148,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Column(
                       children: [
                         //#photo changes
-                        CircleAvatar(radius: 50,
-                          child: CachedNetworkImage(
-                            imageUrl: userProfile.user?.photoProfile??'',
-                            placeholder: (context, url) => const CircularProgressIndicator(),
-                            errorWidget: (context, url, error) => const Icon(Icons.error,color: Colors.red,),
-                          ),),
+                        CircleAvatar(
+                          radius: 50,
+                          child: Image.network(userProfile.user?.photoProfile ?? '',)
+                        ),
 
                         const SizedBox(
                           height: 13,

@@ -1,24 +1,11 @@
-import 'dart:convert';
-import 'package:chucker_flutter/chucker_flutter.dart';
-import 'package:dio/dio.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gennis_innovative_school/controller/create_list.dart';
-import 'package:gennis_innovative_school/network/network.dart';
-import 'package:gennis_innovative_school/pages/mainSceen/pages/attendanceList/attendance_list.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/instance_manager.dart';
-import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
-import 'package:numberpicker/numberpicker.dart';
-import 'package:scroll_date_picker/scroll_date_picker.dart';
-import '../../../../network/sharedPreferenceData/shared_preference_data.dart';
-import '../../../../widget_views/check_page/create_of_users.dart';
-import '../../../../widget_views/check_page/submit_button.dart';
-import '../../../registration/sign_in_page.dart';
 import '../usersList/model/users.dart';
 
 class CheckList extends StatefulWidget {
@@ -32,13 +19,19 @@ class CheckList extends StatefulWidget {
 }
 
 class _CheckListState extends State<CheckList> {
+  int day = 0;
+  String month = '';
+  TextEditingController controllerUsername = TextEditingController();
+  TextEditingController controllermonth = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     Get.find<CreateController>().apiCreateListOfStudents(widget.ids);
+    Get.find<CreateController>().dayOfDate();
+    Get.find<CreateController>().monthOfDate();
   }
-
+  var isChecked = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,59 +69,32 @@ class _CheckListState extends State<CheckList> {
                                       style: const TextStyle(
                                           color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
                                     ),
-                                    trailing: Expanded(
-                                      child: SizedBox(
-                                        child: GestureDetector(
-                                            onTap:() {
-                                           controller.toggleStudentSelection();
-                                            },
-                                            child: AnimatedContainer(
-                                              height: 45,
-                                              width: 45,
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(5),
-                                                color:controller.isChecked ? Colors.purpleAccent:Colors.transparent,
-                                                border: Border.all(color: Colors.black87)
-                                              ),
-                                              duration: const Duration(milliseconds: 500),
-                                              curve: Curves.fastLinearToSlowEaseIn,
-                                              child: controller.isChecked ? IconButton(
-                                                  onPressed: (){
-                                                    //controller.students = Students('yes');
-                                                    controller.listOfStudents[index].typeChecked = 'yes';
-                                                  },
-                                                  icon: const Icon(Icons.check,color: Colors.blueAccent,size: 28,))
-                                                  :IconButton(
-                                                  onPressed: (){
-                                                    //controller.students = Students('no');
-                                                    controller.listOfStudents[index].typeChecked = 'no';
-                                                  },
-                                                  icon: const Icon(Icons.clear,color: Colors.red,size: 28,))
-                                            ),
+                                    trailing: Transform.scale(
+                                      scale: 1.8,
+                                      child: Checkbox(
+                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                        value: isChecked = controller.listOfStudents[index].typeChecked == 'no',
+                                        onChanged: (newValue) {
+                                          setState(() {
+                                            isChecked = newValue!;
+                                            if( isChecked ){
+                                              isChecked = controller.listOfStudents[index].typeChecked == 'yes';
+                                            }else{
+                                            isChecked = controller.listOfStudents[index].typeChecked == 'no';
+                                            }
+                                          });
+                                        },
+                                        autofocus: false,
+                                        checkColor: Colors.white,
+                                        activeColor: Colors.blue,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(3.5),
                                           ),
+                                        ),
+                                        tristate: true,
                                       ),
                                     ),
-                                    // trailing: Transform.scale(
-                                    //   scale: 1.8,
-                                    //   child: Checkbox(
-                                    //     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                    //     value: controller.listOfStudents[index].typeChecked =='no',
-                                    //     onChanged: (value) {
-                                    //       setState(() {
-                                    //         controller.listOfStudents[index].typeChecked = value.toString();
-                                    //       });
-                                    //     },
-                                    //        // controller.toggleStudentSelection((controller.listOfStudents[index].typeChecked =='yes') as Students),
-                                    //     checkColor: Colors.white,
-                                    //     activeColor: Colors.blue,
-                                    //     shape: const RoundedRectangleBorder(
-                                    //       borderRadius: BorderRadius.all(
-                                    //         Radius.circular(5.0),
-                                    //       ),
-                                    //     ),
-                                    //     tristate: true,
-                                    //   ),
-                                    // ),
                                   ),
                                 );
                               },
@@ -166,16 +132,40 @@ class _CheckListState extends State<CheckList> {
                                             width: 70,
                                             decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(5),
-                                                color: Colors.cyan
+                                                color: Colors.cyanAccent
                                             ),
-                                            child: ListView.builder(
-                                              itemCount: controller.listOfStudents.length,
-                                                itemBuilder: (context,index) {
-                                                  return Center(
-                                                      child: Text(
-                                                    "${controller.listOfStudents[index].date?.day}", style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),));
-                                                }
+                                          child: ListView.builder(
+                                            itemCount: controller.listOfDay.length,
+                                            itemBuilder: (context, index){
+                                              return Card(
+                                                color: Colors.cyanAccent,
+                                                child: Container(
+                                                  margin: const EdgeInsets.only(top: 12),
+                                                  child: Center(
+                                                    child: Text('${controller.listOfDay[index]}',
+                                                    style: const TextStyle(color: Colors.cyanAccent,fontSize: 22,fontWeight: FontWeight.bold),),
+                                                  ),
                                                 ),
+                                              );
+                                            },
+                                          ),
+                                          // child:TextFormField(
+                                          //   controller: controllerUsername,
+                                          //   style: const TextStyle(color: Colors.black),
+                                          //   decoration: const InputDecoration(
+                                          //       labelText: 'day',
+                                          //       border: OutlineInputBorder()),
+                                          //   validator: (value) {
+                                          //     if (value != null && value.isEmpty) {
+                                          //       return 'Username must not be empty';
+                                          //     }
+                                          //     return null;
+                                          //   },
+                                          //   onChanged: (value) => setState((){
+                                          //     day = int.parse(value);
+                                          //     controller.listOfStudents[controller.index].date?.day = day;
+                                          //   }),
+                                          // ),
                                           ),
                                           //#month
                                           Container(
@@ -183,24 +173,67 @@ class _CheckListState extends State<CheckList> {
                                             width: 70,
                                             decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(5),
-                                                color: Colors.cyan
+                                                color: Colors.cyanAccent
                                             ),
                                             child: ListView.builder(
-                                                itemCount: controller.listOfStudents.length,
-                                                itemBuilder: (context,index) {
-                                                  return Center(child: Text(
-                                                    "${controller
-                                                        .listOfStudents[index]
-                                                        .date?.month}",
-                                                    style: const TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 16,
-                                                        fontWeight: FontWeight
-                                                            .bold),));
-                                                }
+                                              itemCount: controller.listOfMonth.length,
+                                              itemBuilder: (context, index){
+                                                return Card(
+                                                  color: Colors.cyanAccent,
+                                                  child: Container(
+                                                    margin: const EdgeInsets.only(top: 12),
+                                                    child: Center(
+                                                      child: Text(controller.listOfMonth[index].toString(),
+                                                        style: const TextStyle(color: Colors.black,fontSize: 22,fontWeight: FontWeight.bold),),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
                                             ),
                                           ),
+                                          // Container(
+                                          //   height: 55,
+                                          //   width: 70,
+                                          //   // decoration: BoxDecoration(
+                                          //   //     borderRadius: BorderRadius.circular(5),
+                                          //   //     color: Colors.cyan
+                                          //   // ),
+                                          //   child:TextFormField(
+                                          //     controller: controllermonth,
+                                          //     style: const TextStyle(color: Colors.black),
+                                          //     decoration: const InputDecoration(
+                                          //         labelText: 'month',
+                                          //         border: OutlineInputBorder()),
+                                          //     validator: (value) {
+                                          //       if (value != null && value.isEmpty) {
+                                          //         return 'Username must not be empty';
+                                          //       }
+                                          //       return null;
+                                          //     },
+                                          //     onChanged: (value) => setState((){
+                                          //       month = value;
+                                          //       controller.listOfStudents[controller.index].date?.month = month;
+                                          //     }),
+                                          //   ),
+                                          // ),
                                         ],
+                                        // child:TextFormField(
+                                        //   controller: controllerUsername,
+                                        //   style: const TextStyle(color: Colors.black),
+                                        //   decoration: const InputDecoration(
+                                        //       labelText: 'day',
+                                        //       border: OutlineInputBorder()),
+                                        //   validator: (value) {
+                                        //     if (value != null && value.isEmpty) {
+                                        //       return 'Username must not be empty';
+                                        //     }
+                                        //     return null;
+                                        //   },
+                                        //   onChanged: (value) => setState((){
+                                        //     day = int.parse(value);
+                                        //     controller.listOfStudents[controller.index].date?.day = day;
+                                        //   }),
+                                        // ),
                                       )
                                   ),
                                   const SizedBox(width: 70,),
@@ -209,13 +242,20 @@ class _CheckListState extends State<CheckList> {
                                     child: SizedBox(height: 55, width: 120,
                                       child: ElevatedButton(
                                         onPressed: () {
+                                          List<Students> list = [];
+                                          var day = controller.listOfDay;
+                                          var month = controller.listOfMonth;
                                           for(var studentsList in controller.listOfStudents){
-                                            controller.userList = UserList(data: DataList(students: studentsList as List<Students>));
+                                            list.add(Students(age:studentsList.age,attended:studentsList.attended,date:Date({day,month}),id:studentsList.id,
+                                                img:studentsList.img ,money:studentsList.money ,moneyType:studentsList.moneyType ,name:studentsList.name,
+                                                phone:studentsList.phone ,photoProfile:studentsList.photoProfile ,reason:studentsList.reason ,
+                                                regDate:studentsList.regDate ,role: studentsList.role,scores:studentsList.scores ,surname:studentsList.surname ,
+                                                typeChecked:studentsList.typeChecked ,username: studentsList.username
+                                            ));
+                                            controller.userList = UserList(groupID: controller.userList.groupID,data: DataList(students: list));
                                           }
-                                          if(controller.response.statusCode == 200){
                                             Get.find<CreateController>().apiPostOfStudentsAttendance(controller.userList);
                                             controller.finish(context);
-                                          }
                                         },
                                         style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlueAccent, side: const BorderSide(width: 2, color: Colors.white)),
                                         child: const Text("Submit", style: TextStyle(color: Colors.white, fontSize: 19, fontWeight: FontWeight.bold),),

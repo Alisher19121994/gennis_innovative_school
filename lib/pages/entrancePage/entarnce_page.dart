@@ -1,4 +1,3 @@
-import 'package:cupertino_refresh/cupertino_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/controller/entrance_list.dart';
 import 'package:gennis_innovative_school/pages/profilePage/main_profile_page.dart';
@@ -6,6 +5,7 @@ import 'package:gennis_innovative_school/projectImages/projectImages.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import '../../widget_views/entrance_page/entrance_page.dart';
+import '../profilePage/model/user_profile.dart';
 
 class EntrancePage extends StatefulWidget {
   const EntrancePage({Key? key}) : super(key: key);
@@ -16,6 +16,7 @@ class EntrancePage extends StatefulWidget {
 }
 
 class _EntrancePageState extends State<EntrancePage> {
+  UserProfile userProfile = UserProfile();
   @override
   void initState() {
     super.initState();
@@ -51,11 +52,8 @@ class _EntrancePageState extends State<EntrancePage> {
                       MaterialPageRoute(builder: (_) => const ProfilePage()));
                 },
                 child: CircleAvatar(
-                  radius: 24,
-                  backgroundColor: Colors.black26,
-                  //backgroundImage: NetworkImage("http://176.96.243.55/static/img_folder/photo-1533106418989-88406c7cc8ca.jpg"),
-                  // backgroundImage: NetworkImage(userProfile.user!.photoProfile!),
-                  backgroundImage: AssetImage(ProjectImages.mue),
+                    radius: 24,
+                    child: Image.network(userProfile.user?.photoProfile ?? '',)
                 ),
               )
             ],

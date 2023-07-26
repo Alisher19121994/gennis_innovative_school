@@ -17,6 +17,7 @@ import 'package:gennis_innovative_school/pages/profilePage/morePage/edit_data.da
 import 'package:gennis_innovative_school/pages/profilePage/morePage/edit_photo.dart';
 import 'package:gennis_innovative_school/pages/registration/sign_in_page.dart';
 import 'package:gennis_innovative_school/pages/splash/splash_page.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 
 import 'networkService/di_service/di_service.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorObservers: [ChuckerFlutter.navigatorObserver],
       home: const SplashPage(),

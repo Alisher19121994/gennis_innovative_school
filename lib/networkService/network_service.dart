@@ -8,7 +8,7 @@ import '../pages/mainSceen/pages/usersList/model/users.dart';
 import '../pages/registration/model/login_response.dart';
 
 class NetworkService {
-  static String baseUrlAddress = 'http://192.168.1.3:5000';
+  static String baseUrlAddress = 'http://192.168.1.10:5000';
 
   /* Http Apis */
   static String API_attendances = 'api/attendances';
@@ -53,6 +53,7 @@ class NetworkService {
     final UserList userList = UserList.fromJson(body);
     return userList;
   }
+
   static Future<StudentsListInfo> fetchUsers(String api,int id)async{
     var token = await SharedPreferenceData.getToken();
     final response = await http.get(Uri.parse('$baseUrlAddress/$api/$id'), headers: {
@@ -92,8 +93,7 @@ class NetworkService {
     return null;
   }
 
-  static Future<String?> PostUsersAttendance(String api,UserList userList) async {
-    Students? students;
+  static Future<String?> postUsersAttendance(String api,UserList userList, Students students) async {
     String? token = await SharedPreferenceData.getToken();
     var response = await post(Uri.parse('$baseUrlAddress/$api'),
         headers: {
@@ -102,8 +102,8 @@ class NetworkService {
         },
         body: jsonEncode({
             'groupId': userList.groupID,
-            userList.data?.students: {
-              'age': students!.age,
+              userList.data?.students: {
+              'age': students.age,
               'attended':students.attended,
               'comment': students.comment,
               "date": {"day": students.date?.day, "month": students.date?.month},

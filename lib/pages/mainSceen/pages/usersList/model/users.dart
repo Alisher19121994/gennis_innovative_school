@@ -233,27 +233,27 @@ class Students {
   String? typeChecked;
   String? username;
 
-  Students(String checked,
-      //{
-        // this.age,
-        // this.attended,
-        // this.comment,
-        // this.date,
-        // this.id,
-        // this.img,
-        // this.money,
-        // this.moneyType,
-        // this.name,
-        // this.phone,
-        // this.photoProfile,
-        // this.reason,
-        // this.regDate,
-        // this.role,
-        // this.scores,
-        // this.surname,
-         //this.typeChecked,
-        // this.username
-     // }
+  Students(
+      {
+        this.age,
+        this.attended,
+        this.comment,
+        this.date,
+        this.id,
+        this.img,
+        this.money,
+        this.moneyType,
+        this.name,
+        this.phone,
+        this.photoProfile,
+        this.reason,
+        this.regDate,
+        this.role,
+        this.scores,
+        this.surname,
+        this.typeChecked,
+        this.username
+     }
       );
 
   Students.fromJson(Map<String, dynamic> json) {
@@ -366,7 +366,7 @@ class Date {
   int? day;
   String? month;
 
-  Date({this.day, this.month});
+  Date(Set<List<Object>> set, {this.day, this.month});
 
   Date.fromJson(Map<String, dynamic> json) {
     day = json['day'];

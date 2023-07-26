@@ -1,15 +1,8 @@
-import 'dart:convert';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gennis_innovative_school/controller/point_list.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
-
-import '../../../../network/sharedPreferenceData/shared_preference_data.dart';
-import '../../../../widget_views/point_list/point_page.dart';
-import '../usersList/model/users.dart';
 
 class PointList extends StatefulWidget {
   final int ids;
@@ -52,11 +45,7 @@ class _PointListState extends State<PointList> {
                           leading: CircleAvatar(radius: 45,
                             backgroundColor: Colors.black12,
                             foregroundColor: Colors.black12,
-                            child: CachedNetworkImage(
-                              imageUrl: controller.listOfStudents[index].photoProfile??'',
-                              placeholder: (context, url) => const CircularProgressIndicator(),
-                              errorWidget: (context, url, error) => const Icon(Icons.error,color: Colors.red,),
-                            ),),
+                            child: Image.network(controller.listOfStudents[index].photoProfile??'')),
                           title: Text(controller.listOfStudents[index].surname??'',style: const TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),),
                           subtitle: Text(controller.listOfStudents[index].name??'',style: const TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: RatingBar.builder(

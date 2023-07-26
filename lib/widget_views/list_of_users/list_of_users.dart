@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -42,11 +41,7 @@ Widget listOfUsers(Students students,UserListController userListController) {
                 CircleAvatar(radius: 45,
                 backgroundColor: Colors.black12,
                 foregroundColor: Colors.black12,
-                child: CachedNetworkImage(
-                  imageUrl: students.photoProfile??'',
-                  placeholder: (context, url) => const CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => const Icon(Icons.error,color: Colors.red,),
-                ),),
+                child: Image.network(students.photoProfile??'')),
               const SizedBox(
                 width: 4,
               ),
