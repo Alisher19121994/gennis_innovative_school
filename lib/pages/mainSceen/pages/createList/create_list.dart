@@ -73,16 +73,18 @@ class _CheckListState extends State<CheckList> {
                                       scale: 1.8,
                                       child: Checkbox(
                                         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                        value: isChecked = controller.listOfStudents[index].typeChecked == 'no',
+                                        value: controller.listOfStudents[index].typeChecked == 'yes',
                                         onChanged: (newValue) {
                                           setState(() {
-                                            isChecked = newValue!;
-                                            if( isChecked ){
-                                              isChecked = controller.listOfStudents[index].typeChecked == 'yes';
-                                            }else{
-                                            isChecked = controller.listOfStudents[index].typeChecked == 'no';
+                                            if (newValue != null) {
+                                              if (newValue) {
+                                                controller.listOfStudents[index].typeChecked = 'yes';
+                                              } else {
+                                                controller.listOfStudents[index].typeChecked = 'no';
+                                              }
                                             }
-                                          });
+                                          }
+                                          );
                                         },
                                         autofocus: false,
                                         checkColor: Colors.white,
