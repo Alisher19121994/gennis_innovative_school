@@ -1,26 +1,34 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:gennis_innovative_school/logService/log_service.dart';
 import 'package:gennis_innovative_school/networkService/network_service.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/model/users.dart';
 import 'package:get/get.dart';
-import '../pages/mainSceen/pages/attendanceList/attendance_list.dart';
 import 'package:http/http.dart' as http;
 
+import '../pages/mainSceen/pages/createList/model/attendanceUser/attendance.dart';
+import '../pages/mainSceen/pages/createList/model/user_data.dart';
+
 class CreateController extends GetxController {
+  final Connectivity connectivity = Connectivity();
   var isLoading = false;
-  var isChecked = false;
   int index = 0;
-  List<int> listOfDay = [];
-  List<String> listOfMonth = [];
+  List<int> listOfDay = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
+  List<String> listOfMonth = ['1','2','3','4','5','6','7','8','9','10','11','12'];
+  int? selectedDay;
+  String? selectedMonth;
   List<Students> listOfStudents = [];
+  List<Students> listCreatedStudents = [];
   Students students = Students();
+  Attendance attendance = Attendance();
   UserList userList = UserList();
 
   void apiCreateListOfStudents(int id) async {
     isLoading = true;
     update();
-    var response = await NetworkService.fetchUsersData(
-        NetworkService.API_group_profile, id);
+    var response = await NetworkService.fetchUsersData(NetworkService.API_group_profile, id);
     listOfStudents = response?.data?.students as List<Students>;
     update();
     isLoading = false;
@@ -32,67 +40,54 @@ class CreateController extends GetxController {
     update();
     var response = await NetworkService.postUsersAttendance(NetworkService.API_make_attendance, userAttendance,students);
     if (response != null) {
-    } else {
+      //LogService.warning(response);
+      print("postUsersAttendance: $response");
+    } else{
       isLoading = false;
       update();
     }}
 
-  void monthOfDate(){
-    for (var i = 0; i < 12; i++) {
-      var monthNumber = (DateTime.now().month - i);
-      var month = (monthNumber < 1 ? 12 - (-monthNumber) : monthNumber);
-      listOfMonth.add(month.toString());
-    }
-  }
-  void dayOfDate(){
-    for (var i = 0; i < 31; i++) {
-      var dayNumber = (DateTime.now().day - i);
-      var day = (dayNumber < 1 ? 31 - (-dayNumber) : dayNumber);
-      listOfDay.add(day);
-    }
-  }
 
-  months(){
-    // List months = [];
-    // for (var i = 0; i < 12; i++) {
-    //   var monthNumber = (DateTime.now().month - i);
-    //   var monthDate = DateFormat.M().parse(
-    //       (monthNumber < 1 ? 12 - (-monthNumber) : monthNumber).toString());
-    //   var year = DateTime.now().month - i < 1
-    //       ? DateTime.now().year - 1
-    //       : DateTime.now().year;
-    //   var month = DateFormat.MMMM().format(monthDate);
-    //   months.add('$year $month');
-    // }
-    List<String> months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
-    ];
-    DateTime now = DateTime.now();
-    print(months);
-    var result=(months..addAll(months.getRange(0, now.month))..removeRange(0,now.month)).reversed.toList();
-    print(result);
-  }
-
-  void toggleStudentSelection() {
-    isChecked = !isChecked;
+  void toggleStudentSelection(bool? selected,int indexes) {
+  if(selected == true){
+    listOfStudents[indexes].typeChecked = 'yes';
+    print(listOfStudents[indexes].typeChecked = 'yes');
     update();
+  }else{
+    listOfStudents[indexes].typeChecked = 'no';
+    print(listOfStudents[indexes].typeChecked = 'no');
+    update();
+  }
   }
 
   finish(BuildContext context) {
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      //Navigator.pop(context, "result");
-      Get.to(const AttendanceList(ids: 0));
+      //Navigator.pushNamed(context, AttendanceList.id);
+      //Get.to(const AttendanceList(ids: 0));
     });
   }
+
+  @override
+  void onInit() {
+    super.onInit();
+    connectivity.onConnectivityChanged.listen(updateConnectionStatus);
+  }
+  void updateConnectionStatus(ConnectivityResult connectivityResult) {
+    if (connectivityResult == ConnectivityResult.none) {
+      Get.rawSnackbar(
+          messageText: const Text('PLEASE CONNECT TO THE INTERNET', style: TextStyle(color: Colors.black, fontSize: 14)),
+          isDismissible: false,
+          duration: const Duration(days: 1),
+          backgroundColor: Colors.red[400]!,
+          icon : const Icon(Icons.wifi_off, color: Colors.white, size: 35,),
+          margin: EdgeInsets.zero,
+          snackStyle: SnackStyle.GROUNDED
+      );
+    } else {
+      if (Get.isSnackbarOpen) {
+        Get.closeCurrentSnackbar();
+      }
+    }
+  }
 }
+

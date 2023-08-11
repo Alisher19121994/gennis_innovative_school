@@ -1,12 +1,12 @@
-class Attendance {
+class UserData {
   int? groupId;
-  Student? student;
+  StudentsD? student;
 
-  Attendance({this.groupId, this.student});
+  UserData({this.groupId, this.student});
 
-  Attendance.fromJson(Map<String, dynamic> json) {
+  UserData.fromJson(Map<String, dynamic> json) {
     groupId = json['groupId'];
-    student = json['student'] != null ? Student.fromJson(json['student']) : null;
+    student = json['student'] != null ? new StudentsD.fromJson(json['student']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -19,11 +19,11 @@ class Attendance {
   }
 }
 
-class Student {
+class StudentsD {
   int? age;
   String? attended;
   String? comment;
-  Dateses? date;
+  Dates? date;
   int? id;
   String? img;
   int? money;
@@ -34,36 +34,18 @@ class Student {
   String? reason;
   String? regDate;
   String? role;
-  Scoreses? scores;
+  ScoresData? scores;
   String? surname;
   String? typeChecked;
   String? username;
 
-  Student(
-      {this.age,
-      this.attended,
-      this.comment,
-      this.date,
-      this.id,
-      this.img,
-      this.money,
-      this.moneyType,
-      this.name,
-      this.phone,
-      this.photoProfile,
-      this.reason,
-      this.regDate,
-      this.role,
-      this.scores,
-      this.surname,
-      this.typeChecked,
-      this.username});
+  StudentsD({this.age, this.attended, this.comment, this.date, this.id, this.img, this.money, this.moneyType, this.name, this.phone, this.photoProfile, this.reason, this.regDate, this.role, this.scores, this.surname, this.typeChecked, this.username});
 
-  Student.fromJson(Map<String, dynamic> json) {
+  StudentsD.fromJson(Map<String, dynamic> json) {
     age = json['age'];
     attended = json['attended'];
     comment = json['comment'];
-    date = json['date'] != null ? new Dateses.fromJson(json['date']) : null;
+    date = json['date'] != null ? new Dates.fromJson(json['date']) : null;
     id = json['id'];
     img = json['img'];
     money = json['money'];
@@ -74,8 +56,7 @@ class Student {
     reason = json['reason'];
     regDate = json['reg_date'];
     role = json['role'];
-    scores =
-        json['scores'] != null ? new Scoreses.fromJson(json['scores']) : null;
+    scores = json['scores'] != null ? new ScoresData.fromJson(json['scores']) : null;
     surname = json['surname'];
     typeChecked = json['typeChecked'];
     username = json['username'];
@@ -109,13 +90,13 @@ class Student {
   }
 }
 
-class Dateses {
+class Dates {
   int? day;
   String? month;
 
-  Dateses({this.day, this.month});
+  Dates({this.day, this.month});
 
-  Dateses.fromJson(Map<String, dynamic> json) {
+  Dates.fromJson(Map<String, dynamic> json) {
     day = json['day'];
     month = json['month'];
   }
@@ -128,13 +109,16 @@ class Dateses {
   }
 }
 
-class Scoreses {
-  Scoreses();
+class ScoresData {
 
-  Scoreses.fromJson(Map<String, dynamic> json) {}
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    return data;
-  }
+  ScoresData();
+
+ScoresData.fromJson(Map<String, dynamic> json) {
+}
+
+Map<String, dynamic> toJson() {
+final Map<String, dynamic> data = new Map<String, dynamic>();
+return data;
+}
 }

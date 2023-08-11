@@ -1,9 +1,6 @@
 import 'package:gennis_innovative_school/pages/registration/model/login_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../pages/entrancePage/model/groups_data.dart';
-//import '../../pages/registration/model/sign_in.dart';
-
  class SharedPreferenceData {
 
    static Future<String?> getRefreshToken() async {
@@ -15,24 +12,6 @@ import '../../pages/entrancePage/model/groups_data.dart';
    static Future<void> setRefreshToken(LoginResponse loginResponse) async {
    SharedPreferences prefs = await SharedPreferences.getInstance();
    await prefs.setString('refresh_token', loginResponse.data!.refreshToken!);
-   }
-   //setLoggedIn
-   static Future setUsername(String username) async {
-     final SharedPreferences preferences = await SharedPreferences.getInstance();
-     return preferences.setString("username", username);
-   }
-   static Future getUsername() async {
-     final SharedPreferences preferences = await SharedPreferences.getInstance();
-     return preferences.getString("username");
-   }
-   static Future setPassword(String password) async {
-     final SharedPreferences preferences = await SharedPreferences.getInstance();
-     return preferences.setString("password",password);
-   }
-
-   static Future getPassword() async {
-     final SharedPreferences preferences = await SharedPreferences.getInstance();
-     return preferences.getString("password");
    }
    //setLoggedIn
   static Future<bool?> setLoggedIn(LoginResponse loginResponse) async {
@@ -70,32 +49,5 @@ import '../../pages/entrancePage/model/groups_data.dart';
      return preferences.getString('id') ?? '';
    }
 
-  //setId
-  static Future<bool> setInnerId(Groups groups)async{
-    final SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.setString('ids', groups.id.toString());
-  }
-  //getId
-  static Future<String> getInnerId()async{
-    final SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getString('ids') ?? '';
-  }
-
-   //removeLoggedIn
-  static Future<bool> removeLoggedIn()async{
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.remove("true");
-  }
-  //removeToken
-  static Future<bool> removeToken()async{
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.remove("token");
-  }
-
-  //removeId
-  static Future<bool> removeId()async{
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.remove("id");
-  }
 
 }

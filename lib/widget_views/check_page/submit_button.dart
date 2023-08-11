@@ -54,7 +54,7 @@ Widget submitButton(UserList userList,CreateController controller,int index){
                       //   Students students = Students(studentsList.date?.day as Date,studentsList.date?.month.toString() as Date, studentsList.typeChecked.toString());
                       //   userList = UserList(data: DataList(students: students as List<Students>));
                       // }
-                      Get.find<CreateController>().apiPostOfStudentsAttendance(userList);
+                    //  Get.find<CreateController>().apiPostOfStudentsAttendance(userList);
                       controller.isLoading
                           ? const Center(
                           child: CircularProgressIndicator())

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../controller/profile_page.dart';
-
+/*
+* Widget topBarDetails() is involved in that the photo Profile, which photo is able to reset or change,
+* name & lastName, as well as name of job
+* */
 Widget topBarDetails(ProfileController profileController){
   return Container(
     height: 300,
@@ -23,7 +26,7 @@ Widget topBarDetails(ProfileController profileController){
                 //#photo changes
                 CircleAvatar(
                     radius: 50,
-                    child: Image.network(profileController.userProfile.user?.photoProfile ?? '',)
+                    backgroundImage: NetworkImage(profileController.userProfile.user?.photoProfile ?? '')
                 ),
 
                 const SizedBox(

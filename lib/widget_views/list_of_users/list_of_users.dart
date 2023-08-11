@@ -41,7 +41,7 @@ Widget listOfUsers(Students students,UserListController userListController) {
                 CircleAvatar(radius: 45,
                 backgroundColor: Colors.black12,
                 foregroundColor: Colors.black12,
-                child: Image.network(students.photoProfile??'')),
+                    backgroundImage: NetworkImage(students.photoProfile??'')),
               const SizedBox(
                 width: 4,
               ),

@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../controller/profile_page.dart';
-
+/*
+* Widget teacherDetails() is consisted of all user's personal data, receiving server side!!!
+* */
 Widget teacherDetails(ProfileController profileController){
   return   Expanded(
     child: Container(

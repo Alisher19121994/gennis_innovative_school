@@ -1,36 +1,45 @@
-import '../../createList/model/attendanceUser/attendance.dart';
-
-class UserList {
-  DataList? data;
+class UsersInfo {
+  DataInfo? data;
   int? groupID;
   String? groupName;
   bool? groupStatus;
   String? groupSubject;
   bool? isTime;
+  Level? level;
+  List<Null>? levels;
   List<Links>? links;
   int? locationId;
   int? teacherId;
   List<TimeTable>? timeTable;
 
-  UserList(
+  UsersInfo(
       {this.data,
-        this.groupID,
-        this.groupName,
-        this.groupStatus,
-        this.groupSubject,
-        this.isTime,
-        this.links,
-        this.locationId,
-        this.teacherId,
-        this.timeTable});
+      this.groupID,
+      this.groupName,
+      this.groupStatus,
+      this.groupSubject,
+      this.isTime,
+      this.level,
+      this.levels,
+      this.links,
+      this.locationId,
+      this.teacherId,
+      this.timeTable});
 
-  UserList.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? DataList.fromJson(json['data']) : null;
+  UsersInfo.fromJson(Map<String, dynamic> json) {
+    data = json['data'] != null ? new DataInfo.fromJson(json['data']) : null;
     groupID = json['groupID'];
     groupName = json['groupName'];
     groupStatus = json['groupStatus'];
     groupSubject = json['groupSubject'];
     isTime = json['isTime'];
+    level = json['level'] != null ? new Level.fromJson(json['level']) : null;
+    if (json['levels'] != null) {
+      levels = <Null>[];
+      json['levels'].forEach((v) {
+        levels!.add(new Level.fromJson(v) as Null);
+      });
+    }
     if (json['links'] != null) {
       links = <Links>[];
       json['links'].forEach((v) {
@@ -57,6 +66,12 @@ class UserList {
     data['groupStatus'] = this.groupStatus;
     data['groupSubject'] = this.groupSubject;
     data['isTime'] = this.isTime;
+    // if (this.level != null) {
+    //   data['level'] = this.level!.toJson();
+    // }
+    // if (this.levels != null) {
+    //   data['levels'] = this.levels!.map((v) => v?.toJson()).toList();
+    // }
     if (this.links != null) {
       data['links'] = this.links!.map((v) => v.toJson()).toList();
     }
@@ -69,39 +84,40 @@ class UserList {
   }
 }
 
-class DataList {
-  Information? information;
-  List<Students>? students;
+class DataInfo {
+  InformationNews? information;
+  List<StudentsNew>? students;
 
-  DataList({this.information, this.students});
+  DataInfo({this.information, this.students});
 
-  DataList.fromJson(Map<String, dynamic> json) {
+  DataInfo.fromJson(Map<String, dynamic> json) {
     information = json['information'] != null
-        ?  Information.fromJson(json['information'])
+        ? new InformationNews.fromJson(json['information'])
         : null;
     if (json['students'] != null) {
-      students = <Students>[];
+      students = <StudentsNew>[];
       json['students'].forEach((v) {
-        students!.add( Students.fromJson(v));
+        students!.add(new StudentsNew.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (information != null) {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.information != null) {
       data['information'] = this.information!.toJson();
     }
-    if (students != null) {
-      data['students'] = students!.map((v) => v.toJson()).toList();
+    if (this.students != null) {
+      data['students'] = this.students!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class Information {
+class InformationNews {
   EduLang? eduLang;
   EduLang? groupCourseType;
+  EduLang? groupLevel;
   EduLang? groupName;
   GroupPrice? groupPrice;
   GroupPrice? studentsLength;
@@ -109,21 +125,25 @@ class Information {
   GroupPrice? teacherSalary;
   EduLang? teacherSurname;
 
-  Information(
+  InformationNews(
       {this.eduLang,
-        this.groupCourseType,
-        this.groupName,
-        this.groupPrice,
-        this.studentsLength,
-        this.teacherName,
-        this.teacherSalary,
-        this.teacherSurname});
+      this.groupCourseType,
+      this.groupLevel,
+      this.groupName,
+      this.groupPrice,
+      this.studentsLength,
+      this.teacherName,
+      this.teacherSalary,
+      this.teacherSurname});
 
-  Information.fromJson(Map<String, dynamic> json) {
+  InformationNews.fromJson(Map<String, dynamic> json) {
     eduLang =
-    json['eduLang'] != null ? new EduLang.fromJson(json['eduLang']) : null;
+        json['eduLang'] != null ? new EduLang.fromJson(json['eduLang']) : null;
     groupCourseType = json['groupCourseType'] != null
         ? new EduLang.fromJson(json['groupCourseType'])
+        : null;
+    groupLevel = json['groupLevel'] != null
+        ? new EduLang.fromJson(json['groupLevel'])
         : null;
     groupName = json['groupName'] != null
         ? new EduLang.fromJson(json['groupName'])
@@ -152,6 +172,9 @@ class Information {
     }
     if (this.groupCourseType != null) {
       data['groupCourseType'] = this.groupCourseType!.toJson();
+    }
+    if (this.groupLevel != null) {
+      data['groupLevel'] = this.groupLevel!.toJson();
     }
     if (this.groupName != null) {
       data['groupName'] = this.groupName!.toJson();
@@ -213,54 +236,39 @@ class GroupPrice {
   }
 }
 
-class Students {
+class StudentsNew {
   int? age;
-  String? attended;
   String? comment;
-  Date? date;
   int? id;
-  String? img;
+  Null? img;
   int? money;
   String? moneyType;
   String? name;
   String? phone;
-  String? photoProfile;
-  String? reason;
+  Null? photoProfile;
   String? regDate;
   String? role;
-  Scores? scores;
   String? surname;
-  String? typeChecked;
   String? username;
 
-  Students(
-      {
-        this.age,
-        this.attended,
-        this.comment,
-        this.date,
-        this.id,
-        this.img,
-        this.money,
-        this.moneyType,
-        this.name,
-        this.phone,
-        this.photoProfile,
-        this.reason,
-        this.regDate,
-        this.role,
-        this.scores,
-        this.surname,
-        this.typeChecked,
-        this.username
-     }
-      );
+  StudentsNew(
+      {this.age,
+      this.comment,
+      this.id,
+      this.img,
+      this.money,
+      this.moneyType,
+      this.name,
+      this.phone,
+      this.photoProfile,
+      this.regDate,
+      this.role,
+      this.surname,
+      this.username});
 
-  Students.fromJson(Map<String, dynamic> json) {
+  StudentsNew.fromJson(Map<String, dynamic> json) {
     age = json['age'];
-    attended = json['attended'];
     comment = json['comment'];
-    date = json['date'] != null ? new Date.fromJson(json['date']) : null;
     id = json['id'];
     img = json['img'];
     money = json['money'];
@@ -268,25 +276,16 @@ class Students {
     name = json['name'];
     phone = json['phone'];
     photoProfile = json['photo_profile'];
-    reason = json['reason'];
     regDate = json['reg_date'];
     role = json['role'];
-    scores =
-    json['scores'] != null ? new Scores.fromJson(json['scores']) : null;
     surname = json['surname'];
-    typeChecked = json['isTypeChecked'];
     username = json['username'];
   }
-
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['age'] = this.age;
-    data['attended'] = this.attended;
     data['comment'] = this.comment;
-    if (this.date != null) {
-      data['date'] = this.date!.toJson();
-    }
     data['id'] = this.id;
     data['img'] = this.img;
     data['money'] = this.money;
@@ -294,18 +293,25 @@ class Students {
     data['name'] = this.name;
     data['phone'] = this.phone;
     data['photo_profile'] = this.photoProfile;
-    data['reason'] = this.reason;
     data['reg_date'] = this.regDate;
     data['role'] = this.role;
-    if (this.scores != null) {
-      data['scores'] = this.scores!.toJson();
-    }
     data['surname'] = this.surname;
-    data['isTypeChecked'] = this.typeChecked;
     data['username'] = this.username;
     return data;
   }
 }
+
+class Level {
+  Level();
+
+  Level.fromJson(Map<String, dynamic> json) {}
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    return data;
+  }
+}
+
 class Links {
   String? iconClazz;
   String? link;
@@ -333,6 +339,7 @@ class Links {
     return data;
   }
 }
+
 class TimeTable {
   String? day;
   String? endTime;
@@ -357,35 +364,6 @@ class TimeTable {
     data['room'] = this.room;
     data['start_time'] = this.startTime;
     data['time_id'] = this.timeId;
-    return data;
-  }
-
-}
-class Date {
-  int? day;
-  String? month;
-
-  Date( {required int day, required String month});
-
-  Date.fromJson(Map<String, dynamic> json) {
-    day = json['day'];
-    month = json['month'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['day'] = this.day;
-    data['month'] = this.month;
-    return data;
-  }
-}
-class Scores {
-  Scores();
-
-  Scores.fromJson(Map<String, dynamic> json) {}
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
     return data;
   }
 }

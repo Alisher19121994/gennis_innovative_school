@@ -1,4 +1,5 @@
 import 'package:chucker_flutter/chucker_flutter.dart';
+import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/pages/drawer/additionalList/additional_page.dart';
 import 'package:gennis_innovative_school/pages/drawer/contentList/content_page.dart';
@@ -18,14 +19,16 @@ import 'package:gennis_innovative_school/pages/profilePage/morePage/edit_photo.d
 import 'package:gennis_innovative_school/pages/registration/sign_in_page.dart';
 import 'package:gennis_innovative_school/pages/splash/splash_page.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+//import 'package:network_inspector/network_inspector.dart';
 
 
 import 'networkService/di_service/di_service.dart';
 
 void main()async {
-  await DIService.init();
-
+  WidgetsFlutterBinding.ensureInitialized();
+  await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 15));
   ChuckerFlutter.showOnRelease = true;
+  await DIService.init();
   runApp(const MyApp());
 }
 
@@ -38,7 +41,6 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         navigatorObservers: [ChuckerFlutter.navigatorObserver],
       home: const SplashPage(),
-   //   home: const MainPage(setId: 0),
       routes:{
         MainDrawer.id:(context) => const MainDrawer(),
         SignIn.id:(context) => const SignIn(),
@@ -60,20 +62,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-// Future fetchMe(String refreshToken) async {
-//   final url = '${BackUrl}refresh';
-//   final headers = {
-//     "Authorization": "Bearer $refreshToken",
-//     'Content-Type': 'application/json'
-//   };
-//
-//   final response = await http.post(Uri.parse(url), headers: headers);
-//   if (response.statusCode == 200) {
-//     // Handle successful response
-//     return response.body;
-//   } else {
-//     // Handle error response
-//     throw Exception('Failed to fetch data');
-//   }
-// }

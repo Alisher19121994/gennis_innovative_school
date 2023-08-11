@@ -7,4 +7,5 @@ class ProjectImages {
   static const String mue = 'assets/images/mue.jpeg';
   static const String ali = 'assets/images/image.jpg';
   static const String book = 'assets/images/book.jpg';
+  static const String cloud = 'assets/images/cloud.png';
 }

@@ -6,10 +6,13 @@ import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
 import '../../controller/profile_page.dart';
 import '../../network/sharedPreferenceData/shared_preference_data.dart';
+import '../../widget_views/profile/appBar/actions.dart';
+import '../../widget_views/profile/appBar/title.dart';
 import '../../widget_views/profile/profile.dart';
 import '../../widget_views/profile/teacherDeatails.dart';
 import 'model/user_profile.dart';
 import 'morePage/edit_data.dart';
+import 'morePage/edit_photo.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -18,9 +21,7 @@ class ProfilePage extends StatefulWidget {
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
-
 class _ProfilePageState extends State<ProfilePage> {
-
   @override
   void initState() {
     super.initState();
@@ -35,77 +36,49 @@ class _ProfilePageState extends State<ProfilePage> {
         centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.blue,
-        title: const Text(
-          "Profile",
-          style: TextStyle(
-              color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
-        ),
+        title: titleOfAppBar(),
         actions: <Widget>[
-          PopupMenuButton(
-            offset: const Offset(0, 40),
-            elevation: 2,
-            iconSize: 22,
-            itemBuilder: (BuildContext context) => [
-              PopupMenuItem(
-                  child: Column(children: [
-                //#edit data
-                     Row(
-                  children: [
-                    Icon(
-                      Icons.edit,
-                      size: 24,
-                      color: Colors.black.withOpacity(0.60),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, EditData.id);
-                      },
-                      child: const Text(
-                        "Edit profile data",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 19),
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(width: 15),
-                //#logout
-                Row(
-                  children: [
-                    Icon(
-                      Icons.logout_sharp,
-                      size: 24,
-                      color: Colors.black.withOpacity(0.60),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        SharedPreferenceData.removeLoggedIn();
-                        SharedPreferenceData.removeToken();
-                        SharedPreferenceData.removeId();
-                        Navigator.pushReplacement(
-                            context, SignIn.id as Route<Object?>);
-                      },
-                      child: const Text(
-                        "Logout",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 19),
-                      ),
-                    )
-                  ],
-                )
-              ])),
-            ],
-          ),
+      PopupMenuButton(offset: const Offset(0, 40), elevation: 2, iconSize: 22, itemBuilder: (BuildContext context) => [
+      PopupMenuItem<int>(
+        onTap: (){
+          Get.to(const EditData());
+        },
+        value: 1,
+        child: Row(
+          children: const <Widget>[
+            Icon(Icons.edit,size: 17,color: Colors.black,),
+            SizedBox(width: 5), // Optional spacing between icon and text
+            Text('Data',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.bold),),
+          ],
+        ),
+      ),
+      PopupMenuItem<int>(
+        onTap: (){
+          Get.to(const EditPhoto());
+        },
+        value: 2,
+        child: Row(
+          children: const <Widget>[
+            Icon(Icons.photo_camera,size: 17,color: Colors.black,),
+            SizedBox(width: 5), // Optional spacing between icon and text
+            Text('Photo',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.bold),),
+          ],
+        ),
+      ),
+      PopupMenuItem<int>(
+        onTap: (){
+          // log out
+        },
+        value: 3,
+        child: Row(
+          children: const <Widget>[
+            Icon(Icons.logout,size: 17,color: Colors.black,),
+            SizedBox(width: 5), // Optional spacing between icon and text
+            Text('Log out',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.bold),),
+          ],
+        ),
+      ),
+    ],)
         ],
       ),
       body: GetBuilder<ProfileController>(
