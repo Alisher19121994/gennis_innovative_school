@@ -179,7 +179,7 @@ class _UsersListState extends State<UsersList> {
                           child: ListView.builder(
                             itemCount: controller.listOfStudents.length,
                             itemBuilder:(BuildContext context,int index){
-                              Students students = controller.listOfStudents[index];
+                              StudentsData students = controller.listOfStudents[index];
                               return listOfUsers(students,controller);
                             },
                           ),

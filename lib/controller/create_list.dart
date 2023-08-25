@@ -1,52 +1,49 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:gennis_innovative_school/logService/log_service.dart';
 import 'package:gennis_innovative_school/networkService/network_service.dart';
+import 'package:gennis_innovative_school/pages/mainSceen/pages/createList/model/attendanceUser/attendance.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/model/users.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import '../pages/mainSceen/pages/createList/model/attendanceUser/attendance.dart';
-import '../pages/mainSceen/pages/createList/model/user_data.dart';
-
 class CreateController extends GetxController {
   final Connectivity connectivity = Connectivity();
-  var isLoading = false;
+  int value = 0;
   int index = 0;
+  var isLoading = false;
+  var isSelected = false;
   List<int> listOfDay = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
   List<String> listOfMonth = ['1','2','3','4','5','6','7','8','9','10','11','12'];
-  int? selectedDay;
-  String? selectedMonth;
-  List<Students> listOfStudents = [];
-  List<Students> listCreatedStudents = [];
-  Students students = Students();
-  Attendance attendance = Attendance();
+  List<StudentsData> listOfStudents = [];
   UserList userList = UserList();
+  Attendance attendance = Attendance();
 
   void apiCreateListOfStudents(int id) async {
     isLoading = true;
     update();
     var response = await NetworkService.fetchUsersData(NetworkService.API_group_profile, id);
-    listOfStudents = response?.data?.students as List<Students>;
+    listOfStudents = response?.data?.students as List<StudentsData>;
     update();
     isLoading = false;
     update();
   }
 
-  void apiPostOfStudentsAttendance(UserList userAttendance) async {
+  void apiPostOfStudentsAttendance(Attendance userLists) async {
     isLoading = true;
     update();
-    var response = await NetworkService.postUsersAttendance(NetworkService.API_make_attendance, userAttendance,students);
+    var response = await NetworkService.postAllUser(NetworkService.API_make_attendance,userLists);
     if (response != null) {
-      //LogService.warning(response);
-      print("postUsersAttendance: $response");
-    } else{
+      if (kDebugMode) {
+        print('userLists.groupId: ${attendance.groupId}');
+        print("CreateController: $response");
+      }
       isLoading = false;
       update();
     }}
-
 
   void toggleStudentSelection(bool? selected,int indexes) {
   if(selected == true){
@@ -67,27 +64,5 @@ class CreateController extends GetxController {
     });
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    connectivity.onConnectivityChanged.listen(updateConnectionStatus);
-  }
-  void updateConnectionStatus(ConnectivityResult connectivityResult) {
-    if (connectivityResult == ConnectivityResult.none) {
-      Get.rawSnackbar(
-          messageText: const Text('PLEASE CONNECT TO THE INTERNET', style: TextStyle(color: Colors.black, fontSize: 14)),
-          isDismissible: false,
-          duration: const Duration(days: 1),
-          backgroundColor: Colors.red[400]!,
-          icon : const Icon(Icons.wifi_off, color: Colors.white, size: 35,),
-          margin: EdgeInsets.zero,
-          snackStyle: SnackStyle.GROUNDED
-      );
-    } else {
-      if (Get.isSnackbarOpen) {
-        Get.closeCurrentSnackbar();
-      }
-    }
-  }
 }
 

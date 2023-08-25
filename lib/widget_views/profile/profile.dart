@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../controller/profile_page.dart';
 /*
@@ -24,9 +25,15 @@ Widget topBarDetails(ProfileController profileController){
             child: Column(
               children: [
                 //#photo changes
-                CircleAvatar(
-                    radius: 50,
-                    backgroundImage: NetworkImage(profileController.userProfile.user?.photoProfile ?? '')
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius:BorderRadius.circular(50),
+                  ),
+                  child:CachedNetworkImage(
+                    imageUrl: "",
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  ),
                 ),
 
                 const SizedBox(

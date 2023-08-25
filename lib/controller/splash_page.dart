@@ -20,7 +20,7 @@ class SplashController extends GetxController {
     isLoading = true;
     update();
     var response = await NetworkService.getNewAccessToken();
-    print('Controller response token in Splash: $response');
+    print('getNewAccessToken Controller response in Splash: $response');
 
     if (response != null) {
       dynamic decodedResponse = jsonDecode(response);

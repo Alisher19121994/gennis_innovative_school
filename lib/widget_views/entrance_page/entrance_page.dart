@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-
-import '../../pages/entrancePage/model/groups_data.dart';
+import '../../pages/entrancePage/model/group_info.dart';
 import '../../pages/mainSceen/main.dart';
 import '../../projectImages/projectImages.dart';
 
-Widget listOfGroup(BuildContext context,Groups groups) {
+Widget listOfGroup(BuildContext context,GroupsInfo groups) {
   return ListTile(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (_)=>  MainPage(setId: groups.id?? 0)));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_)=>  MainPage(setId: groups.id?? 0)));
       },
       title: Card(
         elevation: 0,
@@ -32,7 +31,7 @@ Widget listOfGroup(BuildContext context,Groups groups) {
                   width: double.infinity,
                   height: 30,
                   child: Text(
-                    groups.typeOfCourse??"",
+                    groups.teacherName??"",
                     style: const TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ),

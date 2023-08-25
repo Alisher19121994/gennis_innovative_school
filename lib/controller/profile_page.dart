@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import '../network/sharedPreferenceData/shared_preference_data.dart';
 import '../pages/profilePage/model/user_profile.dart';
 
 class ProfileController extends GetxController {
@@ -18,6 +19,7 @@ class ProfileController extends GetxController {
   late String lastName;
   late String dateOfBirth;
   late String phoneNumber;
+  var image = SharedPreferenceData.getImageURL();
 
   void getProfileDate()async{
     isLoading = true;
@@ -26,27 +28,5 @@ class ProfileController extends GetxController {
     userProfile = response.user as UserProfile;
     isLoading = false;
     update();
-  }
-  @override
-  void onInit() {
-    super.onInit();
-    _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
-  }
-  void _updateConnectionStatus(ConnectivityResult connectivityResult) {
-    if (connectivityResult == ConnectivityResult.none) {
-      Get.rawSnackbar(
-          messageText: const Text('PLEASE CONNECT TO THE INTERNET', style: TextStyle(color: Colors.black, fontSize: 14)),
-          isDismissible: false,
-          duration: const Duration(days: 1),
-          backgroundColor: Colors.red[400]!,
-          icon : const Icon(Icons.wifi_off, color: Colors.white, size: 35,),
-          margin: EdgeInsets.zero,
-          snackStyle: SnackStyle.GROUNDED
-      );
-    } else {
-      if (Get.isSnackbarOpen) {
-        Get.closeCurrentSnackbar();
-      }
-    }
   }
 }

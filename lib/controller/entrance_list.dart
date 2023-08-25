@@ -1,21 +1,24 @@
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/networkService/network_service.dart';
 import 'package:get/get.dart';
-import '../pages/entrancePage/model/groups_data.dart';
+import '../pages/entrancePage/model/group_info.dart';
+import '../pages/profilePage/model/user_profile.dart';
 
 class EntranceController extends GetxController {
   final Connectivity _connectivity = Connectivity();
   var isLoading = false;
-  List<Groups> listOfGroups = [];
-  GroupOfData groupOfData = GroupOfData();
+  List<GroupsInfo> listOfGroups = [];
+  GroupInfo groupOfData = GroupInfo();
+  UserProfile userProfile = UserProfile();
+
 
   void apiEntranceOfGroups() async {
     isLoading = true;
     update();
     var response = await NetworkService.fetchGroupData(NetworkService.API_my_groups);
     listOfGroups = response.groups!;
+    print(listOfGroups);
     update();
     isLoading = false;
     update();

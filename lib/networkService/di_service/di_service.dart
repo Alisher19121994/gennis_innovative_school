@@ -11,10 +11,10 @@ class DIService {
   static Future<void> init() async {
     Get.lazyPut<SplashController>(() => SplashController(), fenix: true);
     Get.lazyPut<ProfileController>(() => ProfileController(), fenix: true);
-    Get.put<EntranceController>(EntranceController(),permanent:true);
     Get.lazyPut<EntranceController>(() => EntranceController(), fenix: true);
     Get.lazyPut<UserListController>(() => UserListController(), fenix: true);
     Get.lazyPut<CreateController>(() => CreateController(), fenix: true);
     Get.lazyPut<PointListController>(() => PointListController(), fenix: true);
+    Get.put(EntranceController(),permanent: true);
   }
 }

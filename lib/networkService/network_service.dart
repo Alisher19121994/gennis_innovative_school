@@ -1,36 +1,49 @@
 import 'dart:convert';
-import 'package:chucker_flutter/chucker_flutter.dart';
-import 'package:gennis_innovative_school/logService/log_service.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:gennis_innovative_school/pages/mainSceen/pages/createList/model/attendanceUser/attendance.dart';
 import 'package:http/http.dart' as http;
-import 'package:instabug_http_client/instabug_http_client.dart';
 import '../network/sharedPreferenceData/shared_preference_data.dart';
-import '../pages/entrancePage/model/groups_data.dart';
-import '../pages/mainSceen/pages/createList/model/attendanceUser/attendance.dart';
+import '../pages/entrancePage/model/group_info.dart';
 import '../pages/mainSceen/pages/usersList/model/users.dart';
 import '../pages/profilePage/model/user_profile.dart';
 import '../pages/registration/model/sign_in.dart';
 
 class NetworkService {
 
-  static String baseUrlAddress = 'http://192.168.1.113:5000';
-  static final client = InstabugHttpClient();
-  static final _chuckerHttpClient = ChuckerHttpClient(http.Client());
-
+  //static String baseUrlAddress = 'http://192.168.1.28:5002';
+  static String baseUrlAddress = 'https://gennis.uz';
+  static Dio _dio = Dio();
   /* Http Api */
   static String API_group_profile = 'api/group_profile';
   static String API_my_groups = 'api/my_groups';
   static String API_profile = 'api/profile';
   static String API_make_attendance = 'api/make_attendance';
+  static String API_make_attendanceNEW = '/api/make_attendance';
 
   /* HTTP request get New Access Token */
+
+  static Future<dynamic> refreshAccessToken(String refreshToken)async {
+    var refreshToken = await SharedPreferenceData.getRefreshToken();
+      _dio = Dio(BaseOptions(headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'authorization': 'Bearer $refreshToken',
+      }));
+    final response = await _dio.post('$baseUrlAddress/api/refresh');
+    if (response.statusCode == 200) {
+      return response.data;
+    }
+  }
+
   static Future<dynamic> getNewAccessToken() async {
     var refreshToken = await SharedPreferenceData.getRefreshToken();
+
     final url = Uri.parse('$baseUrlAddress/api/refresh');
     final headers = {
       'Content-Type': 'application/json',
       'authorization': 'Bearer $refreshToken'
     };
-    final response = await client.post(url, headers: headers);
+    final response = await http.post(url, headers: headers);
     if (response.statusCode == 200) {
       return response.body;
     }
@@ -38,7 +51,7 @@ class NetworkService {
 
   /* HTTP request  */
   static Future<String?> loginUser(LogIn logIn) async {
-    final response = await client.post(
+    final response = await http.post(
       Uri.parse('$baseUrlAddress/api/login'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
@@ -56,158 +69,117 @@ class NetworkService {
   static Future<UserList?> fetchUsersData(String api, int id) async {
     var token = await SharedPreferenceData.getToken();
     final response =
-        await client.get(Uri.parse('$baseUrlAddress/$api/$id'), headers: {
+        await http.get(Uri.parse('$baseUrlAddress/$api/$id'),
+            headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
     });
     final Map<String, dynamic> body = jsonDecode(response.body.toString());
     final UserList userList = UserList.fromJson(body);
+    SharedPreferenceData.setGroupId(userList);
     return userList;
   }
 
-  static Future<GroupOfData> fetchGroupData(String api) async {
+  static Future<GroupInfo> fetchGroupData(String api) async {
     String? token = await SharedPreferenceData.getToken();
     String id = await SharedPreferenceData.getId();
-    final response = await client.get(Uri.parse('$baseUrlAddress/$api/$id'),
+    var response = await http.get(Uri.parse('$baseUrlAddress/$api/$id'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token'
         });
-    final Map<String, dynamic> body = jsonDecode(response.body);
-    final GroupOfData groupOfData = GroupOfData.fromJson(body);
+    final GroupInfo groupOfData = GroupInfo.fromJson(jsonDecode(response.body));
     return groupOfData;
   }
 
   static Future<UserProfile> fetchProfileData(String api) async {
     String? token = await SharedPreferenceData.getToken();
     String id = await SharedPreferenceData.getId();
-    final response = await client.get(Uri.parse('$baseUrlAddress/$api/$id'),
+
+    final response = await http.get(Uri.parse('$baseUrlAddress/$api/$id'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token'
         });
     final Map<String, dynamic> body = jsonDecode(response.body);
     final UserProfile userProfile = UserProfile.fromJson(body);
+    SharedPreferenceData.setImageURL(userProfile.user!.photoProfile!);
     return userProfile;
   }
 
-  static Future<String?> postUsersAttendance(String api, UserList userList, Students students) async {
+  static Future<String?> postUsersAttendances(String api, UserList userList) async {
+
     String? token = await SharedPreferenceData.getToken();
-      var studentList =  {
-      'age': 0,
-      'attended': "",
-      'comment': "",
-      "date": {"day": 27, "month": "09"},
-      "id": 3,
-      'img': "",
-      'money': 0,
-      'moneyType': "",
-      'name': "",
-      'phone': "",
-      'photoProfile':"",
-      "reason": "",
-      'reg_date':"",
-      'role': "",
-      "scores": {},
-      'surname': "",
-      'typeChecked':"",
-      'username': "",
-    };
-      var requestBody = {
-        'groupId': 1,
-        'student': studentList,
-      };
-    var response = await _chuckerHttpClient.post(Uri.parse('$baseUrlAddress/$api'),
+    _dio = Dio(BaseOptions(headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer $token',
+    }));
+   var response = await _dio.post('$baseUrlAddress/$api', data: jsonEncode(userList.toJson()),);
+    print('headers: ${response.headers}');
+    print('.requestOptions.data: ${response.requestOptions.data}');
+    print('.requestOptions.method: ${response.requestOptions.method}');
+    print('extra: ${response.extra}');
+
+    if (kDebugMode) {
+      print("NetworkService: $response");
+    }
+
+    if (response.statusCode == 200) {
+      return response.data;
+    }
+    return null;
+  }
+
+  static Future<String?> postAllUser(String api, Attendance attendance) async {
+    String? token = await SharedPreferenceData.getToken();
+    Map<String,dynamic> studentList = {};
+       studentList.addAll({
+         'age': attendance.student?.age,
+         'attended':attendance.student?.attended,
+         'comment':attendance.student?.comment,
+         "date": {"day": attendance.student?.date?.day, "month": attendance.student?.date?.month.toString()},
+         "id": attendance.student?.id,
+         'img': attendance.student?.img,
+         'money': attendance.student?.money,
+         'moneyType': attendance.student?.moneyType,
+         'name': attendance.student?.name,
+         'phone': attendance.student?.phone,
+         'photoProfile':attendance.student?.photoProfile,
+         "reason": attendance.student?.reason,
+         'reg_date':attendance.student?.regDate,
+         'role': attendance.student?.role,
+         "scores": {},
+         'surname': attendance.student?.surname,
+         'typeChecked':attendance.student?.typeChecked,
+         'username': attendance.student?.username,
+       });
+    Map<String,dynamic> requestBody={};
+    requestBody.addAll({
+      'groupId':attendance.groupId,
+      'student': studentList,
+    });
+    print(requestBody);
+    print("userList.groupID in service: ${attendance.groupId}");
+    var response = await http.post(Uri.parse('$baseUrlAddress/$api'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
         },
-        body: jsonEncode(requestBody)
-    );
+        body: jsonEncode(requestBody));
+    // // Print request details
+    // print('Request: ${response.request}');
+    // print('Request method: ${response.request!.method}');
+    // print('Request URL: ${response.request!.url}');
+    // print('Request headers: ${response.request!.headers}');
+    //
+    // // Print response details
+    // print('Response status code: ${response.statusCode}');
+    // print('Response headers: ${response.headers}');
+    // print('Response body: ${response.body}');
     if (response.statusCode == 200) {
-    //  LogService.warning(response);
+      print(response);
       return response.body;
     }
     return null;
   }
-  // static Future<String?> postUsersAttendance(String api, Attendance userList ) async {
-  //   String? token = await SharedPreferenceData.getToken();
-  //     var studentList =  {
-  //     'age': userList.student?.age,
-  //     'attended': userList.student?.attended,
-  //     'comment': userList.student?.comment,
-  //     "date": {"day": userList.student?.date?.day, "month": userList.student?.date?.month.toString()},
-  //     "id": userList.student?.id,
-  //     'img': userList.student?.img,
-  //     'money': userList.student?.money,
-  //     'moneyType': userList.student?.moneyType,
-  //     'name': userList.student?.name,
-  //     'phone': userList.student?.phone,
-  //     'photoProfile':userList.student?.photoProfile,
-  //     "reason": userList.student?.reason,
-  //     'reg_date':userList.student?.regDate,
-  //     'role': userList.student?.role,
-  //     "scores": {},
-  //     'surname': userList.student?.surname,
-  //     'typeChecked':userList.student?.typeChecked,
-  //     'username': userList.student?.username,
-  //   };
-  //     var requestBody = {
-  //       'groupId': userList.groupId,
-  //       'student': studentList,
-  //     };
-  //   var response = await _chuckerHttpClient.post(Uri.parse('$baseUrlAddress/$api'),
-  //       headers: {
-  //         'Content-Type': 'application/json; charset=UTF-8',
-  //         'Authorization': 'Bearer $token',
-  //       },
-  //       body: jsonEncode(requestBody)
-  //   );
-  //   if (response.statusCode == 200) {
-  //   //  LogService.warning(response);
-  //     return response.body;
-  //   }
-  //   return null;
-  // }
-  // static Future<String?> postUsersAttendance(String api, UserList userList, Students students) async {
-  //   String? token = await SharedPreferenceData.getToken();
-  //     var studentList =  {
-  //     'age': 18,
-  //     'attended': "true",
-  //     'comment': "",
-  //     "date": {"day": 30, "month": "11"},
-  //     "id": 2,
-  //     'img': "None",
-  //     'money': 3845,
-  //     'moneyType': "green",
-  //     'name': "Dawdwadawd",
-  //     'phone': "23123123",
-  //     'photoProfile':"None",
-  //     "reason": "",
-  //     'reg_date':"2023-05-05",
-  //     'role': "a43c33b82",
-  //     "scores": {},
-  //     'surname': "Sadawdawdsd",
-  //     'typeChecked':"no",
-  //     'username': "student",
-  //   };
-  //     var requestBody = {
-  //       'groupId': 1,
-  //       'student': studentList,
-  //     };
-  //   var response = await _chuckerHttpClient.post(Uri.parse('$baseUrlAddress/$api'),
-  //       headers: {
-  //         'Content-Type': 'application/json; charset=UTF-8',
-  //         'Authorization': 'Bearer $token',
-  //       },
-  //       body: jsonEncode(requestBody)
-  //   );
-  //   if (response.statusCode == 200) {
-  //   //  LogService.warning(response);
-  //     return response.body;
-  //   }
-  //   return null;
-  // }
-
-
 }

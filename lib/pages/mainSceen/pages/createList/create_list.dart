@@ -1,17 +1,22 @@
 
-import 'package:connectivity_plus/connectivity_plus.dart';
+import 'dart:math';
+
+import 'package:animated_toggle_switch/animated_toggle_switch.dart';
+import 'package:appinio_animated_toggle_tab/appinio_animated_toggle_tab.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/controller/create_list.dart';
+import 'package:gennis_innovative_school/logService/log_service.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/createList/model/attendanceUser/attendance.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/model/users.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/instance_manager.dart';
 import 'package:http/http.dart' as http;
-import '../../../../logService/log_service.dart';
-import 'model/user_data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../network/sharedPreferenceData/shared_preference_data.dart';
+import '../../../../networkService/network_service.dart';
 class CheckList extends StatefulWidget {
   final int ids;
 
@@ -23,32 +28,13 @@ class CheckList extends StatefulWidget {
 }
 
 class _CheckListState extends State<CheckList> {
-  int? selectedDay;
-  String? selectedMonth;
-  final Connectivity connectivity = Connectivity();
+   int? selectedDay;
+   String? selectedMonth;
 
   @override
   void initState() {
     super.initState();
-    connectivity.onConnectivityChanged.listen(updateConnectionStatus);
     Get.find<CreateController>().apiCreateListOfStudents(widget.ids);
-  }
-  void updateConnectionStatus(ConnectivityResult connectivityResult) {
-    if (connectivityResult == ConnectivityResult.none) {
-      Get.rawSnackbar(
-          messageText: const Text('PLEASE CONNECT TO THE INTERNET', style: TextStyle(color: Colors.black, fontSize: 14)),
-          isDismissible: false,
-          duration: const Duration(days: 1),
-          backgroundColor: Colors.red[400]!,
-          icon : const Icon(Icons.wifi_off, color: Colors.white, size: 35,),
-          margin: EdgeInsets.zero,
-          snackStyle: SnackStyle.GROUNDED
-      );
-    } else {
-      if (Get.isSnackbarOpen) {
-        Get.closeCurrentSnackbar();
-      }
-    }
   }
   @override
   Widget build(BuildContext context) {
@@ -63,61 +49,84 @@ class _CheckListState extends State<CheckList> {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  //#List of students
                   SizedBox(
-                    height: 495,
+                    height: 600,
                     width: double.infinity,
                     child: Stack(
                       children: [
                         ListView.builder(
                           itemCount: controller.listOfStudents.length,
                           itemBuilder: (context, index) {
+                            controller.index = index;
                             //return listOfUsers(controller.listOfStudents[index] as CreateController, index);
                             return Card(
                               borderOnForeground: true,
                               color: Colors.cyanAccent,
                               child: ListTile(
-                                leading: Text(
-                                  controller.listOfStudents[index].surname ??
-                                      '',
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                ),
-                                title: Text(
-                                  controller.listOfStudents[index].name ?? '',
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                ),
-                                trailing: Transform.scale(
-                                  scale: 1.8,
-                                  child: Checkbox(
-                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                    value: controller.listOfStudents[index].typeChecked == 'yes',
-                                    onChanged: (selected) {
-                                      setState(() {
-                                        if(selected == true){
-                                          setState(() {
-                                            controller.listOfStudents[index].typeChecked = 'yes';
-                                            print(controller.listOfStudents[index].typeChecked = 'yes');
-                                          });
-
-                                        }else{
-                                          setState(() {
-                                            controller.listOfStudents[index].typeChecked = 'no';
-                                            print(controller.listOfStudents[index].typeChecked = 'no');
-                                          });
-                                        }
-                                      });
+                                title: Text(controller.listOfStudents[controller.index].surname ?? '', style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),),
+                                subtitle: Text(controller.listOfStudents[controller.index].name ?? '', style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),),
+                                // trailing: Transform.scale(
+                                //   scale: 1.8,
+                                //   child: Checkbox(
+                                //     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                //     value: controller.listOfStudents[controller.index].typeChecked == 'yes',
+                                //     onChanged: (selected) {
+                                //       setState(() {
+                                //         if(selected == true){
+                                //           setState(() {
+                                //             controller.listOfStudents[controller.index].typeChecked = 'yes';
+                                //           });
+                                //
+                                //         }else{
+                                //           setState(() {
+                                //             controller.listOfStudents[controller.index].typeChecked = 'no';
+                                //           });
+                                //         }
+                                //       });
+                                //     },
+                                //     autofocus: false,
+                                //     checkColor: Colors.white,
+                                //     activeColor: Colors.blue,
+                                //     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(3.5),),),
+                                //     tristate: true,
+                                //   ),
+                                // ),//
+                                /******************/
+                                trailing: AnimatedToggleSwitch<int>.size(
+                                  current: 0,
+                                  values: const [0, 1],
+                                  iconOpacity: 0.2,
+                                  indicatorSize: const Size.fromWidth(50),
+                                  iconBuilder: (value, size) {
+                                    IconData data = Icons.clear;
+                                    if (value.isEven) data = Icons.check;
+                                    return Icon(data, size: 44,color: Colors.white,);
+                                  },
+                                  borderColor: controller.value.isEven ? const Color(0xFFF8220B) : const Color(0xFF06EA19),
+                                  iconAnimationType: AnimationType.onSelected,
+                                  colorBuilder: (isColor) => isColor.isEven ? const Color(0xFF06EA19) : const Color(0xFFF8220B),
+                                  onChanged: (selected) {
+                                    if(controller.isSelected == true){
+                                      if(selected == 0){
+                                        setState(() {
+                                          controller.listOfStudents[index].typeChecked = 'yes';
+                                          print('typeChecked YES: ---${controller.listOfStudents[index].typeChecked = 'yes'}');
+                                        });
+                                      }
+                                    } else if(controller.isSelected == false){
+                                      if(selected == 1){
+                                        setState(() {
+                                          controller.listOfStudents[index].typeChecked = 'no';
+                                          print('typeChecked NO: ---${controller.listOfStudents[index].typeChecked = 'no'}');
+                                        });
+                                      }
+                                    }
+                                    print('controller.value:----${controller.value}');
+                                    print('selected: -----${selected}');
                                     },
-                                    autofocus: false,
-                                    checkColor: Colors.white,
-                                    activeColor: Colors.blue,
-                                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(3.5),),),
-                                    tristate: true,
-                                  ),
+
+
                                 ),
                               ),
                             );
@@ -129,7 +138,8 @@ class _CheckListState extends State<CheckList> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 120,),
+                  const SizedBox(height: 20,),
+                  //#dates and submit button
                   SizedBox(
                     height: 90,
                     child: Card(
@@ -154,7 +164,6 @@ class _CheckListState extends State<CheckList> {
                                         onChanged: (int? newValue) {
                                           setState(() {
                                             selectedDay = newValue!;
-                                            print(selectedDay);
                                           });
                                         },
                                         items: controller.listOfDay.map<DropdownMenuItem<int>>((int value) {
@@ -166,12 +175,11 @@ class _CheckListState extends State<CheckList> {
                                         onChanged: (String? newValue) {
                                           setState(() {
                                             selectedMonth = newValue!;
-                                            print(selectedMonth);
                                           });
                                         },
                                         items: controller.listOfMonth.map<DropdownMenuItem<String>>((String value) {
                                           return DropdownMenuItem<String>(value: value, child: Text(value),);}).toList(),
-                                      )
+                                      ),
                                     ],
                                   )),
                               const SizedBox(width: 70,),
@@ -181,33 +189,34 @@ class _CheckListState extends State<CheckList> {
                                   height: 55,
                                   width: 120,
                                   child: ElevatedButton(
-                                    onPressed: () {
+                                    onPressed: () async{
+                                      Student students = Student();
                                       for (var studentsList in controller.listOfStudents) {
-                                        Students students = Students(
-                                            age: studentsList.age,
-                                            attended: studentsList.attended,
-                                            comment: studentsList.comment,
-                                            date: Date(day: selectedDay!, month: selectedMonth.toString()),
-                                            id: studentsList.id,
-                                            img: studentsList.img,
-                                            money: studentsList.money,
-                                            moneyType: studentsList.moneyType,
-                                            name: studentsList.name,
-                                            phone: studentsList.phone,
-                                            photoProfile: studentsList.photoProfile,
-                                            reason: studentsList.reason,
-                                            regDate: studentsList.regDate,
-                                            role: studentsList.role,
-                                            scores: Scores(),
-                                            surname: studentsList.surname,
-                                            typeChecked: studentsList.typeChecked,
-                                            username: studentsList.username);
-                                        List<Students> student = [students];
-                                        controller.userList = UserList(groupID: controller.userList.groupID, data: DataList(students: student));
-                                      //  controller.attendance = Attendance(groupId: controller.attendance.groupId,student: students);
+                                        students= Student(
+                                              age: 0,
+                                              attended: "",
+                                              comment: "",
+                                              date: Dateses(day: selectedDay, month: selectedMonth),
+                                              id: studentsList.id,
+                                              img: '',
+                                              money: 0,
+                                              moneyType: "",
+                                              name: '',
+                                              phone: '',
+                                              photoProfile:'',
+                                              reason:'',
+                                              regDate: '',
+                                              role: '',
+                                              scores: Scoreses(),
+                                              surname: '',
+                                              typeChecked: studentsList.typeChecked,
+                                              username: ''
+                                        );
                                       }
-                                      LogService.warning("${controller.userList}");
-                                      Get.find<CreateController>().apiPostOfStudentsAttendance(controller.userList);
+                                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                                      var id = prefs.getInt('ids');
+                                      Attendance attendance = Attendance(groupId: id,  student: students);
+                                      Get.find<CreateController>().apiPostOfStudentsAttendance(attendance);
                                     },
                                     style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlueAccent, side: const BorderSide(width: 2, color: Colors.white)),
                                     child: const Text("Submit", style: TextStyle(color: Colors.white, fontSize: 19, fontWeight: FontWeight.bold),
@@ -227,74 +236,4 @@ class _CheckListState extends State<CheckList> {
       ),
     );
   }
-
-/*
-  * import 'package:flutter/material.dart';
-import 'package:connectivity/connectivity.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  String _connectionStatus = 'Unknown';
-
-  @override
-  void initState() {
-    super.initState();
-    checkInternetConnection();
-  }
-
-  Future<void> checkInternetConnection() async {
-    ConnectivityResult result;
-    try {
-      result = await Connectivity().checkConnectivity();
-    } catch (e) {
-      print(e.toString());
-    }
-
-    if (mounted) {
-      setState(() {
-        switch (result) {
-          case ConnectivityResult.none:
-            _connectionStatus = 'No Internet';
-            break;
-          case ConnectivityResult.mobile:
-            _connectionStatus = 'Mobile Connection';
-            break;
-          case ConnectivityResult.wifi:
-            _connectionStatus = 'WiFi Connection';
-            break;
-          default:
-            _connectionStatus = 'Unknown';
-            break;
-        }
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Internet Connection'),
-        ),
-        body: Center(
-          child: Text(
-            'Connection Status: $_connectionStatus',
-            style: TextStyle(fontSize: 20),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-  * **/
 }

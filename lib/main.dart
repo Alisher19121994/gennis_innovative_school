@@ -1,5 +1,3 @@
-import 'package:chucker_flutter/chucker_flutter.dart';
-import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/pages/drawer/additionalList/additional_page.dart';
 import 'package:gennis_innovative_school/pages/drawer/contentList/content_page.dart';
@@ -25,9 +23,6 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'networkService/di_service/di_service.dart';
 
 void main()async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 15));
-  ChuckerFlutter.showOnRelease = true;
   await DIService.init();
   runApp(const MyApp());
 }
@@ -39,8 +34,25 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        navigatorObservers: [ChuckerFlutter.navigatorObserver],
       home: const SplashPage(),
+      // getPages: [
+      //   name: MainDrawer.id,
+      //   SignIn.id:(context) => const SignIn(),
+      //   EntrancePage.id:(context) => const EntrancePage(),
+      //   UsersList.id:(context) =>  const UsersList(ids: 0,),
+      //   AttendanceList.id:(context) => const AttendanceList(ids: 0,),
+      //   CheckList.id:(context) =>  const CheckList(ids: 0,),
+      //   EduPlanList.id:(context) => const EduPlanList(ids: 0,),
+      //   ProfilePage.id:(context) => const ProfilePage(),
+      //   MainPage.id:(context) => const MainPage(setId: 0,),
+      //   EditPhoto.id:(context) => const EditPhoto(),
+      //   AttendanceCheckOut.id:(context) => const AttendanceCheckOut(),
+      //   EditData.id:(context) => const EditData(),
+      //   PointList.id:(context) => const PointList(ids: 0,),
+      //   AdditonalPage.id:(context) => const AdditonalPage(),
+      //   ContentPage.id:(context) => const ContentPage(),
+      //   InformationPage.id:(context) => const InformationPage(),
+      // ],
       routes:{
         MainDrawer.id:(context) => const MainDrawer(),
         SignIn.id:(context) => const SignIn(),
