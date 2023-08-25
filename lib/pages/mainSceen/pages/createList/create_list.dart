@@ -94,7 +94,7 @@ class _CheckListState extends State<CheckList> {
                                 // ),//
                                 /******************/
                                 trailing: AnimatedToggleSwitch<int>.size(
-                                  current: 0,
+                                  current: controller.isSelected,
                                   values: const [0, 1],
                                   iconOpacity: 0.2,
                                   indicatorSize: const Size.fromWidth(50),
@@ -103,30 +103,24 @@ class _CheckListState extends State<CheckList> {
                                     if (value.isEven) data = Icons.check;
                                     return Icon(data, size: 44,color: Colors.white,);
                                   },
-                                  borderColor: controller.value.isEven ? const Color(0xFFF8220B) : const Color(0xFF06EA19),
+                                  borderColor: controller.isSelected.isEven ? const Color(0xFF06EA19) : const Color(0xFFF8220B),
                                   iconAnimationType: AnimationType.onSelected,
                                   colorBuilder: (isColor) => isColor.isEven ? const Color(0xFF06EA19) : const Color(0xFFF8220B),
-                                  onChanged: (selected) {
-                                    if(controller.isSelected == true){
-                                      if(selected == 0){
-                                        setState(() {
-                                          controller.listOfStudents[index].typeChecked = 'yes';
-                                          print('typeChecked YES: ---${controller.listOfStudents[index].typeChecked = 'yes'}');
-                                        });
-                                      }
-                                    } else if(controller.isSelected == false){
-                                      if(selected == 1){
-                                        setState(() {
-                                          controller.listOfStudents[index].typeChecked = 'no';
-                                          print('typeChecked NO: ---${controller.listOfStudents[index].typeChecked = 'no'}');
-                                        });
-                                      }
+                                  onChanged: (selected) => setState((){
+                                    controller.isSelected = selected;
+                                    switch (controller.isSelected) {
+                                      case 0: {
+                                              setState(() {
+                                                controller.listOfStudents[index].typeChecked = 'yes';
+                                              });}
+                                      break;
+                                      case 1: {
+                                          setState(() {
+                                            controller.listOfStudents[index].typeChecked = 'no';
+                                          });}
                                     }
-                                    print('controller.value:----${controller.value}');
-                                    print('selected: -----${selected}');
-                                    },
-
-
+                                    print(controller.isSelected);
+                                  }),
                                 ),
                               ),
                             );

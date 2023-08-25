@@ -12,10 +12,11 @@ import 'package:http/http.dart' as http;
 
 class CreateController extends GetxController {
   final Connectivity connectivity = Connectivity();
-  int value = 0;
+  int isSelected = 0;
+  bool isChosen = true;
+  //int value = 0;
   int index = 0;
   var isLoading = false;
-  var isSelected = false;
   List<int> listOfDay = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
   List<String> listOfMonth = ['1','2','3','4','5','6','7','8','9','10','11','12'];
   List<StudentsData> listOfStudents = [];
@@ -38,7 +39,6 @@ class CreateController extends GetxController {
     var response = await NetworkService.postAllUser(NetworkService.API_make_attendance,userLists);
     if (response != null) {
       if (kDebugMode) {
-        print('userLists.groupId: ${attendance.groupId}');
         print("CreateController: $response");
       }
       isLoading = false;
