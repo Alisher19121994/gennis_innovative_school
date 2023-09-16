@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/pages/registration/sign_in_page.dart';
+import 'package:gennis_innovative_school/projectImages/projectImages.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
@@ -22,6 +23,7 @@ class ProfilePage extends StatefulWidget {
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
+
 class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
@@ -32,232 +34,301 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.blue,
-        title: titleOfAppBar(),
-        actions: <Widget>[
-            PopupMenuButton(offset: const Offset(0, 40), elevation: 2, iconSize: 22, itemBuilder: (BuildContext context) => [
-              PopupMenuItem<int>(
-        onTap: (){
-          Get.to(const EditData());
-        },
-        value: 1,
-        child: Row(
-          children: const <Widget>[
-            Icon(Icons.edit,size: 17,color: Colors.black,),
-            SizedBox(width: 5), // Optional spacing between icon and text
-            Text('Data',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.bold),),
-          ],
-        ),
-      ),
-              PopupMenuItem<int>(
-        onTap: (){
-          Get.to(const EditPhoto());
-        },
-        value: 2,
-        child: Row(
-          children: const <Widget>[
-            Icon(Icons.photo_camera,size: 17,color: Colors.black,),
-            SizedBox(width: 5), // Optional spacing between icon and text
-            Text('Photo',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.bold),),
-          ],
-        ),
-      ),
-              PopupMenuItem<int>(
-        onTap: (){
-          // log out
-        },
-        value: 3,
-        child: Row(
-          children: const <Widget>[
-            Icon(Icons.logout,size: 17,color: Colors.black,),
-            SizedBox(width: 5), // Optional spacing between icon and text
-            Text('Log out',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.bold),),
-          ],
-        ),
-      ),
-    ],)
-        ],
-      ),
-      body: GetBuilder<ProfileController>(
-        init: ProfileController(),
-        builder: (controller){
-          return Column(
-            children: [
-              //#appBar items,photo,fullName
-              Container(
-                height: 300,
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(40),
-                      bottomLeft: Radius.circular(40),
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: Colors.blue,
+          title: titleOfAppBar(),
+          actions: <Widget>[
+            PopupMenuButton(
+              offset: const Offset(0, 40),
+              elevation: 2,
+              iconSize: 22,
+              itemBuilder: (BuildContext context) => [
+                PopupMenuItem<int>(
+                  value: 1,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (_)=>const EditData()));
+                    },
+                    child: Row(
+                      children: const <Widget>[
+                        Icon(
+                          Icons.edit,
+                          size: 17,
+                          color: Colors.black,
+                        ),
+                        SizedBox(width: 5),
+                        // Optional spacing between icon and text
+                        Text(
+                          'Edit profile',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
                     ),
-                    color: Colors.blue),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      //#Reset photo & fullName
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 50),
-                        child: Column(
-                          children: [
-                            //#photo changes
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius:BorderRadius.circular(50),
-                              ),
-                              height: 150,
-                              width: 150,
-                              child:CachedNetworkImage(
-                                imageUrl: controller.image.toString(),
-                                placeholder: (context, url) => const CircularProgressIndicator(),
-                                errorWidget: (context, url, error) => const Icon(Icons.error),
-                              ),
-                            ),
-
-                            const SizedBox(
-                              height: 13,
-                            ),
-                            //#name & lastName
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                  ),
+                ),
+                // PopupMenuItem<int>(
+                //   value: 2,
+                //   child: InkWell(
+                //     onTap: () {
+                //       Navigator.push(context, MaterialPageRoute(builder: (_)=>const EditPhoto()));
+                //     },
+                //     child: Row(
+                //       children: const <Widget>[
+                //         Icon(
+                //           Icons.photo_camera,
+                //           size: 17,
+                //           color: Colors.black,
+                //         ),
+                //         SizedBox(width: 5),
+                //         // Optional spacing between icon and text
+                //         Text(
+                //           'Photo',
+                //           style: TextStyle(
+                //               color: Colors.black,
+                //               fontSize: 17,
+                //               fontWeight: FontWeight.bold),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                PopupMenuItem<int>(
+                  value: 3,
+                  child: InkWell(
+                    onTap: (){
+                      Get.find<ProfileController>().logout();
+                      Navigator.push(context, MaterialPageRoute(builder: (_)=>const SignIn()));
+                    },
+                    child: Row(
+                      children: const <Widget>[
+                        Icon(Icons.logout, size: 17, color: Colors.black,),
+                        SizedBox(width: 5),
+                        // Optional spacing between icon and text
+                        Text('Log out', style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold),),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+        body: GetBuilder<ProfileController>(
+          init: ProfileController(),
+          builder: (controller) {
+            return Stack(
+              children: [
+                Column(
+                  children: [
+                    //#appBar items,photo,fullName
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 1),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          //#Reset photo & fullName
+                          Container(
+                            color: const Color(0xFF1DA1F2),
+                            padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 7),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text(
-                                  controller.userProfile.user?.info?.name?.value ?? "",
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 22),
+                                //#photo changes
+                                CircleAvatar(
+                                  radius: 60,
+                                  backgroundImage: NetworkImage('https://static.independent.co.uk/2023/07/05/11/SEI162890154.jpg?width=1200&height=900&fit=crop'),
                                 ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  controller.userProfile.user?.info?.surname?.value ?? "",
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 22),
+
+                                // Container(
+                                //   decoration: BoxDecoration(
+                                //     borderRadius: BorderRadius.circular(100),
+                                //     image:  DecorationImage(
+                                //       image: NetworkImage('https://static.independent.co.uk/2023/07/05/11/SEI162890154.jpg?width=1200&height=900&fit=crop'),
+                                //       fit: BoxFit.cover
+                                //     ),
+                                //     color: const Color(0xFFE1E8ED),
+                                //   ),
+                                //   height: 100,
+                                //   width: 100,
+                                //   // child: CachedNetworkImage(
+                                //   //   imageUrl: 'https://static.independent.co.uk/2023/07/05/11/SEI162890154.jpg?width=1200&height=900&fit=crop',
+                                //   //   //imageUrl: controller.userProfile.user?.photoProfile ?? '',
+                                //   //   placeholder: (context, url) =>
+                                //   //       const CircularProgressIndicator(),
+                                //   //   errorWidget: (context, url, error) =>
+                                //   //       const Icon(
+                                //   //     Icons.error,
+                                //   //     color: Colors.red,
+                                //   //   ),
+                                //   // ),
+                                // ),
+                                const SizedBox(height: 8,),
+                                ListTile(
+                                  title: Text(controller.userProfile.user?.typeRole ?? "",
+                                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20), overflow: TextOverflow.ellipsis,),
+                                  subtitle: ListTile(
+                                    title:Text(controller.userProfile.user?.info?.surname?.value ?? "", style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18), overflow: TextOverflow.ellipsis),
+                                    subtitle: Text(controller.userProfile.user?.info?.name?.value ?? "", style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18), overflow: TextOverflow.ellipsis,),
+                                  )
                                 ),
                               ],
                             ),
-                            const SizedBox(
-                              height: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+                    // topBarDetails(controller),
+                    //#teacher details
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 30),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                      "Username:",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.bold),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                               const SizedBox(width: 20,),
+                               Expanded(
+                                 child: Text(
+                                    controller.userProfile.user?.info?.username?.value ?? "",
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.normal),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                               ),
+                              ],
                             ),
-                            //#name of job
-                            Text(
-                              controller.userProfile.user?.typeRole ?? "",
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 22),
+                            const Divider(thickness: 1,),
+                            const SizedBox(height: 15,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                 const Text(
+                                      "Age:",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.bold),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(width: 20,),
+                               Expanded(
+                                 child: Text(
+                                    controller.userProfile.user?.info?.age?.value
+                                            .toString() ??
+                                        "",
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.normal),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                               ),
+                              ],
+                            ),
+                            const Divider(thickness: 1,),
+                            const SizedBox(height: 15,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                 const Text(
+                                      "Date of birth:",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.bold),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(width: 20,),
+                              Expanded(
+                                child: Text(
+                                    controller.userProfile.user?.info?.birthDate
+                                            ?.value ??
+                                        "",
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.normal),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                              ),
+                              ],
+                            ),
+                            const Divider(thickness: 1,),
+                            const SizedBox(height: 15,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                      "Phone number:",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.bold),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(width: 20,),
+                                Expanded(
+                                  child: Text(
+                                    controller.userProfile.user?.info?.phone
+                                            ?.value ??
+                                        "",
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.normal),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Divider(
+                              thickness: 1,
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
+                    )
+                    //  teacherDetails(controller)
+                  ],
                 ),
-              ),
-              // topBarDetails(controller),
-              //#teacher details
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(controller.userProfile.user?.info?.username?.name ?? "", style: TextStyle(color: Colors.black, fontSize: 19, fontWeight: FontWeight.bold),),
-                          Text(controller.userProfile.user?.info?.username?.value ?? "", style: const TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.normal),),
-                        ],
-                      ),
-                      const Divider(
-                        thickness: 1,
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(controller.userProfile.user?.info?.age?.name ?? "", style: TextStyle(color: Colors.black, fontSize: 19, fontWeight: FontWeight.bold),),
-                          Text(controller.userProfile.user?.info?.age?.value.toString() ?? "", style: const TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.normal),),
-                        ],
-                      ),
-                      const Divider(
-                        thickness: 1,
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            controller.userProfile.user?.info?.birthDate?.name ?? "",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 19,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            controller.userProfile.user?.info?.birthDate?.value ?? "",
-                            style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
-                                fontWeight: FontWeight.normal),
-                          ),
-                        ],
-                      ),
-                      const Divider(
-                        thickness: 1,
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                           Text(
-                            controller.userProfile.user?.info?.phone?.name ?? "",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 19,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            controller.userProfile.user?.info?.phone?.value ?? "",
-                            style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
-                                fontWeight: FontWeight.normal),
-                          ),
-                        ],
-                      ),
-                      const Divider(
-                        thickness: 1,
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            //  teacherDetails(controller)
-            ],
-          );
-        },
-      )
-    );
+                controller.isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : const SizedBox.shrink(),
+              ],
+            );
+          },
+        ));
   }
 }

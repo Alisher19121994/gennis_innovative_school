@@ -24,7 +24,7 @@ dependencies:
   dio: ^5.3.2
   cached_network_image: ^3.2.3
   appinio_animated_toggle_tab: ^1.0.2
-
+  date_time_picker: ^2.1.0
 
 
 dev_dependencies:

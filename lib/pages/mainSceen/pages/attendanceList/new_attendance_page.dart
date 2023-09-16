@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 class AttendanceCheckOut extends StatefulWidget {
   const AttendanceCheckOut({Key? key}) : super(key: key);
   static const String id = "attendanceCheckOut";
+
   @override
   State<AttendanceCheckOut> createState() => _AttendanceCheckOutState();
 }
 
 class _AttendanceCheckOutState extends State<AttendanceCheckOut> {
+  var isChecked = true;
 
-  var isChecked = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,23 +19,17 @@ class _AttendanceCheckOutState extends State<AttendanceCheckOut> {
         backgroundColor: const Color(0xFF00C2FF),
         title: Row(
           children: const [
-            Text("Date:",style: TextStyle(color: Colors.white,fontSize: 24,fontWeight: FontWeight.bold),),
+            Text("Date:", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),),
             SizedBox(width: 10,),
-            Text("07.05.2023 ",style: TextStyle(color: Colors.white,fontSize: 24,fontWeight: FontWeight.bold),)
+            Text("07.05.2023 ", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),)
           ],
         ),
       ),
       body: ListView(
         children: [
-          _listOfStudents(price: "350.000",name: 'Alisher',lastname: 'Daminov'),
-          _listOfStudents(price: "350.000",name: 'Alisher',lastname: 'Daminov'),
-          _listOfStudents(price: "350.000",name: 'Alisher',lastname: 'Daminov'),
-          _listOfStudents(price: "350.000",name: 'Alisher',lastname: 'Daminov'),
-          _listOfStudents(price: "350.000",name: 'Alisher',lastname: 'Daminov'),
-          _listOfStudents(price: "350.000",name: 'Alisher',lastname: 'Daminov'),
-          _listOfStudents(price: "350.000",name: 'Alisher',lastname: 'Daminov'),
-          _listOfStudents(price: "350.000",name: 'Alisher',lastname: 'Daminov'),
-          _listOfStudents(price: "350.000",name: 'Alisher',lastname: 'Daminov'),
+          _listOfStudents(),
+          _listOfStudents(),
+          _listOfStudents()
         ],
       ),
       // body: ListView.builder(
@@ -46,38 +40,43 @@ class _AttendanceCheckOutState extends State<AttendanceCheckOut> {
       // ),
     );
   }
-  Widget _listOfStudents({price,name,lastname}){
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        //#students list and checked out
-        Container(
-          margin: const EdgeInsets.all(10),
-          padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-            height: 50,
-            width: double.infinity,
-            color: Colors.white,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children:  [
-                    Row(
-             children: const [
-               Text("Alisher",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 18),) ,
-               SizedBox(width: 10,),
-               Text("Daminov",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 18),) ,
-             ],
-           ),
-                isChecked ?  const Center(
-                  child: Icon(Icons.check,color: Colors.green,size: 40,),)
-                    : const Center(
-                              child: Icon(Icons.close_sharp,color: Colors.red,size: 40,),
-                ),
-              ],
+
+  Widget _listOfStudents() {
+    return Container(
+      height: 75,
+      width: double.infinity,
+      color: Colors.white,
+      child: Center(
+          child: Card(color: Colors.cyanAccent,
+           child: Center(child: ListTile(
+            title: const Text("Alisher", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),overflow: TextOverflow.ellipsis),
+            subtitle:const Text("Daminov", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),overflow: TextOverflow.ellipsis,),
+            trailing: SizedBox(
+              height: 41,
+              width: 41,
+              child: isChecked
+                  ? Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(2.0), color: Colors.green),
+                    child: const Icon(
+                        Icons.check,
+                        color: Colors.white,
+                        size: 40,
+                      ),
+                  )
+                  :  Container(
+                    decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(2.0), color: Colors.red),
+                      child: const Icon(
+                        Icons.close_sharp,
+                        color: Colors.white,
+                        size: 40,
+                      ),
+                    ),
             ),
+          ),
         ),
-        const Divider(thickness: 1,)
-      ],
+      )),
     );
-}
+  }
 }

@@ -48,21 +48,21 @@ class _EntrancePageState extends State<EntrancePage> {
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (_)=>const ProfilePage()));
                 },
-                child: Container(
-                  height: 60,
-                  width: 60,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50)
-                  ),
-                  child: CachedNetworkImage(
-                    imageUrl: image.toString(),
-                    placeholder: (context, url) => const CircularProgressIndicator(),
-                    errorWidget: (context, url, error) => const Icon(Icons.error),
-                  ),
+                child:CircleAvatar(
+                  radius: 25,
+                  backgroundImage: NetworkImage('https://static.independent.co.uk/2023/07/05/11/SEI162890154.jpg?width=1200&height=900&fit=crop'),
                 ),
-                // child: CircleAvatar(
-                //   radius: 24,
-                //   //backgroundImage: NetworkImage(userProfile.user?.photoProfile ?? ''),
+                // child: Container(
+                //   height: 60,
+                //   width: 60,
+                //   decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.circular(50)
+                //   ),
+                //   child: CachedNetworkImage(
+                //     imageUrl: userProfile.user?.photoProfile??'',
+                //     placeholder: (context, url) => const CircularProgressIndicator(),
+                //     errorWidget: (context, url, error) => const Icon(Icons.error,color: Colors.red,),
+                //   ),
                 // ),
               )
             ],

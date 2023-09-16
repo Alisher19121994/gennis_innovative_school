@@ -1,7 +1,9 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/networkService/network_service.dart';
 import 'package:get/get.dart';
+import '../network/sharedPreferenceData/shared_preference_data.dart';
 import '../pages/entrancePage/model/group_info.dart';
 import '../pages/profilePage/model/user_profile.dart';
 
@@ -13,16 +15,24 @@ class EntranceController extends GetxController {
   UserProfile userProfile = UserProfile();
 
 
+
   void apiEntranceOfGroups() async {
+    String id = await SharedPreferenceData.getId();
     isLoading = true;
     update();
     var response = await NetworkService.fetchGroupData(NetworkService.API_my_groups);
+    //var response = await NetworkService.GET('${NetworkService.API_my_groups}/$id',NetworkService.paramsEmpty());
+    if (kDebugMode) {
+      print(response);
+    }
+    //listOfGroups = NetworkService.groupInfoParam(response!);
     listOfGroups = response.groups!;
-    print(listOfGroups);
-    update();
     isLoading = false;
     update();
   }
+
+
+
 
   @override
   void onInit() {

@@ -1,4 +1,5 @@
 import 'package:gennis_innovative_school/pages/mainSceen/pages/createList/model/attendanceUser/attendance.dart';
+import 'package:gennis_innovative_school/pages/profilePage/model/user_profile.dart';
 import 'package:gennis_innovative_school/pages/registration/model/login_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -89,9 +90,9 @@ import '../../pages/mainSceen/pages/usersList/model/users.dart';
      return preferences.getString('month') ?? '';
    }
 
-   static Future<bool> setImageURL(String image)async{
+   static Future<bool> setImageURL(UserProfile image)async{
      final SharedPreferences preferences = await SharedPreferences.getInstance();
-     return preferences.setString('image',image);
+     return preferences.setString('image',image.user!.photoProfile!);
    }
 
    //getId

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/attendanceList/attendance_list.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/createList/create_list.dart';
-import 'package:gennis_innovative_school/pages/mainSceen/pages/eduPlanList/edu_plan_list.dart';
-import 'package:gennis_innovative_school/pages/mainSceen/pages/pointList/point_list.dart';
+import 'package:gennis_innovative_school/pages/mainSceen/pages/eduPlan/POSTlessonPlan/post_lesson_plan.dart';
+import 'package:gennis_innovative_school/pages/mainSceen/pages/eduPlan/edu_plan.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/users_list.dart';
 import '../../projectImages/projectImages.dart';
-import '../drawer/main_drawer_page.dart';
 
 class MainPage extends StatefulWidget {
 
@@ -26,15 +25,12 @@ class _MainPageState extends State<MainPage> {
     const UsersList(ids: 0),
     const AttendanceList(ids: 0,),
     const CheckList(ids: 0,),
-    const PointList(ids: 0,),
-    const EduPlanList(ids: 0,)
   ];
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
-      drawer: const MainDrawer(),
       appBar: AppBar(
         backgroundColor: const Color(0xFF00C2FF),
         elevation: 0,
@@ -66,8 +62,7 @@ class _MainPageState extends State<MainPage> {
           BottomNavigationBarItem(icon: Icon(Icons.list_alt), label: 'List'),
           BottomNavigationBarItem(icon: Icon(Icons.pending_actions_outlined), label: 'Attendance'),
           BottomNavigationBarItem(icon: Icon(Icons.checklist_rtl_outlined), label: 'Check'),
-          BottomNavigationBarItem(icon: Icon(Icons.app_registration_sharp), label: 'Point'),
-          BottomNavigationBarItem(icon: Icon(Icons.cast_for_education_outlined), label: 'Edu-action'),
+          BottomNavigationBarItem(icon: Icon(Icons.cast_for_education_outlined), label: 'Lesson plan'),
         ],
       ),
     );
@@ -81,9 +76,7 @@ class _MainPageState extends State<MainPage> {
       case 2:
         return CheckList(ids: widget.setId);
       case 3:
-        return PointList(ids: widget.setId);
-      case 4:
-        return EduPlanList(ids: widget.setId);
+        return const PostLessonPlanPage();
       default:
         return Container();
     }

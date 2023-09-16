@@ -34,41 +34,33 @@ Widget listOfUsers(StudentsData students,UserListController userListController) 
         color: Colors.cyanAccent,
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 6),
-          height: 60,
-         // width: MediaQuery.of(context as BuildContext).size.width,
+          height: 72,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children:  [
             Container(
-            height: 50,
-            width: 50,
+            height: 70,
+            width: 70,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50)
+                borderRadius: BorderRadius.circular(50),
+              color: Colors.cyan
             ),
             child: CachedNetworkImage(
-              imageUrl: userListController.image.toString(),
+              imageUrl: '',
               placeholder: (context, url) => const CircularProgressIndicator(),
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
           ),
-              const SizedBox(
-                width: 4,
-              ),
+              const SizedBox(width: 13,),
               //#surname
-              Text(
-                students.surname??"",
-                style: const TextStyle(
+              Text(students.surname??"", style: const TextStyle(
                     color: Colors.black,
                     fontSize: 19,
                     fontWeight: FontWeight.bold),
               ),
-              const SizedBox(
-                width: 7,
-              ),
+              const SizedBox(width: 7,),
               //#name
-              Text(
-                students.name??"",
-                style: const TextStyle(
+              Text(students.name??"", style: const TextStyle(
                     color: Colors.black,
                     fontSize: 19,
                     fontWeight: FontWeight.bold),

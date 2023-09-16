@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:gennis_innovative_school/constants/routes/routes.dart';
 import 'package:gennis_innovative_school/network/network.dart';
 import 'package:gennis_innovative_school/network/sharedPreferenceData/shared_preference_data.dart';
 import 'package:gennis_innovative_school/networkService/network_service.dart';
@@ -166,6 +167,7 @@ class _SignInState extends State<SignIn> {
                                     if(isValid) {
                                       LogIn logIn = LogIn(username: username, password: password);
                                       Navigator.of(context).push(MaterialPageRoute(builder: (_)=> const EntrancePage()));
+                                      //Navigator.pushNamed(context, ConstantRoutes.ENTRANCEPAGE);
 
                                       NetworkService.loginUser(logIn).then((response) => {
                                         if(response != null){

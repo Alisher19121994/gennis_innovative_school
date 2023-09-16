@@ -6,14 +6,10 @@ import 'package:get/get.dart';
 import '../network/sharedPreferenceData/shared_preference_data.dart';
 
 class UserListController extends GetxController {
-  final Connectivity _connectivity = Connectivity();
   var isLoading = false;
   var isPaid = false;
   List<StudentsData> listOfStudents = [];
-  //StudentsData students = StudentsData();
   UserList userList = UserList();
-  var image = SharedPreferenceData.getImageURL();
-
 
   void apiUserListOfStudents(int id) async {
     isLoading = true;

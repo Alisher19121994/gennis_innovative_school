@@ -229,6 +229,7 @@ class StudentsData {
   String? regDate;
   String? role;
   Scores? scores;
+  //List<Scores>? scores;
   String? surname;
   String? typeChecked;
   String? username;
@@ -271,8 +272,13 @@ class StudentsData {
     reason = json['reason'];
     regDate = json['reg_date'];
     role = json['role'];
-    scores =
-    json['scores'] != null ? Scores.fromJson(json['scores']) : null;
+    scores = json['scores'] != null ? Scores.fromJson(json['scores']) : null;
+   //  if (json['scores'] != null) {
+   //    scores = <Scores>[];
+   //    json['scores'].forEach((v) {
+   //      scores!.add(new Scores.fromJson(v));
+   //    });
+   //  }
     surname = json['surname'];
     typeChecked = json['typeChecked'];
     username = json['username'];
@@ -297,6 +303,9 @@ class StudentsData {
     data['reason'] = this.reason;
     data['reg_date'] = this.regDate;
     data['role'] = this.role;
+    // if (this.scores != null) {
+    //   data['scores'] = this.scores!.map((v) => v.toJson()).toList();
+    // }
     if (this.scores != null) {
       data['scores'] = this.scores!.toJson();
     }
@@ -383,12 +392,51 @@ class Date {
   // }
 }
 class Scores {
-  Scores();
+  int? activeStars;
+  int? id;
+  String? name;
+  List<StarsList>? stars;
+  String? title;
 
-  Scores.fromJson(Map<String, dynamic> json) {}
+  Scores({this.activeStars, this.id, this.name, this.title});
+
+  Scores.fromJson(Map<String, dynamic> json) {
+    activeStars = json['activeStars'];
+    id = json['id'];
+    name = json['name'];
+    if (json['stars'] != null) {
+      stars = <StarsList>[];
+      json['stars'].forEach((v) {
+        stars!.add(new StarsList.fromJson(v));
+      });
+    }
+    title = json['title'];
+  }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['activeStars'] = this.activeStars;
+    data['id'] = this.id;
+    data['name'] = this.name;
+    if (this.stars != null) {
+      data['stars'] = this.stars!.map((v) => v.toJson()).toList();
+    }
+    data['title'] = this.title;
+    return data;
+  }
+}
+class StarsList {
+  String? active;
+
+  StarsList({this.active});
+
+  StarsList.fromJson(Map<String, dynamic> json) {
+    active = json['active'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['active'] = this.active;
     return data;
   }
 }

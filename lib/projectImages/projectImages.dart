@@ -8,4 +8,5 @@ class ProjectImages {
   static const String ali = 'assets/images/image.jpg';
   static const String book = 'assets/images/book.jpg';
   static const String cloud = 'assets/images/cloud.png';
+  static const String placeholder = 'assets/images/placeholder.png';
 }

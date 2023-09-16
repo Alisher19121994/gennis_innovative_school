@@ -6,7 +6,7 @@ import '../../projectImages/projectImages.dart';
 Widget listOfGroup(BuildContext context,GroupsInfo groups) {
   return ListTile(
       onTap: () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_)=>  MainPage(setId: groups.id?? 0)));
+        Navigator.of(context).push(MaterialPageRoute(builder: (_)=>  MainPage(setId: groups.id?? 0)));
       },
       title: Card(
         elevation: 0,
