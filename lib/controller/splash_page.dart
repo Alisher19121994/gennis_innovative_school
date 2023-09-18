@@ -16,7 +16,7 @@ class SplashController extends GetxController {
   final Connectivity _connectivity = Connectivity();
   var isLoading = false;
 
-  void hasLoggedInByUser() async {
+  Future<void> hasLoggedInByUser() async {
     isLoading = true;
     update();
     var response = await NetworkService.getNewAccessToken();

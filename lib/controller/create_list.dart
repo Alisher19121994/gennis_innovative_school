@@ -15,6 +15,8 @@ import '../globalModel/create_new_users.dart';
 
 class CreateController extends GetxController {
   final Connectivity connectivity = Connectivity();
+  int? selectedDay;
+  String? selectedMonth;
   int isSelected = 1;
   int rating = 0;
   var isLoading = false;
@@ -25,7 +27,7 @@ class CreateController extends GetxController {
   Attendance attendance = Attendance();
   List<NewScores>? scoreOfList=[];
 
-  void apiCreateListOfStudents(int id) async {
+  Future<void> apiCreateListOfStudents(int id) async {
     isLoading = true;
     update();
     var response = await NetworkService.fetchUsersData(NetworkService.API_group_profile, id);
@@ -35,7 +37,7 @@ class CreateController extends GetxController {
     update();
   }
 
-  void apiPostOfStudentsAttendance(CreateAttendances userLists) async {
+  Future<void> apiPostOfStudentsAttendance(CreateAttendances userLists) async {
     isLoading = true;
     update();
     var response = await NetworkService.postAllUsers(NetworkService.API_make_attendance,userLists);
@@ -49,7 +51,7 @@ class CreateController extends GetxController {
     }
   }
 
-  void toggleStudentSelection(bool? selected,int indexes) {
+  Future<void> toggleStudentSelection(bool? selected,int indexes) async {
   if(selected == true){
     listOfStudents[indexes].typeChecked = 'yes';
     print(listOfStudents[indexes].typeChecked = 'yes');
@@ -61,7 +63,7 @@ class CreateController extends GetxController {
   }
   }
 
-  void finish(BuildContext context) {
+  Future<void> finish(BuildContext context) async {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       //Navigator.popAndPushNamed(context, AttendanceList(ids: 0,).toString());
      // Navigator.push(context, MaterialPageRoute(builder: (_)=> const AttendanceList(ids: 0)));

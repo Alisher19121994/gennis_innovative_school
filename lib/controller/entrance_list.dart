@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -5,30 +6,31 @@ import 'package:gennis_innovative_school/networkService/network_service.dart';
 import 'package:get/get.dart';
 import '../network/sharedPreferenceData/shared_preference_data.dart';
 import '../pages/entrancePage/model/group_info.dart';
-import '../pages/profilePage/model/user_profile.dart';
 
 class EntranceController extends GetxController {
   final Connectivity _connectivity = Connectivity();
   var isLoading = false;
   List<GroupsInfo> listOfGroups = [];
   GroupInfo groupOfData = GroupInfo();
-  UserProfile userProfile = UserProfile();
 
 
 
-  void apiEntranceOfGroups() async {
+  Future<void> apiEntranceOfGroups() async {
     String id = await SharedPreferenceData.getId();
     isLoading = true;
     update();
     var response = await NetworkService.fetchGroupData(NetworkService.API_my_groups);
-    //var response = await NetworkService.GET('${NetworkService.API_my_groups}/$id',NetworkService.paramsEmpty());
+    // var response = await NetworkService.GET('${NetworkService.API_my_groups}/$id',NetworkService.paramsEmpty());
     if (kDebugMode) {
       print(response);
     }
-    //listOfGroups = NetworkService.groupInfoParam(response!);
+    // Map <String, dynamic>? body =  jsonDecode(response.toString());
+    // final GroupInfo groupOfData = GroupInfo.fromJson(body!);
+    // listOfGroups = groupOfData.groups!;
     listOfGroups = response.groups!;
     isLoading = false;
     update();
+
   }
 
 

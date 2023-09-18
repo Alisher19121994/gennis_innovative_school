@@ -6,9 +6,9 @@ import 'entrance_page.dart';
 * */
 Widget isDataReceived(EntranceController controller){
   return ListView.builder(
-      itemCount: controller.listOfGroups.length,
+      itemCount: controller.listOfGroups?.length,
       itemBuilder: (context, index) {
-        return listOfGroup(context, controller.listOfGroups[index]);
+        return listOfGroup(context, controller.listOfGroups![index]);
       },
     );
 }

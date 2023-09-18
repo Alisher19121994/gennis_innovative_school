@@ -4,23 +4,21 @@ import '../../pages/mainSceen/main.dart';
 import '../../projectImages/projectImages.dart';
 
 Widget listOfGroup(BuildContext context,GroupsInfo groups) {
-  return ListTile(
+  return InkWell(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (_)=>  MainPage(setId: groups.id?? 0)));
+        Navigator.of(context).push(MaterialPageRoute(builder: (_)=>  MainPage(setId: groups.id ?? 0)));
       },
-      title: Card(
-        elevation: 0,
-        //#image
-        child: Container(
+      child:Container(
+        margin: const EdgeInsets.all(4.0),
           height: 240,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(18),
+              borderRadius: BorderRadius.circular(8.0),
               image:  const DecorationImage(
                   image: AssetImage(ProjectImages.book), fit: BoxFit.cover)),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.circular(8.0),
                 color: Colors.black26
             ),
             child: Column(
@@ -32,6 +30,14 @@ Widget listOfGroup(BuildContext context,GroupsInfo groups) {
                   height: 30,
                   child: Text(
                     groups.teacherName??"",
+                    style: const TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  height: 30,
+                  child: Text(
+                    groups.teacherSurname??"",
                     style: const TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ),
@@ -54,6 +60,6 @@ Widget listOfGroup(BuildContext context,GroupsInfo groups) {
             ),
           ),
         ),
-      )
+
   );
 }

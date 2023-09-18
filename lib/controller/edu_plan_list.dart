@@ -22,7 +22,7 @@ class EduLessonPlanController extends GetxController {
   late String mainLesson;
   late String homework;
 
-  void apiPostOfLessonPlan(CreateAttendances userLists) async {
+  Future<void> apiPostOfLessonPlan(CreateAttendances userLists) async {
     isLoading = true;
     update();
     var response = await NetworkService.postAllUsers(NetworkService.API_make_attendance,userLists);
@@ -35,7 +35,7 @@ class EduLessonPlanController extends GetxController {
     }
   }
 
-  void finish(BuildContext context) {
+  Future<void> finish(BuildContext context) async {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       //Navigator.popAndPushNamed(context, AttendanceList(ids: 0,).toString());
       // Navigator.push(context, MaterialPageRoute(builder: (_)=> const AttendanceList(ids: 0)));

@@ -72,32 +72,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                 ),
-                // PopupMenuItem<int>(
-                //   value: 2,
-                //   child: InkWell(
-                //     onTap: () {
-                //       Navigator.push(context, MaterialPageRoute(builder: (_)=>const EditPhoto()));
-                //     },
-                //     child: Row(
-                //       children: const <Widget>[
-                //         Icon(
-                //           Icons.photo_camera,
-                //           size: 17,
-                //           color: Colors.black,
-                //         ),
-                //         SizedBox(width: 5),
-                //         // Optional spacing between icon and text
-                //         Text(
-                //           'Photo',
-                //           style: TextStyle(
-                //               color: Colors.black,
-                //               fontSize: 17,
-                //               fontWeight: FontWeight.bold),
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
                 PopupMenuItem<int>(
                   value: 3,
                   child: InkWell(

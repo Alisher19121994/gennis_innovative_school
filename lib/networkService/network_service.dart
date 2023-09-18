@@ -1,8 +1,12 @@
 import 'dart:convert';
+//import 'dart:html';
 import 'package:dio/dio.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/createList/model/attendanceUser/attendance.dart';
+import 'package:get/get_utils/src/platform/platform.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import '../globalModel/create_new_users.dart';
 import '../network/sharedPreferenceData/shared_preference_data.dart';
 import '../pages/entrancePage/model/group_info.dart';
@@ -116,7 +120,8 @@ class NetworkService {
   }
 
   static GroupInfo groupInfoParam(String response) {
-    Map<String, dynamic> body =  jsonDecode(response);
+    //Map<String, dynamic> body =  jsonDecode(response);
+    dynamic body =  jsonDecode(response);
     final GroupInfo groupOfData = GroupInfo.fromJson(body);
     return groupOfData;
   }
@@ -128,7 +133,21 @@ class NetworkService {
   //   return data;
   // }
 
-
+  static Future<http.StreamedResponse > createImage(XFile? data) async {
+    String? token = await SharedPreferenceData.getToken();
+    http.MultipartRequest request = http.MultipartRequest('POST', Uri.parse('$baseUrlAddress/api/'));
+    request.headers.addAll(<String, String> {
+     'Content-Type': 'application/json; charset=UTF-8',
+     'Authorization': 'Bearer $token',
+   });
+    if(GetPlatform.isMobile && data != null){
+      File file = File(data.path);
+      request.files.add(http.MultipartFile('image',file.readAsBytes().asStream(),file.lengthSync(),
+      filename: file.path.split('/').last));
+    }
+    http.StreamedResponse response = await request.send();
+    return response;
+  }
 
 
   static Future<GroupInfo> fetchGroupData(String api) async {
