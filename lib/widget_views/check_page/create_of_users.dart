@@ -7,7 +7,7 @@ import '../../controller/create_list.dart';
 import '../../globalModel/create_new_users.dart';
 import '../../pages/mainSceen/pages/createList/model/attendanceUser/attendance.dart';
 
-// Widget listOfUsers(BuildContext context,CreateController controller) {
+// Widget listOfStudentsCheck(BuildContext context,CreateController controller) {
 //   return SingleChildScrollView(
 //     child: Column(
 //       mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -7,6 +7,18 @@ import '../../pages/mainSceen/pages/usersList/model/users.dart';
 
  class SharedPreferenceData {
 
+   static Future<String?> getSuccess() async {
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+     String? refreshToken = prefs.getString('success');
+     return refreshToken;
+   }
+
+   static Future<void> setSuccess(bool success) async {
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+     await prefs.setBool('success', success);
+   }
+
+
    static Future<String?> getRefreshToken() async {
    SharedPreferences prefs = await SharedPreferences.getInstance();
    String? refreshToken = prefs.getString('refresh_token');
@@ -32,7 +44,7 @@ import '../../pages/mainSceen/pages/usersList/model/users.dart';
    // setToken
    static Future<bool> setToken(LoginResponse loginResponse)async{
     final SharedPreferences preferences = await SharedPreferences.getInstance();
-     return preferences.setString('token',loginResponse.data!.accessToken!);
+     return preferences.setString('token',loginResponse.data?.accessToken?? '');
    }
 
   // getToken

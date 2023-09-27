@@ -1,13 +1,13 @@
 class GroupOfData {
-  List<Groups>? groups;
+  List<Groupsofs>? groups;
 
   GroupOfData({this.groups});
 
   GroupOfData.fromJson(Map<String, dynamic> json) {
     if (json['groups'] != null) {
-      groups = <Groups>[];
+      groups = <Groupsofs>[];
       json['groups'].forEach((v) {
-        groups!.add( Groups.fromJson(v));
+        groups!.add( Groupsofs.fromJson(v));
       });
     }
   }
@@ -21,7 +21,7 @@ class GroupOfData {
   }
 }
 
-class Groups {
+class Groupsofs {
   int? id;
   String? name;
   int? payment;
@@ -33,7 +33,7 @@ class Groups {
   String? teacherSurname;
   String? typeOfCourse;
 
-  Groups(
+  Groupsofs(
       {this.id,
         this.name,
         this.payment,
@@ -45,7 +45,7 @@ class Groups {
         this.teacherSurname,
         this.typeOfCourse});
 
-  Groups.fromJson(Map<String, dynamic> json) {
+  Groupsofs.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     payment = json['payment'];

@@ -10,24 +10,14 @@ import 'package:image_picker/image_picker.dart';
 import '../pages/profilePage/model/user_profile.dart';
 
 class ProfileController extends GetxController {
-  XFile? _pickedFile;
-  XFile? get pickedFile => _pickedFile;
-  final _picker = ImagePicker();
-
   var isLoading = false;
   UserProfile userProfile = UserProfile();
-  final formKey = GlobalKey<FormState>();
-  late String userName;
-  late String name;
-  late String lastName;
-  late String dateOfBirth;
-  late String phoneNumber;
+
 
   Future<void> getProfileDate() async {
     isLoading = true;
     update();
-    UserProfile response =
-        await NetworkService.fetchProfileData(NetworkService.API_profile);
+    UserProfile response = await NetworkService.fetchProfileData();
     userProfile = response;
     if (kDebugMode) {
       print(response);
@@ -41,26 +31,15 @@ class ProfileController extends GetxController {
     update();
     var response = await NetworkService.logoutOfUser();
     if (response != null) {
+      if (kDebugMode) {
+        print('logoutOfUser: $response');
+      }
       isLoading = false;
       update();
     }
   }
 
-  Future<void> pickImage() async {
-     _pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    update();
-  }
 
-  Future<void> upLoad()async{
-    isLoading = true;
-    update();
-    http.StreamedResponse response = await NetworkService.createImage(_pickedFile);
-    if (response.statusCode == 200) {
-      Map map = jsonDecode(await response.stream.bytesToString());
-      String message = map['message'];
-      print("message: -> $message");
-      isLoading = false;
-      update();
-    }
-  }
+
+
 }

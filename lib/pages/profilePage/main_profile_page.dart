@@ -47,45 +47,55 @@ class _ProfilePageState extends State<ProfilePage> {
               iconSize: 22,
               itemBuilder: (BuildContext context) => [
                 PopupMenuItem<int>(
-                  value: 1,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_)=>const EditData()));
-                    },
-                    child: Row(
-                      children: const <Widget>[
-                        Icon(
-                          Icons.edit,
-                          size: 17,
-                          color: Colors.black,
-                        ),
-                        SizedBox(width: 5),
-                        // Optional spacing between icon and text
-                        Text(
-                          'Edit profile',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                  height: 50,
+                  value: 3,
+                  child: SizedBox(
+                    height: 50,
+                    width: double.infinity,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (_)=>const EditData()));
+                      },
+                      child: Row(
+                        children: const <Widget>[
+                          Icon(
+                            Icons.edit,
+                            size: 17,
+                            color: Colors.black,
+                          ),
+                          SizedBox(width: 5),
+                          // Optional spacing between icon and text
+                          Text(
+                            'Edit profile',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
                 PopupMenuItem<int>(
+                  height: 50,
                   value: 3,
-                  child: InkWell(
-                    onTap: (){
-                      Get.find<ProfileController>().logout();
-                      Navigator.push(context, MaterialPageRoute(builder: (_)=>const SignIn()));
-                    },
-                    child: Row(
-                      children: const <Widget>[
-                        Icon(Icons.logout, size: 17, color: Colors.black,),
-                        SizedBox(width: 5),
-                        // Optional spacing between icon and text
-                        Text('Log out', style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold),),
-                      ],
+                  child: SizedBox(
+                    height: 50,
+                    width: double.infinity,
+                    child: InkWell(
+                      onTap: (){
+                        Get.find<ProfileController>().logout();
+                        Navigator.push(context, MaterialPageRoute(builder: (_)=>const SignIn()));
+                      },
+                      child: Row(
+                        children: const <Widget>[
+                          Icon(Icons.logout, size: 17, color: Colors.black,),
+                          SizedBox(width: 5),
+                          // Optional spacing between icon and text
+                          Text('Log out', style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold),),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -168,8 +178,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     //#teacher details
                     Expanded(
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 30),
+                        padding: const EdgeInsets.all(14.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -188,13 +197,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                const SizedBox(width: 20,),
                                Expanded(
                                  child: Text(
-                                    controller.userProfile.user?.info?.username?.value ?? "",
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.normal),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
+                                      controller.userProfile.user?.info?.username?.value ?? "",
+                                      style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.normal),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                ),
                               ],
                             ),
@@ -213,18 +222,18 @@ class _ProfilePageState extends State<ProfilePage> {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 const SizedBox(width: 20,),
-                               Expanded(
-                                 child: Text(
-                                    controller.userProfile.user?.info?.age?.value
-                                            .toString() ??
-                                        "",
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.normal),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                               ),
+                                Expanded(
+                                  child: Text(
+                                      controller.userProfile.user?.info?.age?.value
+                                              .toString() ??
+                                          "",
+                                      style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.normal),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                ),
                               ],
                             ),
                             const Divider(thickness: 1,),
@@ -242,18 +251,18 @@ class _ProfilePageState extends State<ProfilePage> {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 const SizedBox(width: 20,),
-                              Expanded(
-                                child: Text(
-                                    controller.userProfile.user?.info?.birthDate
-                                            ?.value ??
-                                        "",
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.normal),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                              ),
+                             Expanded(
+                               child: Text(
+                                      controller.userProfile.user?.info?.birthDate
+                                              ?.value ??
+                                          "",
+                                      style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.normal),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                             ),
                               ],
                             ),
                             const Divider(thickness: 1,),
@@ -271,18 +280,18 @@ class _ProfilePageState extends State<ProfilePage> {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 const SizedBox(width: 20,),
-                                Expanded(
-                                  child: Text(
-                                    controller.userProfile.user?.info?.phone
-                                            ?.value ??
-                                        "",
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.normal),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
+                               Expanded(
+                                 child: Text(
+                                      controller.userProfile.user?.info?.phone
+                                              ?.value ??
+                                          "",
+                                      style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.normal),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                               ),
                               ],
                             ),
                             const Divider(

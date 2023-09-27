@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +18,7 @@ class EntranceController extends GetxController {
     String id = await SharedPreferenceData.getId();
     isLoading = true;
     update();
-    var response = await NetworkService.fetchGroupData(NetworkService.API_my_groups);
+    var response = await NetworkService.fetchGroup();
     // var response = await NetworkService.GET('${NetworkService.API_my_groups}/$id',NetworkService.paramsEmpty());
     if (kDebugMode) {
       print(response);
@@ -27,13 +26,14 @@ class EntranceController extends GetxController {
     // Map <String, dynamic>? body =  jsonDecode(response.toString());
     // final GroupInfo groupOfData = GroupInfo.fromJson(body!);
     // listOfGroups = groupOfData.groups!;
-    listOfGroups = response.groups!;
+    //listOfGroups.add(response.groups?.reversed as GroupsInfo);
+    listOfGroups = response.groups ?? [];
+    //listOfGroups = NetworkService.parseStudents(response.groups.toString());
+    update();
     isLoading = false;
     update();
 
   }
-
-
 
 
   @override

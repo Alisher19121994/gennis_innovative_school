@@ -11,7 +11,7 @@ class UserListController extends GetxController {
   Future<void> apiUserListOfStudents(int id) async {
     isLoading = true;
     update();
-    var response = await NetworkService.fetchUsersData(NetworkService.API_group_profile,id);
+    var response = await NetworkService.fetchUsersData(id);
     listOfStudents = response?.data!.students as List<StudentsData>;
     isLoading = false;
     update();
@@ -20,7 +20,7 @@ class UserListController extends GetxController {
   Future<void> apiUserListOfTeacher(int id) async {
     isLoading = true;
     update();
-    UserList? response = await NetworkService.fetchUsersData(NetworkService.API_group_profile,id);
+    UserList? response = await NetworkService.fetchUsersData(id);
     userList = response!;
     isLoading = false;
     update();

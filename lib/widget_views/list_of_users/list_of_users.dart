@@ -32,7 +32,7 @@ Widget listOfUsers(StudentsData students,UserListController userListController) 
       ],
     ),
       child: Card(
-        color: Colors.cyanAccent,
+        color: const Color(0xFFE1E8ED),
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 6),
           height: 72,
@@ -44,7 +44,7 @@ Widget listOfUsers(StudentsData students,UserListController userListController) 
             width: 70,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
-              color: const Color(0xFFE1E8ED)
+              color:  Color(0xFFE1E8ED)
             ),
             child: CachedNetworkImage(
               imageUrl: '',

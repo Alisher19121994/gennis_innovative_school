@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/attendanceList/attendance_list.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/createList/create_list.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/eduPlan/POSTlessonPlan/post_lesson_plan.dart';
-import 'package:gennis_innovative_school/pages/mainSceen/pages/eduPlan/edu_plan.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/users_list.dart';
 import '../../projectImages/projectImages.dart';
 
@@ -19,13 +18,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
 
-  var page = true;
   int currentPage = 0;
-  List pages = [
-    const UsersList(ids: 0),
-    const AttendanceList(ids: 0,),
-    const CheckList(ids: 0,),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +53,8 @@ class _MainPageState extends State<MainPage> {
         unselectedItemColor: const Color(0xFF54185D),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.list_alt), label: 'List'),
-          BottomNavigationBarItem(icon: Icon(Icons.pending_actions_outlined), label: 'Attendance'),
-          BottomNavigationBarItem(icon: Icon(Icons.checklist_rtl_outlined), label: 'Check'),
+          BottomNavigationBarItem(icon: Icon(Icons.pending_actions_outlined), label: 'Activity'),
+         // BottomNavigationBarItem(icon: Icon(Icons.checklist_rtl_outlined), label: 'Check'),
           BottomNavigationBarItem(icon: Icon(Icons.cast_for_education_outlined), label: 'Lesson plan'),
         ],
       ),
@@ -73,12 +66,12 @@ class _MainPageState extends State<MainPage> {
         return UsersList(ids: widget.setId);
       case 1:
         return AttendanceList(ids: widget.setId);
+      // case 2:
+      //   return CheckList(ids: widget.setId);
       case 2:
-        return CheckList(ids: widget.setId);
-      case 3:
-        return const PostLessonPlanPage();
+        return PostLessonPlanPage(postLessonPlanId: widget.setId);
       default:
-        return Container();
+        return AttendanceList(ids: widget.setId,);
     }
   }
 }

@@ -1,3 +1,39 @@
+// class GroupInfo {
+//    List<GroupsInfo>? groups;
+//
+//   GroupInfo({this.groups});
+//
+//   // factory GroupInfo.fromJson(Map<String, dynamic> data) {
+//   //   final groupsData = data['groups'] as List<dynamic>?;
+//   //   return GroupInfo(
+//   //       groups: groupsData != null
+//   //           ? groupsData.map((reviewData) =>
+//   //           GroupsInfo.fromJson(reviewData as Map<String, dynamic>))
+//   //           .toList()
+//   //           : <GroupsInfo>[]
+//   //   );
+//   // }
+//   // Map<String, dynamic> toJson() {
+//   //   return {
+//   //     'groups': groups.map((value) => value.toJson()).toList(),
+//   //   };
+//   // }
+//
+//   GroupInfo.fromJson(Map<String, dynamic> json) {
+//     if (json['groups'] != null) {
+//       groups = <GroupsInfo>[];
+//       for (var v in (json['groups'] as List)) {
+//         groups!.add( GroupsInfo.fromJson(v));
+//       }
+//     }
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['groups'] = groups!.map((v) => v.toJson()).toList();
+//     return data;
+//   }
+// }
 class GroupInfo {
   List<GroupsInfo>? groups;
 
@@ -18,7 +54,6 @@ class GroupInfo {
     return data;
   }
 }
-
 class GroupsInfo {
   int? id;
   String? name;
@@ -26,7 +61,7 @@ class GroupsInfo {
   int? studentsLength;
   String? subject;
   int? teacherID;
-  Null? teacherImg;
+  String? teacherImg;
   String? teacherName;
   String? teacherSurname;
   String? typeOfCourse;
@@ -57,17 +92,17 @@ class GroupsInfo {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['payment'] = this.payment;
-    data['studentsLength'] = this.studentsLength;
-    data['subject'] = this.subject;
-    data['teacherID'] = this.teacherID;
-    data['teacherImg'] = this.teacherImg;
-    data['teacherName'] = this.teacherName;
-    data['teacherSurname'] = this.teacherSurname;
-    data['typeOfCourse'] = this.typeOfCourse;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['payment'] = payment;
+    data['studentsLength'] = studentsLength;
+    data['subject'] = subject;
+    data['teacherID'] = teacherID;
+    data['teacherImg'] = teacherImg;
+    data['teacherName'] = teacherName;
+    data['teacherSurname'] = teacherSurname;
+    data['typeOfCourse'] = typeOfCourse;
     return data;
   }
 }

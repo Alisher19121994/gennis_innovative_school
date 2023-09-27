@@ -25,6 +25,7 @@ class _CheckListState extends State<CheckList> {
   }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -33,16 +34,13 @@ class _CheckListState extends State<CheckList> {
           child: GetBuilder<CreateController>(
             init: CreateController(),
             builder: (controller) {
-             // return listOfUsers(controller);
+              //return listOfStudentsCheck(controller);
               return SingleChildScrollView(
                 child: Column(
-                  //crossAxisAlignment: CrossAxisAlignment.center,
-                  //mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     //#List of students
                     SizedBox(
-                      //height: 550,
-                      height: MediaQuery.of(context).size.height / 3,
+                      height: MediaQuery.of(context).size.height / 1.4,
                       width: double.infinity,
                       child: Stack(
                         children: [
@@ -51,12 +49,13 @@ class _CheckListState extends State<CheckList> {
                             itemBuilder: (context, index) {
                               return Card(
                                 borderOnForeground: true,
-                                color: Colors.cyanAccent,
+                                color:  const Color(0xFFE1E8ED),
                                 child: ListTile(
                                     title: Text(controller.listOfStudents[index].surname ?? '',
                                       style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 22),),
                                     subtitle: Text(controller.listOfStudents[index].name ?? '',
                                         style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 22),   overflow: TextOverflow.ellipsis),
+
                                     trailing:AnimatedToggleSwitch<int>.size(
                                       current: controller.isSelected,
                                       values: const [0, 1],
@@ -85,7 +84,13 @@ class _CheckListState extends State<CheckList> {
                                             });
                                           }
                                           break;
-                                          default: { }
+                                          default: {
+                                            setState(() {
+                                              controller.listOfStudents[index].typeChecked = 'default: no';
+                                              print(controller.listOfStudents[index].typeChecked = 'default: no');
+
+                                            });
+                                          }
                                         }
                                         print(controller.isSelected);
                                       }),
@@ -330,7 +335,7 @@ class _CheckListState extends State<CheckList> {
                     SizedBox(
                       height: 80,
                       child: Card(
-                        color: Colors.cyanAccent,
+                        color:  const Color(0xFFE1E8ED),
                         child: Container(
                             height: 80,
                             padding: const EdgeInsets.symmetric(horizontal: 10),

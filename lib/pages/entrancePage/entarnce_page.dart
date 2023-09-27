@@ -1,15 +1,17 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/controller/entrance_list.dart';
-import 'package:gennis_innovative_school/pages/mainSceen/pages/createList/model/attendanceUser/attendance.dart';
-import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/model/users.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import '../../network/sharedPreferenceData/shared_preference_data.dart';
+import 'package:material_dialogs/dialogs.dart';
+import 'package:material_dialogs/shared/types.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import '../../projectImages/projectImages.dart';
 import '../../widget_views/entrance_page/entrance_page.dart';
 import '../profilePage/main_profile_page.dart';
-import '../profilePage/model/user_profile.dart';
+
 
 class EntrancePage extends StatefulWidget {
   const EntrancePage({Key? key}) : super(key: key);
@@ -20,12 +22,55 @@ class EntrancePage extends StatefulWidget {
 }
 
 class _EntrancePageState extends State<EntrancePage> {
-  UserProfile userProfile = UserProfile();
-  var image = SharedPreferenceData.getImageURL();
+
+  late ConnectivityResult result;
+  late StreamSubscription subscription;
+  var isConnected = false;
+
+  checkInternet()async{
+    result = await Connectivity().checkConnectivity();
+    if(result != ConnectivityResult.none){
+      isConnected = true;
+    }else{
+      isConnected = false;
+      dialogBuilder(context);
+    }
+  }
+
+  Future<void> dialogBuilder(BuildContext context) {
+    return  Dialogs.materialDialog(
+      barrierDismissible: false,
+        color: Colors.red,
+        msg: 'Please, connect to the internet',
+        title: 'ERROR',
+        customViewPosition: CustomViewPosition.BEFORE_ACTION,
+        context: context,
+        actions: [
+          IconsButton(
+            onPressed: () {
+              checkInternet();
+              Navigator.of(context).pop();
+            },
+            text: 'Try again',
+            iconData: Icons.done,
+            color: Colors.blue,
+            textStyle: const TextStyle(color: Colors.white),
+            iconColor: Colors.white,
+          ),
+        ]);
+  }
+
+  startStreaming()async{
+    subscription = Connectivity().onConnectivityChanged.listen((event) {
+      checkInternet();
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    startStreaming();
+    //Get.find<EntranceController>().startStreaming(context);
     Get.find<EntranceController>().apiEntranceOfGroups();
   }
 
