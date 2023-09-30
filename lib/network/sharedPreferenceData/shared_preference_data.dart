@@ -7,6 +7,28 @@ import '../../pages/mainSceen/pages/usersList/model/users.dart';
 
  class SharedPreferenceData {
 
+   static Future<String?> getSuccesses() async {
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+     String? refreshToken = prefs.getString('getSuccesses');
+     return refreshToken;
+   }
+
+   static Future<void> setSuccesses(String success) async {
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+     await prefs.setString('getSuccesses', success);
+   }
+
+   static Future<String?> getError() async {
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+     String? refreshToken = prefs.getString('errors');
+     return refreshToken;
+   }
+
+   static Future<void> setError(String success) async {
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+     await prefs.setString('errors', success);
+   }
+
    static Future<String?> getSuccess() async {
      SharedPreferences prefs = await SharedPreferences.getInstance();
      String? refreshToken = prefs.getString('success');

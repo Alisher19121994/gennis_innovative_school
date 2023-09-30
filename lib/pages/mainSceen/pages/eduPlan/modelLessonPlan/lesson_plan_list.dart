@@ -22,15 +22,15 @@ class LessonPlanList {
 }
 
 class PlanList {
-  Null? assessment;
+  String? assessment;
   String? date;
   Group? group;
   int? id;
-  Null? lastHomework;
-  Null? lessonName;
-  Null? lessonTarget;
-  Null? mainLesson;
-  Null? newHomework;
+  String? lastHomework;
+  String? lessonName;
+  String? lessonTarget;
+  String? mainLesson;
+  String? newHomework;
   Group? teacher;
 
   PlanList(

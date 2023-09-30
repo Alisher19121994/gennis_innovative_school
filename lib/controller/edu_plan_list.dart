@@ -1,20 +1,12 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:gennis_innovative_school/logService/log_service.dart';
 import 'package:gennis_innovative_school/networkService/network_service.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/attendanceList/attendance_list.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/attendanceList/model/lesson_plan_post.dart';
-import 'package:gennis_innovative_school/pages/mainSceen/pages/createList/model/attendanceUser/attendance.dart';
-import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/model/users.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-
-import '../globalModel/create_new_users.dart';
 import '../pages/mainSceen/pages/attendanceList/model/lesson_plan_get.dart';
-import '../pages/mainSceen/pages/eduPlan/modelLessonPlan/lesson_plan_list.dart';
 
 class EduLessonPlanController extends GetxController {
   var isLoading = false;

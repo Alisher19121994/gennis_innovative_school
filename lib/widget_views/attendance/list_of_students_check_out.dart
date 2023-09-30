@@ -8,14 +8,14 @@ Widget listOfStudentsCheckOut(BuildContext context,) {
       Navigator.push(context, MaterialPageRoute(builder: (_)=>const AttendanceCheckOut()));
     },
     child: Container(
-      height: 400,
-      width: 200,
+      height: 150,
+      width: 150,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color:  const Color(0xFFE1E8ED),
       ),
-      margin: const EdgeInsets.symmetric(horizontal: 3.0,vertical: 3.0),
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
+       margin: const EdgeInsets.symmetric(horizontal: 3.0,vertical: 3.0),
+       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

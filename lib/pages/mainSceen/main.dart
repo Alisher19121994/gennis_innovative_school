@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/attendanceList/attendance_list.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/createList/create_list.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/eduPlan/POSTlessonPlan/post_lesson_plan.dart';
+import 'package:gennis_innovative_school/pages/mainSceen/pages/eduPlan/lessonPlanListForPost/lesson_plan_list_for_post.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/users_list.dart';
 import '../../projectImages/projectImages.dart';
 
@@ -69,9 +70,10 @@ class _MainPageState extends State<MainPage> {
       // case 2:
       //   return CheckList(ids: widget.setId);
       case 2:
-        return PostLessonPlanPage(postLessonPlanId: widget.setId);
-      default:
-        return AttendanceList(ids: widget.setId,);
+        return LessonPlanListForPost(ids: widget.setId);
+       default:
+         return Container();
+       // return AttendanceList(ids: widget.setId,);
     }
   }
 }

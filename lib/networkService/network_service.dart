@@ -238,8 +238,8 @@ class NetworkService {
   static Future<String?> postProfileDetails(ProfileDetailsPost profileDetailsPost) async {
     String? token = await SharedPreferenceData.getToken();
     String id = await SharedPreferenceData.getId();
-    Map<String,dynamic> postProfileDetails = {};
-    postProfileDetails.addAll({
+    Map<String,dynamic> postProfileDetail = {};
+    postProfileDetail.addAll({
       "birthDay": profileDetailsPost.birthDay,
       "birthMonth": profileDetailsPost.birthMonth,
       "birthYear": profileDetailsPost.birthYear,
@@ -252,13 +252,15 @@ class NetworkService {
       "type": profileDetailsPost.type,
       "username": profileDetailsPost.username
     });
-    print('NetworkService: $postProfileDetails');
-    var response = await http.post(Uri.parse('https://gennis.uz/api/change_student_info/$id'),
+    print('NetworkService: $postProfileDetail');
+    var response = await http.post(
+        Uri.parse('https://gennis.uz/api/change_student_info/$id'),
+        body: jsonEncode(postProfileDetail),
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
+          'Content-Type':'application/json',
+          'Authorization':'Bearer $token',
         },
-        body: jsonEncode(postProfileDetails));
+    );
     print('NetworkService response: $response');
     print('NetworkService response.headers: ${response.headers}');
     print('NetworkService response.statusCode: ${response.statusCode}');
@@ -268,8 +270,9 @@ class NetworkService {
     print('NetworkService response.persistentConnection: ${response.persistentConnection}');
     if (response.statusCode == 200) {
       return response.body;
+    }else{
+      return null;
     }
-    return null;
   }
 
   static List<GroupsInfo> parseJsonList(String jsonStr) {

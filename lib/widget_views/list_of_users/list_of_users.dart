@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -33,37 +32,36 @@ Widget listOfUsers(StudentsData students,UserListController userListController) 
     ),
       child: Card(
         color: const Color(0xFFE1E8ED),
-        child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 6),
-          height: 72,
+        child: SizedBox(
+          height: 45,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            children:  [
+            children:[
             Container(
-            height: 70,
-            width: 70,
+            height: 50,
+            width: 50,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
-              color:  Color(0xFFE1E8ED)
+              color:  const Color(0xFFE1E8ED)
             ),
-            child: CachedNetworkImage(
-              imageUrl: '',
-              placeholder: (context, url) => const CircularProgressIndicator(),
-              errorWidget: (context, url, error) => const Icon(Icons.error,color: Colors.red,),
-            ),
+            // child: CachedNetworkImage(
+            //   imageUrl: '',
+            //   placeholder: (context, url) => const CircularProgressIndicator(),
+            //   errorWidget: (context, url, error) => const Icon(Icons.error,color: Colors.red,),
+            // ),
           ),
-              const SizedBox(width: 13,),
+              const SizedBox(width: 5,),
               //#surname
               Text(students.surname??"", style: const TextStyle(
                     color: Colors.black,
-                    fontSize: 19,
+                    fontSize: 17,
                     fontWeight: FontWeight.bold),overflow: TextOverflow.ellipsis
               ),
               const SizedBox(width: 7,),
               //#name
               Text(students.name??"", style: const TextStyle(
                     color: Colors.black,
-                    fontSize: 19,
+                    fontSize: 17,
                     fontWeight: FontWeight.bold),overflow: TextOverflow.ellipsis,
               ),
             ],

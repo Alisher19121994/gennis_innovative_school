@@ -221,29 +221,7 @@ Widget profileDetailsPost(ProfileDetailsController controller) {
                       const SizedBox(
                         height: 7,
                       ),
-                      //#edit data Phone number
-                      TextFormField(
-                          style: const TextStyle(color: Colors.black),
-                          decoration: const InputDecoration(
-                              label: Text(
-                                'Type',
-                                style: TextStyle(color: Colors.blue),
-                              ),
-                              border: OutlineInputBorder()),
-                          validator: (value) {
-                            if (value != null && value.isEmpty) {
-                              return 'Type must not be empty';
-                            }
-                            return null;
-                          },
-                          onChanged: (value) => {
-                                controller.type = value,
-                                controller.isValidDetails(controller.type ?? '')
-                              }),
-                      const SizedBox(
-                        height: 7,
-                      ),
-                      //#edit data Phone number
+                      //#edit data Role
                       TextFormField(
                           style: const TextStyle(color: Colors.black),
                           decoration: const InputDecoration(

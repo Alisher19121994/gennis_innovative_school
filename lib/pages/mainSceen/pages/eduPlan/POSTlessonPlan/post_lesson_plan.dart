@@ -16,17 +16,15 @@ class PostLessonPlanPage extends StatefulWidget {
 }
 
 class _PostLessonPlanPageState extends State<PostLessonPlanPage> {
-  LessonPlanPost lessonPlanPost = LessonPlanPost();
-  @override
-  void initState() {
-    super.initState();
-    Get.find<EduLessonPlanController>().apiPostLessonPlan(widget.postLessonPlanId,lessonPlanPost);
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text('Create Lesson Plan',style: TextStyle(color: Colors.white,fontSize: 19,fontWeight: FontWeight.bold),),
+      ),
       body:GetBuilder<EduLessonPlanController>(
         init: EduLessonPlanController(),
         builder: (controller){

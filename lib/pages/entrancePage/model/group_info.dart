@@ -1,39 +1,4 @@
-// class GroupInfo {
-//    List<GroupsInfo>? groups;
-//
-//   GroupInfo({this.groups});
-//
-//   // factory GroupInfo.fromJson(Map<String, dynamic> data) {
-//   //   final groupsData = data['groups'] as List<dynamic>?;
-//   //   return GroupInfo(
-//   //       groups: groupsData != null
-//   //           ? groupsData.map((reviewData) =>
-//   //           GroupsInfo.fromJson(reviewData as Map<String, dynamic>))
-//   //           .toList()
-//   //           : <GroupsInfo>[]
-//   //   );
-//   // }
-//   // Map<String, dynamic> toJson() {
-//   //   return {
-//   //     'groups': groups.map((value) => value.toJson()).toList(),
-//   //   };
-//   // }
-//
-//   GroupInfo.fromJson(Map<String, dynamic> json) {
-//     if (json['groups'] != null) {
-//       groups = <GroupsInfo>[];
-//       for (var v in (json['groups'] as List)) {
-//         groups!.add( GroupsInfo.fromJson(v));
-//       }
-//     }
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = <String, dynamic>{};
-//     data['groups'] = groups!.map((v) => v.toJson()).toList();
-//     return data;
-//   }
-// }
+
 class GroupInfo {
   List<GroupsInfo>? groups;
 

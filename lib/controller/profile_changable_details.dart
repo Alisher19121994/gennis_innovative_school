@@ -15,7 +15,7 @@ class ProfileDetailsController extends GetxController {
   late String fathersName;
   late String dateOfBirth;
   late String phoneNumber;
-  late String type;
+  String type = 'info';
   late String role;
   String? selectedDay;
   String? selectedMonth;
@@ -31,6 +31,7 @@ class ProfileDetailsController extends GetxController {
     update();
     var response = await NetworkService.postProfileDetails(profileDetailsPosts);
     if (response != null) {
+      
       if (kDebugMode) {
         print("ProfileDetailsController -> POST is done: $response");
       }

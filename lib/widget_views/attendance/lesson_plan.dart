@@ -1,16 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../pages/mainSceen/pages/attendanceList/tabInfoLessonPan/tab_info_lesson_plan.dart';
+import '../../pages/mainSceen/pages/eduPlan/POSTlessonPlan/post_lesson_plan.dart';
 import '../../pages/mainSceen/pages/eduPlan/modelLessonPlan/lesson_plan_list.dart';
 
-Widget lessonPlan(BuildContext context,PlanList planList,int id){
+Widget createLessonPlan(BuildContext context,PlanList planList){
   return InkWell(
     onTap: (){
-      Navigator.push(context, MaterialPageRoute(builder: (_)=>TabPage(setId: id)));
+      Navigator.push(context, MaterialPageRoute(builder: (_)=>PostLessonPlanPage(postLessonPlanId: planList.id ?? 0,)));
     },
     child: Container(
-      height: 119,
-      width: 229,
+      height: 100,
+      width: 180,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         gradient: const LinearGradient(
@@ -29,11 +30,9 @@ Widget lessonPlan(BuildContext context,PlanList planList,int id){
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Icon(Icons.cast_for_education_outlined,size: 28,),
-          const Center(child: Text('Lesson plan',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 18),)),
-          Center(child: Text(planList.date ?? '',style: const TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 18),)),
-
-
+          const Icon(Icons.cast_for_education_outlined,size: 21,),
+          const Center(child: Text('Lesson plan',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 14),)),
+          Center(child: Text(planList.date ?? '',style: const TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 14),)),
         ],
       ),
 

@@ -59,12 +59,6 @@ Widget createImageForProfile(ProfilePhotoController controller) {
                             ],
                           ),
                         )),
-                    // child: controller.pickedFile != null
-                    //     ? Image.file(
-                    //   File(controller.pickedFile!
-                    //       .path), width: 100, height: 100, fit: BoxFit.cover,
-                    // )
-                    //     : const Text('Please select an image'),
                   ),
                 ),
               ),
@@ -76,8 +70,8 @@ Widget createImageForProfile(ProfilePhotoController controller) {
                 margin: const EdgeInsets.symmetric(horizontal: 70),
                 child: ElevatedButton(
                     onPressed: () {
-                      controller.uploadImages();
-                      //controller.uploadImage();
+                     // controller.uploadImages();
+                      controller.setProfilePhoto();
                     },
                     child: const Center(
                       child: Text(

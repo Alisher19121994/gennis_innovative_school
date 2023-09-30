@@ -12,6 +12,7 @@ import 'package:gennis_innovative_school/pages/mainSceen/pages/attendanceList/ta
 import 'package:gennis_innovative_school/pages/mainSceen/pages/createList/create_list.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/eduPlan/POSTlessonPlan/post_lesson_plan.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/eduPlan/edu_plan.dart';
+import 'package:gennis_innovative_school/pages/mainSceen/pages/eduPlan/lessonPlanListForPost/lesson_plan_list_for_post.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/usersList/users_list.dart';
 import 'package:gennis_innovative_school/pages/profilePage/main_profile_page.dart';
 import 'package:gennis_innovative_school/pages/profilePage/morePage/edit_data.dart';
@@ -71,7 +72,8 @@ class MyApp extends StatelessWidget {
           EduPlanPage.id:(context) => const EduPlanPage(eduPlanListId: 0,),
           PostLessonPlanPage.id:(context) => const PostLessonPlanPage(postLessonPlanId: 0,),
           EditProfileDetails.id:(context) => const EditProfileDetails(),
-          TabPage.id:(context) => const TabPage(setId: 0),
+          TabPage.id:(context) => const TabPage(setId: 0, setGroupId: 0,),
+          LessonPlanListForPost.id:(context) => const LessonPlanListForPost(ids: 0),
       }
     );
   }

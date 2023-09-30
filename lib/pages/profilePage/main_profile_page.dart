@@ -1,20 +1,11 @@
-import 'dart:convert';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/pages/registration/sign_in_page.dart';
 import 'package:gennis_innovative_school/projectImages/projectImages.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
-import 'package:http/http.dart' as http;
+import '../../controller/entrance_list.dart';
 import '../../controller/profile_page.dart';
-import '../../network/sharedPreferenceData/shared_preference_data.dart';
-import '../../widget_views/profile/appBar/actions.dart';
 import '../../widget_views/profile/appBar/title.dart';
-import '../../widget_views/profile/profile.dart';
-import '../../widget_views/profile/teacherDeatails.dart';
-import 'model/user_profile.dart';
 import 'morePage/edit_data.dart';
-import 'morePage/edit_photo.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -25,6 +16,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  var e = Get.find<EntranceController>();
   @override
   void initState() {
     super.initState();
@@ -39,7 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
           centerTitle: true,
           elevation: 0,
           backgroundColor: Colors.blue,
-          title: titleOfAppBar(),
+          title: const Text('Profile',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 23),),
           actions: <Widget>[
             PopupMenuButton(
               offset: const Offset(0, 40),
@@ -126,34 +118,12 @@ class _ProfilePageState extends State<ProfilePage> {
                               children: [
                                 //#photo changes
                                 CircleAvatar(
+                                  backgroundColor: const Color(0xFFE1E8ED),
                                   radius: 60,
-                                  backgroundImage: NetworkImage('https://static.independent.co.uk/2023/07/05/11/SEI162890154.jpg?width=1200&height=900&fit=crop'),
+                                //  backgroundImage: NetworkImage('https://gennis.uz/${e.listOfGroups[0].teacherImg}'),
+                                  backgroundImage: NetworkImage('https://gennis.uz/${controller.userProfile.user?.photoProfile}'),
                                 ),
-
-                                // Container(
-                                //   decoration: BoxDecoration(
-                                //     borderRadius: BorderRadius.circular(100),
-                                //     image:  DecorationImage(
-                                //       image: NetworkImage('https://static.independent.co.uk/2023/07/05/11/SEI162890154.jpg?width=1200&height=900&fit=crop'),
-                                //       fit: BoxFit.cover
-                                //     ),
-                                //     color: const Color(0xFFE1E8ED),
-                                //   ),
-                                //   height: 100,
-                                //   width: 100,
-                                //   // child: CachedNetworkImage(
-                                //   //   imageUrl: 'https://static.independent.co.uk/2023/07/05/11/SEI162890154.jpg?width=1200&height=900&fit=crop',
-                                //   //   //imageUrl: controller.userProfile.user?.photoProfile ?? '',
-                                //   //   placeholder: (context, url) =>
-                                //   //       const CircularProgressIndicator(),
-                                //   //   errorWidget: (context, url, error) =>
-                                //   //       const Icon(
-                                //   //     Icons.error,
-                                //   //     color: Colors.red,
-                                //   //   ),
-                                //   // ),
-                                // ),
-                                const SizedBox(height: 8,),
+                                const SizedBox(height: 4.0,),
                                 ListTile(
                                   title: Text(controller.userProfile.user?.typeRole ?? "",
                                     style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20), overflow: TextOverflow.ellipsis,),
@@ -174,7 +144,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         ],
                       ),
                     ),
-                    // topBarDetails(controller),
                     //#teacher details
                     Expanded(
                       child: Container(
@@ -186,8 +155,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                      "Username:",
+                                 Text(
+                                  controller.userProfile.user?.info?.username?.name ?? "",
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 19,
@@ -213,9 +182,9 @@ class _ProfilePageState extends State<ProfilePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                 const Text(
-                                      "Age:",
-                                  style: TextStyle(
+                                  Text(
+                                   controller.userProfile.user?.info?.age?.name ?? "",
+                                  style: const TextStyle(
                                       color: Colors.black,
                                       fontSize: 19,
                                       fontWeight: FontWeight.bold),
@@ -242,8 +211,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                 const Text(
-                                      "Date of birth:",
+                                  Text(
+                                   controller.userProfile.user?.info?.birthDate?.name ?? "",
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 19,
@@ -271,8 +240,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                      "Phone number:",
+                                Text(
+                                  controller.userProfile.user?.info?.phone?.name ?? "",
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 19,
@@ -301,13 +270,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     )
-                    //  teacherDetails(controller)
                   ],
                 ),
                 controller.isLoading
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
+                    ? const Center(child: CircularProgressIndicator(),)
                     : const SizedBox.shrink(),
               ],
             );

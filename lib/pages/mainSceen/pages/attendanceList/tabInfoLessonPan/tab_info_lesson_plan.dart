@@ -5,7 +5,8 @@ import '../../eduPlan/edu_plan.dart';
 
 class TabPage extends StatefulWidget {
   final int setId;
-  const TabPage({super.key, required this.setId});
+  final int setGroupId;
+  const TabPage({super.key, required this.setId, required this.setGroupId});
   static const String id = "tabPage";
 
   @override
@@ -64,7 +65,7 @@ class _TabPageState extends State<TabPage> {
           ),
           body:TabBarView(
             children: [
-               EduPlanPage(eduPlanListId: widget.setId,),
+               EduPlanPage(eduPlanListId: widget.setGroupId,),
                CheckList(ids: widget.setId,)
             ],
           ),

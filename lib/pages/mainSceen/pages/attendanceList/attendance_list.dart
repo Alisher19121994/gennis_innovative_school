@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/attendanceList/tabInfoLessonPan/tab_info_lesson_plan.dart';
 import 'package:get/get.dart';
-import '../../../../controller/attendance_list.dart';
+import '../../../../controller/lesson_plan_list.dart';
 import '../../../../projectImages/projectImages.dart';
 import '../../../../widget_views/attendance/lesson_plan.dart';
 import '../../../../widget_views/attendance/list_of_students_check_out.dart';
@@ -23,15 +23,15 @@ class _AttendanceListState extends State<AttendanceList> {
   @override
   void initState() {
     super.initState();
-    Get.find<AttendanceController>().apiLessonPlanList(widget.ids);
+    Get.find<LessonPlanPostListsController>().apiLessonPlanList(widget.ids);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: GetBuilder<AttendanceController>(
-        init: AttendanceController(),
+      body: GetBuilder<LessonPlanPostListsController>(
+        init: LessonPlanPostListsController(),
         builder: (controller){
           return attendance(context,controller,widget.ids);
         },

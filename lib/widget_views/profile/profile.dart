@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../controller/profile_page.dart';
 /*
@@ -29,11 +28,11 @@ Widget topBarDetails(ProfileController profileController){
                   decoration: BoxDecoration(
                     borderRadius:BorderRadius.circular(50),
                   ),
-                  child:CachedNetworkImage(
-                    imageUrl: "",
-                    placeholder: (context, url) => CircularProgressIndicator(),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
-                  ),
+                  // child:CachedNetworkImage(
+                  //   imageUrl: "",
+                  //   placeholder: (context, url) => CircularProgressIndicator(),
+                  //   errorWidget: (context, url, error) => Icon(Icons.error),
+                  // ),
                 ),
 
                 const SizedBox(

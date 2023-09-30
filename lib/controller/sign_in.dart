@@ -42,6 +42,7 @@ class SignInController extends GetxController {
 
   Future<void> dialogBuilder(BuildContext context) {
     return  Dialogs.materialDialog(
+        barrierDismissible: false,
         color: Colors.red,
         msg: 'Username or Password',
         title: 'ERROR',
