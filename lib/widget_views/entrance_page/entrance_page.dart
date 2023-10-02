@@ -13,8 +13,10 @@ Widget listOfGroup(BuildContext context,GroupsInfo groups) {
           height: 240,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.0),
-              image:  const DecorationImage(
-                  image: AssetImage(ProjectImages.book), fit: BoxFit.cover)),
+              image: DecorationImage(
+                  image: NetworkImage('https://gennis.uz/${groups.teacherImg}'),
+                  fit: BoxFit.cover)
+       ),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
             decoration: BoxDecoration(

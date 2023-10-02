@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:gennis_innovative_school/networkService/network_service.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/attendanceList/attendance_list.dart';
 import 'package:gennis_innovative_school/pages/mainSceen/pages/attendanceList/model/lesson_plan_post.dart';
@@ -31,17 +32,20 @@ class EduLessonPlanController extends GetxController {
     update();
   }
 
-  Future<void> apiPostLessonPlan(int id, LessonPlanPost lessonPlanPosts) async {
+  Future<void> apiPostLessonPlan(int id, LessonPlanPost lessonPlanPosts,BuildContext context) async {
     isLoading = true;
     update();
-    var response = await NetworkService.postLessonPlan(id, lessonPlanPosts);
-    if (response != null) {
-      if (kDebugMode) {
-        print("EduLessonPlanController -> POST: $response");
-      }
-      isLoading = false;
-      update();
+   NetworkService.postLessonPlan(id, lessonPlanPosts).then((response)async {
+   if (response != null) {
+       _finish(context);
+    if (kDebugMode) {
+      print("EduLessonPlanController -> POST: $response");
     }
+    isLoading = false;
+    update();
+  }
+   });
+
   }
 
   void isValidData(String data){
@@ -50,4 +54,11 @@ class EduLessonPlanController extends GetxController {
       update();
     }
   }
+
+  _finish(BuildContext context) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      Navigator.pop(context, "result");
+    });
+  }
+
 }

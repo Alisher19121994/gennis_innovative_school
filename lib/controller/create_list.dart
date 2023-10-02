@@ -51,9 +51,7 @@ class CreateController extends GetxController {
     if (response != null) {
       dynamic decodedResponse = jsonDecode(response);
       String msg = decodedResponse['msg'];
-     // String success = decodedResponse['success'];
        SharedPreferenceData.setError(msg);
-      // SharedPreferenceData.setSuccesses(success);
       if (kDebugMode) {
         print(response);
       }

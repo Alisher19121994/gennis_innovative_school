@@ -28,7 +28,7 @@ class _PostLessonPlanPageState extends State<PostLessonPlanPage> {
       body:GetBuilder<EduLessonPlanController>(
         init: EduLessonPlanController(),
         builder: (controller){
-        return postEduPlan(controller,widget.postLessonPlanId);
+        return postEduPlan(controller,widget.postLessonPlanId,context);
         },
       ),
     );

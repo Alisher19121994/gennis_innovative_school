@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:gennis_innovative_school/networkService/network_service.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -26,24 +27,31 @@ class ProfileDetailsController extends GetxController {
     ,'1995','1996','1997','1998','1999','2000','2001','2002','2003','2004','2005','2006','2007','2008','2009','2010','2011','2012','2013','2014'
     ,'2015','2016','2017','2018','2019','2020','2021','2022','2023'];
 
-  Future<void> apiPostProfile(ProfileDetailsPost profileDetailsPosts) async {
+  Future<void> apiPostProfile(ProfileDetailsPost profileDetailsPosts,BuildContext context) async {
     isLoading = true;
     update();
-    var response = await NetworkService.postProfileDetails(profileDetailsPosts);
-    if (response != null) {
-      
-      if (kDebugMode) {
-        print("ProfileDetailsController -> POST is done: $response");
+    NetworkService.postProfileDetails(profileDetailsPosts).then((response)async {
+      if (response != null) {
+        _finish(context);
+        if (kDebugMode) {
+          print("ProfileDetailsController -> POST is done: $response");
+        }
+        isLoading = false;
+        update();
       }
-      isLoading = false;
-      update();
-    }
+    });
   }
 
   void isValidDetails(String data){
     data = '';
     update();
   }
+  _finish(BuildContext context) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      Navigator.pop(context, "result");
+    });
+  }
+
 
 
 }

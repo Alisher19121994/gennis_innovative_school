@@ -27,7 +27,7 @@ class _EditPhotoState extends State<EditPhoto> {
         body: GetBuilder<ProfilePhotoController>(
           init: ProfilePhotoController(),
           builder: (controller) {
-             return createImageForProfile(controller);
+             return createImageForProfile(controller,context);
           },
         ));
   }

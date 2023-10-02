@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/pages/entrancePage/entarnce_page.dart';
 import 'package:gennis_innovative_school/pages/registration/sign_in_page.dart';
 import 'package:gennis_innovative_school/projectImages/projectImages.dart';
-import 'package:http/http.dart' as http;
 import '../../controller/splash_page.dart';
 
 class SplashPage extends StatefulWidget {

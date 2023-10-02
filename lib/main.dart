@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gennis_innovative_school/constants/routes/routes.dart';
 import 'package:gennis_innovative_school/pages/drawer/additionalList/additional_page.dart';
 import 'package:gennis_innovative_school/pages/drawer/contentList/content_page.dart';
 import 'package:gennis_innovative_school/pages/drawer/informationList/information_page.dart';
@@ -18,6 +17,10 @@ import 'package:gennis_innovative_school/pages/profilePage/main_profile_page.dar
 import 'package:gennis_innovative_school/pages/profilePage/morePage/edit_data.dart';
 import 'package:gennis_innovative_school/pages/profilePage/morePage/edit_photo.dart';
 import 'package:gennis_innovative_school/pages/profilePage/morePage/edit_profile_details.dart';
+import 'package:gennis_innovative_school/pages/profilePage/morePage/tabBarsOfLocations/pages/chirchikPage.dart';
+import 'package:gennis_innovative_school/pages/profilePage/morePage/tabBarsOfLocations/pages/gazalkent_page.dart';
+import 'package:gennis_innovative_school/pages/profilePage/morePage/tabBarsOfLocations/pages/xujakent_page.dart';
+import 'package:gennis_innovative_school/pages/profilePage/morePage/teachers_salary_page.dart';
 import 'package:gennis_innovative_school/pages/registration/sign_in_page.dart';
 import 'package:gennis_innovative_school/pages/splash/splash_page.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -74,6 +77,10 @@ class MyApp extends StatelessWidget {
           EditProfileDetails.id:(context) => const EditProfileDetails(),
           TabPage.id:(context) => const TabPage(setId: 0, setGroupId: 0,),
           LessonPlanListForPost.id:(context) => const LessonPlanListForPost(ids: 0),
+          TeachersSalary.id:(context) => const TeachersSalary(),
+          GazalkentPage.id:(context) => const GazalkentPage(),
+          ChirchikPage.id:(context) => const ChirchikPage(),
+          XujakentPage.id:(context) => const XujakentPage(),
       }
     );
   }

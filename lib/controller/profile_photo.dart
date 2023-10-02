@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -24,7 +26,7 @@ class ProfilePhotoController extends GetxController {
   }
 
 
-  Future setProfilePhoto() async {
+  Future setProfilePhoto(BuildContext context) async {
     isLoading = true;
     update();
     String id = await SharedPreferenceData.getId();
@@ -48,6 +50,9 @@ class ProfilePhotoController extends GetxController {
 
     request.send().then((response) async {
       if (response.statusCode == 200) {
+        _finish(context);
+        isLoading = false;
+        update();
         if (kDebugMode) {
           print(await response.stream.bytesToString());
           print("response PHOTO Uploaded: $response");
@@ -57,9 +62,7 @@ class ProfilePhotoController extends GetxController {
           print('response.request:--->${response.request}');
           print('response.statusCode:--->${response.statusCode}');
           print('response.contentLength:--->${response.contentLength}');
-          print('response.isRedirect:--->${response.isRedirect}');
-
-        }
+          print('response.isRedirect:--->${response.isRedirect}');}
 
       }else{
         print(await response.stream.bytesToString());
@@ -72,8 +75,13 @@ class ProfilePhotoController extends GetxController {
         print('response.contentLength else:--->${response.contentLength}');
         print('response.isRedirect else:--->${response.isRedirect}');
       }
-      isLoading = false;
-      update();
     });
   }
+
+  _finish(BuildContext context) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      Navigator.pop(context, "result");
+    });
+  }
+
 }

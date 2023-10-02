@@ -6,8 +6,7 @@ import '../../../controller/entrance_list.dart';
 import '../../../pages/entrancePage/model/group_info.dart';
 import '../../../pages/profilePage/main_profile_page.dart';
 import '../../../projectImages/projectImages.dart';
-
-Widget titleOfAppBar(BuildContext context,GroupsInfo groups,){
+Widget titleOfAppBar(BuildContext context,EntranceController controller){
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -32,7 +31,7 @@ Widget titleOfAppBar(BuildContext context,GroupsInfo groups,){
           child:CircleAvatar(
             backgroundColor: const Color(0xFFE1E8ED),
             radius: 50,
-            backgroundImage: NetworkImage('https://gennis.uz/${groups.teacherImg}'),
+            backgroundImage: NetworkImage('https://gennis.uz/${controller.userProfile.user?.photoProfile}'),
           ),
         ),
       )

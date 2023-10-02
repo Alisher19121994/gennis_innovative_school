@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../controller/profile_changable_details.dart';
 import '../../../pages/profilePage/morePage/model/profile_details_post.dart';
 
-Widget profileDetailsPost(ProfileDetailsController controller) {
+Widget profileDetailsPost(ProfileDetailsController controller,BuildContext context) {
   return Stack(
     children: [
       Form(
@@ -262,7 +261,7 @@ Widget profileDetailsPost(ProfileDetailsController controller) {
                                   type: controller.type,
                                   username: controller.userName,
                                 );
-                                Get.find<ProfileDetailsController>().apiPostProfile(profileDetailsPosts);
+                                Get.find<ProfileDetailsController>().apiPostProfile(profileDetailsPosts,context);
                               }
                             },
                             child: const Center(

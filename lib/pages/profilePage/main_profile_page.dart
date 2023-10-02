@@ -6,6 +6,7 @@ import '../../controller/entrance_list.dart';
 import '../../controller/profile_page.dart';
 import '../../widget_views/profile/appBar/title.dart';
 import 'morePage/edit_data.dart';
+import 'morePage/teachers_salary_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -76,6 +77,37 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: 50,
                     width: double.infinity,
                     child: InkWell(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (_)=>const TeachersSalary()));
+                      },
+                      child: Row(
+                        children: const <Widget>[
+                          Icon(
+                            Icons.attach_money_sharp,
+                            size: 27,
+                            color: Colors.black,
+                          ),
+                          SizedBox(width: 9),
+                          // Optional spacing between icon and text
+                          Text(
+                            'Salary',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                PopupMenuItem<int>(
+                  height: 50,
+                  value: 3,
+                  child: SizedBox(
+                    height: 50,
+                    width: double.infinity,
+                    child: InkWell(
                       onTap: (){
                         Get.find<ProfileController>().logout();
                         Navigator.push(context, MaterialPageRoute(builder: (_)=>const SignIn()));
@@ -120,7 +152,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                 CircleAvatar(
                                   backgroundColor: const Color(0xFFE1E8ED),
                                   radius: 60,
-                                //  backgroundImage: NetworkImage('https://gennis.uz/${e.listOfGroups[0].teacherImg}'),
                                   backgroundImage: NetworkImage('https://gennis.uz/${controller.userProfile.user?.photoProfile}'),
                                 ),
                                 const SizedBox(height: 4.0,),

@@ -5,7 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import '../../../controller/edu_plan_list.dart';
 import '../../../pages/mainSceen/pages/attendanceList/model/lesson_plan_post.dart';
 
-Widget postEduPlan(EduLessonPlanController controller, int postLessonPlanId){
+Widget postEduPlan(EduLessonPlanController controller, int postLessonPlanId,BuildContext context){
   return Stack(
     children: [
       Form(
@@ -154,7 +154,7 @@ Widget postEduPlan(EduLessonPlanController controller, int postLessonPlanId){
                                     assessment:controller.assessment ,
                                     mainLesson: controller.mainLesson,
                                     newHomework: controller.homework));
-                            Get.find<EduLessonPlanController>().apiPostLessonPlan(postLessonPlanId,lessonPlanPosts);
+                            Get.find<EduLessonPlanController>().apiPostLessonPlan(postLessonPlanId,lessonPlanPosts,context);
                           }
                         },
                         style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlueAccent, side: const BorderSide(width: 1, color: Colors.white)),

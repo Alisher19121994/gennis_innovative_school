@@ -7,17 +7,6 @@ import '../../pages/mainSceen/pages/usersList/model/users.dart';
 
  class SharedPreferenceData {
 
-   static Future<String?> getSuccesses() async {
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-     String? refreshToken = prefs.getString('getSuccesses');
-     return refreshToken;
-   }
-
-   static Future<void> setSuccesses(String success) async {
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-     await prefs.setString('getSuccesses', success);
-   }
-
    static Future<String?> getError() async {
      SharedPreferences prefs = await SharedPreferences.getInstance();
      String? refreshToken = prefs.getString('errors');
@@ -100,39 +89,17 @@ import '../../pages/mainSceen/pages/usersList/model/users.dart';
      return preferences.getInt('ids');
    }
 
-   ////
-   static Future<bool> setDayId(int day)async{
+
+   //setGroupId
+   static Future<bool> setLocationId(LoginResponse loginResponse )async{
      final SharedPreferences preferences = await SharedPreferences.getInstance();
-     return preferences.setString('day',day.toString());
+     return preferences.setInt('Location', loginResponse.data!.locationId!);
    }
 
    //getId
-   static Future<dynamic> getDayId()async{
+   static Future<int?> getLocationId()async{
      final SharedPreferences preferences = await SharedPreferences.getInstance();
-     return preferences.getString('day') ?? '';
-   }
-   /////a///
-
-   static Future<bool> setMonthL(String month)async{
-     final SharedPreferences preferences = await SharedPreferences.getInstance();
-     return preferences.setString('month',month);
-   }
-
-   //getId
-   static Future<String> getMonth()async{
-     final SharedPreferences preferences = await SharedPreferences.getInstance();
-     return preferences.getString('month') ?? '';
-   }
-
-   static Future<bool> setImageURL(UserProfile image)async{
-     final SharedPreferences preferences = await SharedPreferences.getInstance();
-     return preferences.setString('image',image.user!.photoProfile!);
-   }
-
-   //getId
-   static Future<String> getImageURL()async{
-     final SharedPreferences preferences = await SharedPreferences.getInstance();
-     return preferences.getString('image') ?? '';
+     return preferences.getInt('Location');
    }
 
 }

@@ -1,9 +1,5 @@
 import 'dart:convert';
-//import 'dart:html';
-import 'package:dio/dio.dart';
-import 'package:gennis_innovative_school/pages/mainSceen/pages/createList/model/attendanceUser/attendance.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_utils/src/platform/platform.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -18,13 +14,10 @@ import '../pages/mainSceen/pages/eduPlan/modelLessonPlan/lesson_plan_list.dart';
 import '../pages/mainSceen/pages/usersList/model/users.dart';
 import '../pages/profilePage/model/user_profile.dart';
 import '../pages/profilePage/morePage/model/profile_details_post.dart';
+import '../pages/profilePage/morePage/model/teachers_salary.dart';
 import '../pages/registration/model/sign_in.dart';
 
 class NetworkService {
-
-  static String baseUrlAddress = 'https://gennis.uz';
-  static String URL = 'gennis.uz';
-  /* HTTP request */
 
   static Future<dynamic> getNewAccessToken() async {
     var refreshToken = await SharedPreferenceData.getRefreshToken();
@@ -96,26 +89,6 @@ class NetworkService {
     }
     return null;
   }
-  //
-  // static Future<String?> POST(String api, Map<String, String> params) async {
-  //   String? token = await SharedPreferenceData.getToken();
-  //   var uri = Uri.https(URL, api); // http or https
-  //   var response = await post(
-  //       uri,
-  //       headers:  {
-  //     'Content-Type': 'application/json; charset=UTF-8',
-  //     'Authorization': 'Bearer $token',
-  //   },body: jsonEncode(params));
-  //   if (response.statusCode == 200 || response.statusCode == 201) {
-  //     return response.body;
-  //   }
-  //   return null;
-  // }
-  //
-  // static Map<String, String> paramsEmpty() {
-  //   Map<String, String> params = {};
-  //   return params;
-  // }
 
   static GroupInfo groupInfoParam(String response) {
     Map<String, dynamic> body =  jsonDecode(response);
@@ -164,6 +137,35 @@ class NetworkService {
     }
     final GroupInfo groupOfData = GroupInfo.fromJson(body);
     return groupOfData;
+  }
+
+  static Future<TeachersSalary> fetchTeachersSalary() async {
+    String? token = await SharedPreferenceData.getToken();
+    String id = await SharedPreferenceData.getId();
+    int? locationId = await SharedPreferenceData.getLocationId();
+    Map<String, dynamic> body = {};
+    try{
+      var response = await http.get(
+          Uri.parse('https://gennis.uz/api/teacher_salary/$id/$locationId'),
+          headers:{
+            "content-type": "application/json; charset=utf-8",
+            'authorization':'Bearer $token',
+          }
+      );
+      print('response.body: ${response.body}');
+      print('response.headers: ${response.headers}');
+      print('response.request: ${response.request}');
+      print('response.statusCode: ${response.statusCode}');
+      print('response.reasonPhrase: ${response.reasonPhrase}');
+      print('response.persistentConnection: ${response.persistentConnection}');
+      if(response.statusCode == 200) {
+        body = jsonDecode(response.body.toString().replaceAll("\n",""));
+      }
+    }catch(e){
+      print('XATOLIK: $e');
+    }
+    final TeachersSalary teachersSalary = TeachersSalary.fromJson(body);
+    return teachersSalary;
   }
 
   static Future<LessonPlanList> fetchLessonPlanList(int id) async {

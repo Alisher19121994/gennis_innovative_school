@@ -23,7 +23,7 @@ class _EditProfileDetailsState extends State<EditProfileDetails> {
       body: GetBuilder<ProfileDetailsController>(
         init: ProfileDetailsController(),
         builder: (controller){
-          return profileDetailsPost(controller);
+          return profileDetailsPost(controller,context);
         },
       )
     );

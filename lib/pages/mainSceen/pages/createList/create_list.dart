@@ -1,14 +1,9 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/controller/create_list.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/instance_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../globalModel/create_new_users.dart';
-import '../../../../network/sharedPreferenceData/shared_preference_data.dart';
-import '../../../../widget_views/list_of_users/list_of_users.dart';
 class CheckList extends StatefulWidget {
   final int ids;
   const CheckList({Key? key, required this.ids}) : super(key: key);

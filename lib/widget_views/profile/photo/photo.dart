@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import '../../../controller/profile_page.dart';
 import '../../../controller/profile_photo.dart';
 
-Widget createImageForProfile(ProfilePhotoController controller) {
+Widget createImageForProfile(ProfilePhotoController controller,BuildContext context) {
   return Stack(
     children: [
       Container(
@@ -70,8 +70,7 @@ Widget createImageForProfile(ProfilePhotoController controller) {
                 margin: const EdgeInsets.symmetric(horizontal: 70),
                 child: ElevatedButton(
                     onPressed: () {
-                     // controller.uploadImages();
-                      controller.setProfilePhoto();
+                      controller.setProfilePhoto(context);
                     },
                     child: const Center(
                       child: Text(

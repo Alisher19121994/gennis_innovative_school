@@ -142,6 +142,7 @@ Widget signIn(BuildContext context,SignInController controller){
                                     Navigator.of(context).push(MaterialPageRoute(builder: (_) => const EntrancePage())),
                                     loginResponse = LoginResponse.fromJson(jsonDecode(response)),
                                     logger.d(response),
+                                    SharedPreferenceData.setLocationId(loginResponse),
                                     SharedPreferenceData.setLoggedIn(loginResponse),
                                     SharedPreferenceData.setToken(loginResponse),
                                     SharedPreferenceData.setId(loginResponse),

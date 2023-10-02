@@ -4,7 +4,6 @@ import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import '../../controller/users_list.dart';
 import '../../pages/mainSceen/pages/usersList/model/users.dart';
 import 'list_of_users.dart';
-
 Widget listOfGroups(BuildContext context, UserListController controller) {
   return LiquidPullToRefresh(
     backgroundColor: const Color(0xFF00C2FF),
@@ -252,7 +251,7 @@ Widget listOfGroups(BuildContext context, UserListController controller) {
                       itemCount: controller.listOfStudents.length,
                       itemBuilder: (BuildContext context, int index) {
                         StudentsData students = controller.listOfStudents[index];
-                        return listOfUsers(students, controller);
+                        return listOfUsers(students, controller,index);
                       },
                     ),
                     controller.isLoading
@@ -263,8 +262,7 @@ Widget listOfGroups(BuildContext context, UserListController controller) {
               ),
             ],
           ),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 1),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
         ),
       ],
     ),
