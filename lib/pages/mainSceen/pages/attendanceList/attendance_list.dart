@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gennis_innovative_school/pages/mainSceen/pages/attendanceList/tabInfoLessonPan/tab_info_lesson_plan.dart';
 import 'package:get/get.dart';
 import '../../../../controller/lesson_plan_list.dart';
-import '../../../../projectImages/projectImages.dart';
-import '../../../../widget_views/attendance/lesson_plan.dart';
-import '../../../../widget_views/attendance/list_of_students_check_out.dart';
 import '../../../../widget_views/attendance/mainAttendance/custom_attendance.dart';
-import '../eduPlan/edu_plan.dart';
-import '../eduPlan/modelLessonPlan/lesson_plan_list.dart';
-import 'new_attendance_page.dart';
 
 class AttendanceList extends StatefulWidget {
   final int ids;
@@ -24,6 +17,7 @@ class _AttendanceListState extends State<AttendanceList> {
   void initState() {
     super.initState();
     Get.find<LessonPlanPostListsController>().apiLessonPlanList(widget.ids);
+    Get.find<LessonPlanPostListsController>().apiUsersAttendanceList(widget.ids);
   }
 
   @override

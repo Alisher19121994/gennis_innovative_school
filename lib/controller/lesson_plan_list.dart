@@ -5,13 +5,28 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import '../network/sharedPreferenceData/shared_preference_data.dart';
 import '../networkService/network_service.dart';
+import '../pages/mainSceen/pages/attendanceList/model/attandances/attandance_group_gridview.dart';
 import '../pages/mainSceen/pages/eduPlan/modelLessonPlan/lesson_plan_list.dart';
 import '../pages/registration/model/login_response.dart';
 
 class LessonPlanPostListsController extends GetxController {
   var isLoading = false;
   List<PlanList> planList = [];
+  List<AttendanceInfo> attendanceInfo = [];
   final GlobalKey<LiquidPullToRefreshState> refreshIndicatorKey = GlobalKey<LiquidPullToRefreshState>();
+
+
+  Future<void> apiUsersAttendanceList(int id) async {
+    isLoading = true;
+    update();
+    var response = await NetworkService.fetchAttendanceList(id);
+    attendanceInfo = response.attendanceInfo!.reversed.toList();
+    if (kDebugMode) {
+      print("UserAttendanceController -> GET: $response");
+    }
+    isLoading = false;
+    update();
+  }
 
 
   Future<void> apiLessonPlanList(int id) async {

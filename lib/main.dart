@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
           ProfilePage.id:(context) => const ProfilePage(),
           MainPage.id:(context) => const MainPage(setId: 0,),
           EditPhoto.id:(context) => const EditPhoto(),
-          AttendanceCheckOut.id:(context) => const AttendanceCheckOut(),
+          AttendanceCheckOut.id:(context) => const AttendanceCheckOut(date: '',ids: 0),
           EditData.id:(context) => const EditData(),
           AdditonalPage.id:(context) => const AdditonalPage(),
           ContentPage.id:(context) => const ContentPage(),

@@ -1,4 +1,3 @@
-import '../../createList/model/attendanceUser/attendance.dart';
 
 class UserList {
   DataList? data;

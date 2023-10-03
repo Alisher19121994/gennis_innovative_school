@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../../../../controller/new_page_attendance_page.dart';
+import '../../../../widget_views/attendance/newAttendance/new_attendance.dart';
+import 'model/attandances/users_in_attandance_in_listVertical.dart';
 
 class AttendanceCheckOut extends StatefulWidget {
-  const AttendanceCheckOut({Key? key}) : super(key: key);
+  final String date;
+  final int ids;
+
+  const AttendanceCheckOut({Key? key, required this.date, required this.ids}) : super(key: key);
   static const String id = "attendanceCheckOut";
 
   @override
@@ -9,7 +16,11 @@ class AttendanceCheckOut extends StatefulWidget {
 }
 
 class _AttendanceCheckOutState extends State<AttendanceCheckOut> {
-  var isChecked = true;
+  @override
+  void initState() {
+    super.initState();
+    Get.find<NewAttendanceController>().apiNewAttendanceDayList(widget.ids, widget.date);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,65 +29,47 @@ class _AttendanceCheckOutState extends State<AttendanceCheckOut> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF00C2FF),
         title: Row(
-          children: const [
-            Text("Date:", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),),
-            SizedBox(width: 10,),
-            Text("07.05.2023 ", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),)
+          children: [
+            const Text(
+              "Date: ",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              widget.date,
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
+            )
           ],
         ),
       ),
-      body: ListView(
-        children: [
-          _listOfStudents(),
-          _listOfStudents(),
-          _listOfStudents()
-        ],
+      body: GetBuilder<NewAttendanceController>(
+        init: NewAttendanceController(),
+        builder: (controller) {
+          return Stack(
+            children: [
+              ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: controller.attendanceInfo.length,
+                  itemBuilder: (context, index) {
+                    NewAttendanceInfo attendanceInfo =
+                        controller.attendanceInfo[index];
+                    return listOfStudents(attendanceInfo);
+                  }),
+              controller.isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : const SizedBox.shrink(),
+            ],
+          );
+        },
       ),
-      // body: ListView.builder(
-      //   itemCount: list.length,
-      //     itemBuilder: (BuildContext context,int index){
-      //     return _listOfStudents(list[index]);
-      //     }
-      // ),
-    );
-  }
-
-  Widget _listOfStudents() {
-    return Container(
-      height: 75,
-      width: double.infinity,
-      color: Colors.white,
-      child: Center(
-          child: Card(color: Colors.cyanAccent,
-           child: Center(child: ListTile(
-            title: const Text("Alisher", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),overflow: TextOverflow.ellipsis),
-            subtitle:const Text("Daminov", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),overflow: TextOverflow.ellipsis,),
-            trailing: SizedBox(
-              height: 41,
-              width: 41,
-              child: isChecked
-                  ? Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(2.0), color: Colors.green),
-                    child: const Icon(
-                        Icons.check,
-                        color: Colors.white,
-                        size: 40,
-                      ),
-                  )
-                  :  Container(
-                    decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(2.0), color: Colors.red),
-                      child: const Icon(
-                        Icons.close_sharp,
-                        color: Colors.white,
-                        size: 40,
-                      ),
-                    ),
-            ),
-          ),
-        ),
-      )),
     );
   }
 }

@@ -28,6 +28,7 @@ dependencies:
   image_picker: ^1.0.4
   material_dialogs: ^1.1.4
   liquid_pull_to_refresh: ^3.0.1
+  #upgrader: ^8.1.0
 
 
 

@@ -7,6 +7,7 @@ import '../../controller/gazalkent_list.dart';
 import '../../controller/lesson_plan_list.dart';
 import '../../controller/create_list.dart';
 import '../../controller/edu_plan_list.dart';
+import '../../controller/new_page_attendance_page.dart';
 import '../../controller/profile_changable_details.dart';
 import '../../controller/profile_photo.dart';
 import '../../controller/sign_in.dart';
@@ -28,5 +29,6 @@ class DIService {
     Get.lazyPut<ChirchikController>(() => ChirchikController(), fenix: true);
     Get.lazyPut<GazalkentController>(() => GazalkentController(), fenix: true);
     Get.lazyPut<XojakentController>(() => XojakentController(), fenix: true);
+    Get.lazyPut<NewAttendanceController>(() => NewAttendanceController(), fenix: true);
   }
 }

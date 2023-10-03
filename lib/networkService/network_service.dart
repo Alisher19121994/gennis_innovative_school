@@ -8,6 +8,8 @@ import 'package:image_picker/image_picker.dart';
 import '../globalModel/create_new_users.dart';
 import '../network/sharedPreferenceData/shared_preference_data.dart';
 import '../pages/entrancePage/model/group_info.dart';
+import '../pages/mainSceen/pages/attendanceList/model/attandances/attandance_group_gridview.dart';
+import '../pages/mainSceen/pages/attendanceList/model/attandances/users_in_attandance_in_listVertical.dart';
 import '../pages/mainSceen/pages/attendanceList/model/lesson_plan_get.dart';
 import '../pages/mainSceen/pages/attendanceList/model/lesson_plan_post.dart';
 import '../pages/mainSceen/pages/eduPlan/modelLessonPlan/lesson_plan_list.dart';
@@ -347,6 +349,52 @@ class NetworkService {
       return response.body;
     }
     return null;
+  }
+
+  static Future<UsersInAttendanceInGridview> fetchAttendanceList(int id) async {
+    String? token = await SharedPreferenceData.getToken();
+    Map<String, dynamic> body = {};
+    try{
+      var response = await http.get(
+          Uri.parse('https://gennis.uz/api/attendances_android/$id'),
+          headers:{
+            "content-type": "application/json; charset=utf-8",
+            'authorization':'Bearer $token',
+          }
+      );
+      print('fetchAttendanceList in the api(attendances_android): ${response.body}');
+      print('fetchAttendanceList -> response.headers: ${response.headers}');
+      if(response.statusCode == 200) {
+        body = jsonDecode(response.body.toString());
+      }
+    }catch(e){
+      print('XATOLIK: $e');
+    }
+    final UsersInAttendanceInGridview usersInAttendanceInGridview = UsersInAttendanceInGridview.fromJson(body);
+    return usersInAttendanceInGridview;
+  }
+
+  static Future<UsersInAttendanceInListVertical?> fetchAttendanceDayList(int id,String day) async {
+    String? token = await SharedPreferenceData.getToken();
+    Map<String, dynamic> body = {};
+    try{
+      var response = await http.get(
+          Uri.parse('https://gennis.uz/api/get_attendance_day/$id/$day'),
+          headers:{
+            "content-type": "application/json; charset=utf-8",
+            'authorization':'Bearer $token',
+          }
+      );
+      print('fetchAttendanceDayList in the api(get_attendance_day): ${response.body}');
+      print('fetchAttendanceDayList -> response.headers: ${response.headers}');
+      if(response.statusCode == 200) {
+        body = jsonDecode(response.body.toString());
+      }
+    }catch(e){
+      print('XATOLIK: $e');
+    }
+    final UsersInAttendanceInListVertical usersInAttendanceInListVertical = UsersInAttendanceInListVertical.fromJson(body);
+    return usersInAttendanceInListVertical;
   }
 
 
