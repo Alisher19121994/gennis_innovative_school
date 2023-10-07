@@ -25,6 +25,7 @@ class CreateController extends GetxController {
   String? selectedMonth;
   int isSelected = 1;
   int rating = 0;
+  var isChecked = true;
   var isLoading = false;
   List<int> listOfDay = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
   List<String> listOfMonth = ['1','2','3','4','5','6','7','8','9','10','11','12'];
@@ -47,18 +48,20 @@ class CreateController extends GetxController {
   Future<void> apiPostOfStudentsAttendance(CreateAttendances userLists,BuildContext context) async {
     isLoading = true;
     update();
-     var response = await NetworkService.postAllUsers(userLists);
-    if (response != null) {
-      dynamic decodedResponse = jsonDecode(response);
-      String msg = decodedResponse['msg'];
-       SharedPreferenceData.setError(msg);
-      if (kDebugMode) {
-        print(response);
+    NetworkService.postAllUsers(userLists).then((response) async{
+      if (response != null) {
+        dynamic decodedResponse = jsonDecode(response);
+        String msg = decodedResponse['msg'];
+        SharedPreferenceData.setError(msg);
+        if (kDebugMode) {
+          print(response);
+        }
+        dialogBuilderChecked(context);
+        isLoading = false;
+        update();
       }
-      dialogBuilderChecked(context);
-      isLoading = false;
-      update();
-    }
+    });
+
   }
 
   Future<void> toggleStudentSelection(bool? selected,int indexes) async {

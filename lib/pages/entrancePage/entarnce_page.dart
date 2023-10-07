@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/controller/entrance_list.dart';
 import 'package:get/get.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
-import '../../network/sharedPreferenceData/shared_preference_data.dart';
 import '../../widget_views/entrance_page/entrance_page.dart';
 import '../../widget_views/profile/appBar/title.dart';
 
@@ -19,7 +17,6 @@ class _EntrancePageState extends State<EntrancePage> {
   void initState() {
     super.initState();
     Get.find<EntranceController>().apiEntranceOfGroups();
-    Get.find<EntranceController>().refreshInEntrance();
     Get.find<EntranceController>().startStreaming(context);
     Get.find<EntranceController>().getProfileDate();
   }
@@ -42,19 +39,11 @@ class _EntrancePageState extends State<EntrancePage> {
                   builder: (controller) {
                     return Stack(
                       children: [
-                        LiquidPullToRefresh(
-                          backgroundColor: const Color(0xFF00C2FF),
-                          key: controller.refreshIndicatorKey,
-                          color: const Color(0xFF00C2FF),
-                          onRefresh: () {
-                            return controller.refreshInEntrance();
+                        ListView.builder(
+                          itemCount: controller.listOfGroups.length,
+                          itemBuilder: (context, index) {
+                            return listOfGroup(context, controller,index,controller.listOfGroups[index]);
                           },
-                          child: ListView.builder(
-                            itemCount: controller.listOfGroups.length,
-                            itemBuilder: (context, index) {
-                              return listOfGroup(context, controller.listOfGroups[index]);
-                            },
-                          ),
                         ),
                         controller.isLoading
                             ? const Center(child: CircularProgressIndicator())

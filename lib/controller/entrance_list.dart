@@ -1,18 +1,14 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/networkService/network_service.dart';
 import 'package:get/get.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/shared/types.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
-import '../network/sharedPreferenceData/shared_preference_data.dart';
 import '../pages/entrancePage/model/group_info.dart';
 import '../pages/profilePage/model/user_profile.dart';
-import '../pages/registration/model/login_response.dart';
 
 class EntranceController extends GetxController {
   int? index;
@@ -20,7 +16,6 @@ class EntranceController extends GetxController {
   List<GroupsInfo> listOfGroups = [];
   GroupInfo groupOfData = GroupInfo();
   GroupsInfo groupsOfData = GroupsInfo();
-  final GlobalKey<LiquidPullToRefreshState> refreshIndicatorKey = GlobalKey<LiquidPullToRefreshState>();
   late ConnectivityResult result;
   late StreamSubscription subscription;
   var isConnected = false;
@@ -91,20 +86,20 @@ class EntranceController extends GetxController {
 
   }
 
-   Future<void> refreshInEntrance() async {
-    isLoading = true;
-    update();
-    var response = await NetworkService.getNewAccessToken();
-    print('getNewAccessToken EntranceController: $response');
-    if (response != null) {
-      dynamic decodedResponse = jsonDecode(response);
-      String accessToken = decodedResponse['access_token'];
-      SharedPreferenceData.setToken(LoginResponse(data: Data(accessToken: accessToken)));
-      print('Controller Yangi token olindi EntranceController: $accessToken');
-    } else {
-      isLoading = false;
-      update();
-    }
-  }
+  //  Future<void> refreshInEntrance() async {
+  //   isLoading = true;
+  //   update();
+  //   var response = await NetworkService.getNewAccessToken();
+  //   print('getNewAccessToken EntranceController: $response');
+  //   if (response != null) {
+  //     dynamic decodedResponse = jsonDecode(response);
+  //     String accessToken = decodedResponse['access_token'];
+  //     SharedPreferenceData.setToken(LoginResponse(data: Data(accessToken: accessToken)));
+  //     print('Controller Yangi token olindi EntranceController: $accessToken');
+  //   } else {
+  //     isLoading = false;
+  //     update();
+  //   }
+  // }
 
 }

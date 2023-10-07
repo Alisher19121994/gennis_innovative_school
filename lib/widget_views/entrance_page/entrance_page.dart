@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import '../../controller/entrance_list.dart';
 import '../../pages/entrancePage/model/group_info.dart';
 import '../../pages/mainSceen/main.dart';
 import '../../projectImages/projectImages.dart';
 
-Widget listOfGroup(BuildContext context,GroupsInfo groups) {
+Widget listOfGroup(BuildContext context,EntranceController controller,int index,GroupsInfo groupsInfo) {
   return InkWell(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (_)=>  MainPage(setId: groups.id ?? 0)));
+        Navigator.of(context).push(MaterialPageRoute(builder: (_)=>  MainPage(setId: groupsInfo.id ?? 0)));
       },
       child:Container(
         margin: const EdgeInsets.all(4.0),
@@ -14,7 +15,7 @@ Widget listOfGroup(BuildContext context,GroupsInfo groups) {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.0),
               image: DecorationImage(
-                  image: NetworkImage('https://gennis.uz/${groups.teacherImg}'),
+                  image: NetworkImage('https://gennis.uz/${controller.listOfGroups[index].teacherImg}'),
                   fit: BoxFit.cover)
        ),
           child: Container(
@@ -31,7 +32,7 @@ Widget listOfGroup(BuildContext context,GroupsInfo groups) {
                   width: double.infinity,
                   height: 30,
                   child: Text(
-                    groups.teacherName??"",
+                    controller.listOfGroups[index].teacherName??"",
                     style: const TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ),
@@ -39,7 +40,7 @@ Widget listOfGroup(BuildContext context,GroupsInfo groups) {
                   width: double.infinity,
                   height: 30,
                   child: Text(
-                    groups.teacherSurname??"",
+                    controller.listOfGroups[index].teacherSurname??"",
                     style: const TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ),
@@ -51,7 +52,22 @@ Widget listOfGroup(BuildContext context,GroupsInfo groups) {
                   width: double.infinity,
                   height: 30,
                   child: Text(
-                    groups.subject??"",
+                    controller.listOfGroups[index].name?? "",
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                //#title
+                SizedBox(
+                  width: double.infinity,
+                  height: 30,
+                  child: Text(
+                    controller.listOfGroups[index].subject?? "",
                     style: const TextStyle(
                         color: Colors.white,
                         fontSize: 20,

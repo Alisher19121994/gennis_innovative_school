@@ -48,16 +48,12 @@ Widget listOfUsers(StudentsData students,UserListController userListController,i
                         width: 50.0,
                         margin: const EdgeInsets.only(left: 8.0,top: 1.0,bottom: 1.0,right: 3.0),
                         child: url.isNotEmpty ?
-                        Container(
-                          height: 50.0,
-                          width: 50.0,
-                          margin: const EdgeInsets.only(left: 8.0,top: 1.0,bottom: 1.0,right: 3.0),
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: NetworkImage('https://gennis.uz/${userListController.listOfStudents[index].photoProfile}')
-                              )
-                          ),
-                        ) :
+                            CircleAvatar(
+                              backgroundColor:const Color(0xFFE1E8ED) ,
+                              radius: 50.0,
+                              backgroundImage: NetworkImage('https://gennis.uz/${userListController.listOfStudents[index].photoProfile}'),
+                            )
+                            :
                         Container(
                           height: 50.0,
                           width: 50.0,

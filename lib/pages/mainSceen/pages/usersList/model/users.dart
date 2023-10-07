@@ -232,6 +232,7 @@ class StudentsData {
   String? surname;
   String? typeChecked;
   String? username;
+  int? isChecked;
 
   StudentsData(
       {
@@ -252,7 +253,8 @@ class StudentsData {
         this.scores,
         this.surname,
         this.typeChecked,
-        this.username
+        this.username,
+        this.isChecked,
      }
       );
 
@@ -281,6 +283,7 @@ class StudentsData {
     surname = json['surname'];
     typeChecked = json['typeChecked'];
     username = json['username'];
+    isChecked = json['isChecked'];
   }
 
 
@@ -311,6 +314,7 @@ class StudentsData {
     data['surname'] = this.surname;
     data['typeChecked'] = this.typeChecked;
     data['username'] = this.username;
+    data['isChecked'] = this.isChecked;
     return data;
   }
 }

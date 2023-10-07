@@ -2,8 +2,10 @@ import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:gennis_innovative_school/controller/create_list.dart';
 import 'package:get/get.dart';
+import 'package:roundcheckbox/roundcheckbox.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../globalModel/create_new_users.dart';
+
 class CheckList extends StatefulWidget {
   final int ids;
   const CheckList({Key? key, required this.ids}) : super(key: key);
@@ -12,6 +14,8 @@ class CheckList extends StatefulWidget {
   State<CheckList> createState() => _CheckListState();
 }
 class _CheckListState extends State<CheckList> {
+  var isChecked = false;
+
   @override
   void initState() {
     super.initState();
@@ -41,283 +45,109 @@ class _CheckListState extends State<CheckList> {
                           ListView.builder(
                             itemCount: controller.listOfStudents.length,
                             itemBuilder: (context, index) {
-                              return Card(
-                                borderOnForeground: true,
-                                color:  const Color(0xFFE1E8ED),
-                                child: SizedBox(
-                                  height: 65,
-                                  child: ListTile(
-                                      title: Text(controller.listOfStudents[index].surname ?? '',
-                                        style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 22),),
-                                      subtitle: Text(controller.listOfStudents[index].name ?? '',
-                                          style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 22),   overflow: TextOverflow.ellipsis),
+                              return Column(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(left: 3.0,right: 3.0,top: 3.0),
+                                    padding: const EdgeInsets.only(left: 4.0,right: 4.0,top: 4.0,bottom: 4.0),
+                                    height: 55,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4.0),
+                                     // color:  const Color(0xFFE1E8ED),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Text(controller.listOfStudents[index].surname ?? '', style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),),
+                                            const SizedBox(width: 8.0,),
+                                            Text(controller.listOfStudents[index].name ?? '', style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18), overflow: TextOverflow.ellipsis)
+                                          ],
+                                        ),
+                                              AnimatedToggleSwitch<int>.size(
+                                                current: controller.listOfStudents[index].isChecked ?? 1,
+                                                values: const [0, 1],
+                                                iconOpacity: 0.2,
+                                                indicatorSize: const Size.fromRadius(24),
+                                                iconBuilder: (value, size) {
+                                                  IconData data = Icons.clear;
+                                                  if (value.isEven) data = Icons.check;
+                                                  return Icon(data, size: 30,color: Colors.white,);
+                                                },
+                                                borderColor: controller.listOfStudents[index].isChecked == 0 ? const Color(0xFF06EA19) : const Color(0xFFF8220B),
+                                                iconAnimationType: AnimationType.onSelected,
+                                                colorBuilder: (isColor) => isColor.isEven ? const Color(0xFF06EA19) : const Color(0xFFF8220B),
+                                                onChanged: (selected){
+                                                setState(() {
+                                                  controller.listOfStudents[index].isChecked = selected;
+                                                });
+                                                  switch (controller.listOfStudents[index].isChecked) {
+                                                    case 0: {
+                                                      setState(() {
+                                                        controller.listOfStudents[index].typeChecked = 'yes';
+                                                      });
+                                                    }
+                                                    break;
+                                                    case 1: {
+                                                      setState(() {
+                                                        controller.listOfStudents[index].typeChecked = 'no';
 
-                                      trailing:AnimatedToggleSwitch<int>.size(
-                                        current: controller.isSelected,
-                                        values: const [0, 1],
-                                        iconOpacity: 0.2,
-                                        indicatorSize: const Size.fromRadius(24),
-                                        iconBuilder: (value, size) {
-                                          IconData data = Icons.clear;
-                                          if (value.isEven) data = Icons.check;
-                                          return Icon(data, size: 30,color: Colors.white,);
-                                        },
-                                        borderColor: controller.isSelected.isEven ? const Color(0xFF06EA19) : const Color(0xFFF8220B),
-                                        iconAnimationType: AnimationType.onSelected,
-                                        colorBuilder: (isColor) => isColor.isEven ? const Color(0xFF06EA19) : const Color(0xFFF8220B),
-                                        onChanged: (selected) => setState((){
-                                          controller.isSelected = selected;
-                                          switch (controller.isSelected) {
-                                            case 0: {
-                                              setState(() {
-                                                controller.listOfStudents[index].typeChecked = 'yes';
-                                              });
-                                            }
-                                            break;
-                                            case 1: {
-                                              setState(() {
-                                                controller.listOfStudents[index].typeChecked = 'no';
-                                              });
-                                            }
-                                            break;
-                                            // default: {
-                                            //   setState(() {
-                                            //     controller.listOfStudents[index].typeChecked = 'default: no';
-                                            //     print(controller.listOfStudents[index].typeChecked = 'default: no');
-                                            //
-                                            //   });
-                                            // }
-                                          }
-                                          print(controller.isSelected);
-                                        }),
-                                      )
-                                    // Row(
-                                    //   crossAxisAlignment: CrossAxisAlignment.start,
-                                    //   children: [
-                                    //     controller.isSelected == 0 ? const SizedBox(
-                                    //       height: 40,
-                                    //       width: 100,
-                                    //       child: Center(
-                                    //         child: Text('Available',style: TextStyle(
-                                    //             color: Color(0xFF06EA19),fontSize: 18,fontWeight: FontWeight.bold
-                                    //         ),),
-                                    //       ),
-                                    //     )
-                                    //         :const SizedBox(
-                                    //       height: 40,
-                                    //       width: 100,
-                                    //       child: Center(
-                                    //         child: Text('Absent',style: TextStyle(
-                                    //             color: Color(0xFFF8220B),fontSize: 18,fontWeight: FontWeight.bold
-                                    //         ),),
-                                    //       ),
-                                    //     ),
-                                    //     const SizedBox(width: 18,),
-                                    //     AnimatedToggleSwitch<int>.size(
-                                    //       current: controller.isSelected,
-                                    //       values: const [0, 1],
-                                    //       iconOpacity: 0.2,
-                                    //       indicatorSize: const Size.fromRadius(24),
-                                    //       iconBuilder: (value, size) {
-                                    //         IconData data = Icons.clear;
-                                    //         if (value.isEven) data = Icons.check;
-                                    //         return Icon(data, size: 44,color: Colors.white,);
-                                    //       },
-                                    //       borderColor: controller.isSelected.isEven ? const Color(0xFF06EA19) : const Color(0xFFF8220B),
-                                    //       iconAnimationType: AnimationType.onSelected,
-                                    //       colorBuilder: (isColor) => isColor.isEven ? const Color(0xFF06EA19) : const Color(0xFFF8220B),
-                                    //       onChanged: (selected) => setState((){
-                                    //         controller.isSelected = selected;
-                                    //         switch (controller.isSelected) {
-                                    //           case 0: {
-                                    //             setState(() {
-                                    //               controller.listOfStudents[index].typeChecked = 'yes';
-                                    //             });
-                                    //           }
-                                    //           break;
-                                    //           case 1: {
-                                    //             setState(() {
-                                    //               controller.listOfStudents[index].typeChecked = 'no';
-                                    //             });
-                                    //           }
-                                    //           break;
-                                    //           default: { }
-                                    //         }
-                                    //         print(controller.isSelected);
-                                    //       }),
-                                    //     ),
-                                    //   ],
-                                    // ),
-                                    /*****************/
-                                    // subtitle:Column(
-                                    //   crossAxisAlignment: CrossAxisAlignment.start,
-                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    //   children: [
-                                    //     Row(
-                                    //       crossAxisAlignment: CrossAxisAlignment.start,
-                                    //       children: [
-                                    //         controller.isSelected == 0 ? const SizedBox(
-                                    //           height: 40,
-                                    //           width: 100,
-                                    //           child: Center(
-                                    //             child: Text('Available',style: TextStyle(
-                                    //                 color: Color(0xFF06EA19),fontSize: 18,fontWeight: FontWeight.bold
-                                    //             ),),
-                                    //           ),
-                                    //         )
-                                    //             :const SizedBox(
-                                    //             height: 40,
-                                    //             width: 100,
-                                    //               child: Center(
-                                    //                 child: Text('Absent',style: TextStyle(
-                                    //                 color: Color(0xFFF8220B),fontSize: 18,fontWeight: FontWeight.bold
-                                    //             ),),
-                                    //           ),
-                                    //         ),
-                                    //         const SizedBox(width: 18,),
-                                    //         AnimatedToggleSwitch<int>.size(
-                                    //           current: controller.isSelected,
-                                    //           values: const [0, 1],
-                                    //           iconOpacity: 0.2,
-                                    //           indicatorSize: const Size.fromRadius(24),
-                                    //           iconBuilder: (value, size) {
-                                    //             IconData data = Icons.clear;
-                                    //             if (value.isEven) data = Icons.check;
-                                    //             return Icon(data, size: 44,color: Colors.white,);
-                                    //           },
-                                    //           borderColor: controller.isSelected.isEven ? const Color(0xFF06EA19) : const Color(0xFFF8220B),
-                                    //           iconAnimationType: AnimationType.onSelected,
-                                    //           colorBuilder: (isColor) => isColor.isEven ? const Color(0xFF06EA19) : const Color(0xFFF8220B),
-                                    //           onChanged: (selected) => setState((){
-                                    //             controller.isSelected = selected;
-                                    //             switch (controller.isSelected) {
-                                    //               case 0: {
-                                    //                 setState(() {
-                                    //                   controller.listOfStudents[index].typeChecked = 'yes';
-                                    //                 });
-                                    //               }
-                                    //               break;
-                                    //               case 1: {
-                                    //                 setState(() {
-                                    //                   controller.listOfStudents[index].typeChecked = 'no';
-                                    //                 });
-                                    //               }
-                                    //               break;
-                                    //               default: { }
-                                    //             }
-                                    //             print(controller.isSelected);
-                                    //           }),
-                                    //         ),
-                                    //       ],
-                                    //     ),
-                                    //     controller.isSelected == 0 ? Column(
-                                    //      children: [
-                                    //        Row(
-                                    //          crossAxisAlignment: CrossAxisAlignment.start,
-                                    //          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    //          children: [
-                                    //            const SizedBox(
-                                    //              height: 40,
-                                    //              width: 100,
-                                    //              child: Center(
-                                    //                child: Text('Homework',style: TextStyle(
-                                    //                    color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold
-                                    //                ),),
-                                    //              ),
-                                    //            ),
-                                    //            const SizedBox(width: 18,),
-                                    //            Expanded(
-                                    //              child: RatingBar.builder(
-                                    //                initialRating: 0,
-                                    //                minRating: 0,
-                                    //                direction: Axis.horizontal,
-                                    //                itemCount: 5,
-                                    //                itemSize: 34.9,
-                                    //                itemPadding: const EdgeInsets.symmetric(horizontal: 5.2),
-                                    //                itemBuilder: (context, _) => const Icon(Icons.star, color: Colors.amber,),
-                                    //                onRatingUpdate: (rating) {
-                                    //                setState(() {
-                                    //                  controller.rating = rating.toInt();
-                                    //                  // controller.listOfStudents[index].scores?.activeStars = rating.toInt();
-                                    //                  // print('controller.listOfStudents[index]: ${ controller.listOfStudents[index].scores?.activeStars = rating.toInt()}');
-                                    //                });
-                                    //                },
-                                    //              ),
-                                    //            ),
-                                    //          ],
-                                    //        ),
-                                    //        const SizedBox(height: 6,),
-                                    //        Row(
-                                    //          crossAxisAlignment: CrossAxisAlignment.start,
-                                    //          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    //          children: [
-                                    //            const SizedBox(
-                                    //              height: 40,
-                                    //              width: 100,
-                                    //              child: Center(
-                                    //                child: Text('Attendance',style: TextStyle(
-                                    //                    color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold
-                                    //                ),),
-                                    //              ),
-                                    //            ),
-                                    //            const SizedBox(width: 18,),
-                                    //            Expanded(
-                                    //              child: RatingBar.builder(
-                                    //                initialRating: 0,
-                                    //                minRating: 0,
-                                    //                direction: Axis.horizontal,
-                                    //                itemCount: 5,
-                                    //                itemSize: 34.9,
-                                    //                itemPadding: const EdgeInsets.symmetric(horizontal: 5.2),
-                                    //                itemBuilder: (context, _) => const Icon(Icons.star, color: Colors.amber,),
-                                    //                onRatingUpdate: (rating) {
-                                    //                },
-                                    //              ),
-                                    //            ),
-                                    //          ],
-                                    //        ),
-                                    //      ],
-                                    //    )
-                                    //         : Container()
-                                    //
-                                    //   ],
-                                    // ),
-                                    /**********************/
-                                    // trailing: AnimatedToggleSwitch<int>.size(
-                                    //   current: controller.isSelected,
-                                    //   values: const [0, 1],
-                                    //   iconOpacity: 0.2,
-                                    //   indicatorSize: const Size.fromRadius(24),
-                                    //   iconBuilder: (value, size) {
-                                    //     IconData data = Icons.clear;
-                                    //     if (value.isEven) data = Icons.check;
-                                    //     return Icon(data, size: 44,color: Colors.white,);
-                                    //   },
-                                    //   borderColor: controller.isSelected.isEven ? const Color(0xFF06EA19) : const Color(0xFFF8220B),
-                                    //   iconAnimationType: AnimationType.onSelected,
-                                    //   colorBuilder: (isColor) => isColor.isEven ? const Color(0xFF06EA19) : const Color(0xFFF8220B),
-                                    //   onChanged: (selected) => setState((){
-                                    //     controller.isSelected = selected;
-                                    //     switch (controller.isSelected) {
-                                    //       case 0: {
-                                    //               setState(() {
-                                    //                 controller.listOfStudents[index].typeChecked = 'yes';
-                                    //               });
-                                    //       }
-                                    //       break;
-                                    //       case 1: {
-                                    //           setState(() {
-                                    //             controller.listOfStudents[index].typeChecked = 'no';
-                                    //           });
-                                    //       }
-                                    //       break;
-                                    //       default: { }
-                                    //     }
-                                    //     print(controller.isSelected);
-                                    //   }),
-                                    // ),
+                                                      });
+                                                    }
+                                                    break;
+                                                  }
+                                                },
+                                              ),
+                                        // Transform.scale(
+                                        //   scale: 2.0,
+                                        //   child: Checkbox(
+                                        //     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                        //     //activeColor: Colors.blue,
+                                        //     checkColor: Colors.white,
+                                        //     tristate: true,
+                                        //     fillColor: MaterialStateProperty.all(Colors.blue),
+                                        //     overlayColor: MaterialStateProperty.all(Colors.lightBlueAccent),
+                                        //     splashRadius: 20,
+                                        //     shape: RoundedRectangleBorder(
+                                        //       borderRadius: BorderRadius.circular(3.0),
+                                        //     ),
+                                        //
+                                        //     value:controller.listOfStudents[index].isChecked,
+                                        //     onChanged: (bool? value) {
+                                        //       setState(() {
+                                        //         controller.listOfStudents[index].isChecked = value!;
+                                        //         switch(controller.listOfStudents[index].isChecked){
+                                        //           case true:{
+                                        //             setState(() {
+                                        //               controller.listOfStudents[index].typeChecked = 'yes';
+                                        //               print(controller.listOfStudents[index].typeChecked = 'yes');
+                                        //             });
+                                        //           } break;
+                                        //           case false:{
+                                        //             setState(() {
+                                        //               controller.listOfStudents[index].typeChecked = 'no';
+                                        //               print(controller.listOfStudents[index].typeChecked = 'no');
+                                        //             });
+                                        //           } break;
+                                        //           default:{
+                                        //             controller.listOfStudents[index].typeChecked = 'no';
+                                        //             print(controller.listOfStudents[index].typeChecked = 'no');
+                                        //           }
+                                        //         }
+                                        //
+                                        //       });
+                                        //
+                                        //     },
+                                        //   ),
+                                        // ),
+                                      ],
+                                    ),
                                   ),
-                                ),
+                                  const Divider(thickness: 1.0,)
+                                ],
                               );
                             },
                           ),
